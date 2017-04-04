@@ -16,7 +16,7 @@ namespace TobaccoShop.Controllers
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+            int l = 0;
             return View();
         }
 
