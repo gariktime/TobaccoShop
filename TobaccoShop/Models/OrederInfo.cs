@@ -10,5 +10,10 @@
 
         public int OrderID { get; set; }
         public Order Order { get; set; }
+
+        public OrederInfo()
+        {
+
+        }
     }
 }

@@ -13,11 +13,12 @@ namespace TobaccoShop.Models
         [Required(ErrorMessage = "Введите модель товара")]
         public string Model { get; set; }
 
+        [DataType(DataType.MultilineText)]
         [StringLength(2000, MinimumLength = 5, ErrorMessage = "Описание товара должно быть от 5 до 2000 символов")]
         public string Description { get; set; }
 
         [Required]
-        public decimal Price { get; set; }
+        public int Price { get; set; }
 
         [Required]
         [Range(0, 5000)]
@@ -30,7 +31,7 @@ namespace TobaccoShop.Models
             Comments = new List<Comment>();
         }
 
-        public Product(string mark, string model, decimal price, int available)
+        public Product(string mark, string model, int price, int available)
         {
             this.Mark = mark;
             this.Model = model;

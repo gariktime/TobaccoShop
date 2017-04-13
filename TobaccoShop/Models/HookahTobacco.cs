@@ -11,7 +11,12 @@ namespace TobaccoShop.Models
         [Range(1, 5000, ErrorMessage = "Вес табака должен быть от 1 до 5000 грамм")]
         public double Weight { get; set; }
 
-        public HookahTobacco(string mark, string model, double weight, decimal price, int available)
+        public HookahTobacco()
+        {
+
+        }
+
+        public HookahTobacco(string mark, string model, double weight, int price, int available)
             : base(mark, model, price, available)
         {
             this.Weight = weight;

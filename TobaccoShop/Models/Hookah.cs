@@ -11,7 +11,12 @@ namespace TobaccoShop.Models
         [Range(10, 200, ErrorMessage = "Высота кальяна должна быть от 10 до 200 сантиметров")]
         public double Height { get; set; }
 
-        public Hookah(string mark, string model, double height, decimal price, int available)
+        public Hookah()
+        {
+
+        }
+
+        public Hookah(string mark, string model, double height, int price, int available)
             : base(mark, model, price, available)
         {
             this.Height = height;

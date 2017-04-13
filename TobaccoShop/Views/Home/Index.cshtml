@@ -3,30 +3,12 @@
 }
 
 
-<div class="row">
-    @foreach (var p in ViewBag.Products)
-    {
-        <div class="col-md-4">
-            <div class="img-thumbnail"></div>
-            <div class="product-info">@(p.Mark + "  " + p.Model)</div>
-            <div class="price"></div>
-            <div>
-                <button type="button" class="btn btn-primary">Купить</button>
-            </div>
-        </div>
-    }
+<div class="list-group">
 
-
-
-    @*<table class="table-bordered">
-        @foreach (var b in ViewBag.Products)
-        {
-        <tr>
-            <td align="center" width="20%"><p>@b.Mark</p></td>
-            <td align="center" width="80%"><p>@b.Model</p></td>
-            
-        </tr>
-        }
-    </table>*@
-
+    <div class="col-md-2">
+        <a class="nounderline section-name" href="/Hookah/List" title="Кальяны">
+            <img class="img-responsive img-center" src="~/Content/SectionImages/hookah.png" />
+            <p>КАЛЬЯНЫ</p>
+        </a>
+    </div>
 </div>

@@ -19,8 +19,6 @@ namespace TobaccoShop.Models
         /// <param name="modelBuilder"></param>
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Configurations.Add(new HookahConfiguration());
-            modelBuilder.Configurations.Add(new HookahTobaccoConfiguration());
             modelBuilder.Configurations.Add(new OrderInfoConfiguration());
             base.OnModelCreating(modelBuilder);
         }
@@ -34,22 +32,6 @@ namespace TobaccoShop.Models
     }
 
     #region Model Configuration Fluent API
-    class HookahConfiguration : EntityTypeConfiguration<Product>
-    {
-        public HookahConfiguration()
-        {
-            ToTable("Products");
-        }
-    }
-
-    class HookahTobaccoConfiguration : EntityTypeConfiguration<Product>
-    {
-        public HookahTobaccoConfiguration()
-        {
-            ToTable("Products");
-        }
-    }
-
     class OrderInfoConfiguration : EntityTypeConfiguration<OrederInfo>
     {
         public OrderInfoConfiguration()
@@ -67,16 +49,17 @@ namespace TobaccoShop.Models
             HookahTobacco p2 = new HookahTobacco("Al Fakher", "Cherry", 70, 75, 20);
             HookahTobacco p3 = new HookahTobacco("Al Fakher", "Mint", 35, 75, 20);
             HookahTobacco p4 = new HookahTobacco("Al Fakher", "Orange", 70, 75, 20);
-            Comment com1 = new Comment { Text = "Збсь" };
-            Comment com2 = new Comment { Text = "Норм" };
+            Comment com1 = new Comment { Text = "Заебок" };
+            Comment com2 = new Comment { Text = "Нормас" };
             p1.Comments.Add(com1);
             p1.Comments.Add(com2);
             db.HookahTobacco.AddRange(new List<HookahTobacco> { p1, p2, p3, p4 });
             db.Comments.AddRange(new List<Comment> { com1, com2 });
 
+
             Hookah p5 = new Hookah("KM", "BOER GL Bronze", 82, 9000, 2);
             Hookah p6 = new Hookah("Khalil", "Mamoon Halazone Trimetal", 85, 6800, 1);
-            
+            db.Hookahs.AddRange(new List<Hookah> { p5, p6 });
 
             List<OrederInfo> infos = new List<OrederInfo>();
             OrederInfo info1 = new OrederInfo { Quantity = 3, Product = p1 };

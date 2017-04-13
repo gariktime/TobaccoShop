@@ -1,0 +1,53 @@
+﻿@model IEnumerable<TobaccoShop.Models.Hookah>
+
+@{
+    ViewBag.Title = "Кальяны";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var marks = Model.Select(p => p.Mark).Distinct();
+}
+
+<div class="row">
+    
+    <div id="filter" class="col-md-3">
+        <div class="filter-section">
+            <p>Цена</p>
+            <div>
+                <input id="price_min" type="text" class="form-control" />
+                <span>—</span>
+                <input id="price_max" type="text" class="form-control" />
+            </div>
+            <div class=""></div>
+        </div>
+
+        <div class="filter-section">
+            <p>Марка</p>
+            @foreach (var mark in marks)
+            {
+                <div class="checkbox-item">
+                    @Html.CheckBox(mark, htmlAttributes: new { @class = "checkbox" })
+                    @Html.Label(mark, htmlAttributes: new { @style = "margin-left: 5px" })
+                </div>
+            }
+        </div>
+
+    </div>
+
+    <div class="col-md-9 list-group">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-2">
+                <p>Кальян @Html.DisplayFor(modelItem => item.Mark) @Html.DisplayFor(modelItem => item.Model)</p>
+
+                <p>Высота @Html.DisplayFor(modelItem => item.Height) см.</p>
+
+                <p>@Html.DisplayFor(modelItem => item.Price) руб.</p>
+
+                @using (Html.BeginForm("AddToCart", "Hookah", FormMethod.Post))
+                {
+                    <input class="btn-success" type="button" value="Купить" />
+                }
+                
+            </div>
+        }
+    </div>
+</div>

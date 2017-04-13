@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using TobaccoShop.Models;
+using System.Reflection;
 
 namespace TobaccoShop.Controllers
 {
@@ -13,11 +14,7 @@ namespace TobaccoShop.Controllers
 
         public ActionResult Index()
         {
-            IEnumerable<Product> products = context.Products;
-            Product p = context.Products.Find(1);
-            ViewBag.Products = products;
             return View();
         }
-
     }
 }
