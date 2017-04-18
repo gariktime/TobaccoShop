@@ -16,8 +16,34 @@ namespace TobaccoShop.Controllers
 
         public async Task<ActionResult> List()
         {
-            ViewBag.Marks = db.Hookahs.Select(p => p.Mark).Distinct().ToList();
-            return View(await db.Hookahs.ToListAsync());
+            HookahListViewModel hlvm = new HookahListViewModel();
+            hlvm.Products = await db.Hookahs.ToListAsync();
+            hlvm.minPrice = await db.Hookahs.Select(p => p.Price).MinAsync();
+            hlvm.maxPrice = await db.Hookahs.Select(p => p.Price).MaxAsync();
+            hlvm.minHeight = await db.Hookahs.Select(p => p.Height).MinAsync();
+            hlvm.maxHeight = await db.Hookahs.Select(p => p.Height).MaxAsync();
+            hlvm.Marks = new List<MarkItem>();
+            var mrks = db.Hookahs.Select(p => p.Mark).ToList();
+            for (int i = 0; i < mrks.Count(); i++)
+            {
+                hlvm.Marks.Add(new MarkItem(mrks[i], false));
+            }
+
+            return View(hlvm);
+        }
+
+        [HttpPost]
+        public ActionResult ProductList(HookahListViewModel hlvm)
+        {
+            var tt = hlvm;
+            if (Request.IsAjaxRequest())
+            {
+                
+                int minPrice = int.Parse( Request.Form.GetValues("price_min")[0]);
+                var k = 0;
+                return PartialView();
+            }
+            return PartialView("_ProductList");
         }
 
         public async Task<ActionResult> Item(int? id)

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TobaccoShop.Models
 {
@@ -20,6 +21,48 @@ namespace TobaccoShop.Models
             : base(mark, model, price, available)
         {
             this.Height = height;
+        }
+    }
+
+    public class HookahListViewModel
+    {
+        [Required(ErrorMessage = "Введите минимальную цену")]
+        [Range(1, 999999, ErrorMessage = "Неверные данные")]
+        public int minPrice { get; set; }
+
+        [Required(ErrorMessage = "Введите максимальную цену")]
+        [Range(1, 999999, ErrorMessage = "Неверные данные")]
+        public int maxPrice { get; set; }
+
+        [Required(ErrorMessage = "Введите минимальную высоту")]
+        [Range(1, 999999, ErrorMessage = "Неверные данные")]
+        public double minHeight { get; set; }
+
+        [Required(ErrorMessage = "Введите максимальную высоту")]
+        [Range(1, 999999, ErrorMessage = "Неверные данные")]
+        public double maxHeight { get; set; }
+
+        public IEnumerable<Hookah> Products;
+
+        public List<MarkItem> Marks;
+
+        public HookahListViewModel()
+        {
+
+        }
+
+
+    }
+
+    public class MarkItem
+    {
+        public string Name { get; set; }
+        public bool Value { get; set; }
+
+        public MarkItem(string name, bool value)
+        {
+            this.Name = name;
+            this.Value = value;
         }
     }
 }
