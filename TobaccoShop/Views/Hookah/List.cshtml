@@ -1,110 +1,56 @@
-﻿@*@model IEnumerable<TobaccoShop.Models.Hookah>*@
-@model TobaccoShop.Models.HookahListViewModel
+﻿@model TobaccoShop.Models.HookahListViewModel
 
 @{
     ViewBag.Title = "Кальяны";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //var marks = Model.Select(p => p.Mark).Distinct();
-    //var minPrice = Model.Select(p => p.Price).Min();
-    //var maxPrice = Model.Select(p => p.Price).Max();
-    //var minHeight = Model.Select(p => p.Height).Min();
-    //var maxHeight = Model.Select(p => p.Height).Max();
 }
 
 <div class="row">
-    @using (Ajax.BeginForm("ProductList", new AjaxOptions { UpdateTargetId = "productList" }))
+    @using (Ajax.BeginForm("ProductFilter", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "productList" }))
     {
-    <div id="filter" class="col-md-3">
-        <div class="filter-section">
-            <p>Цена</p>
-            <div>
-                @*<input id="price_min" name="price_min" type="text" class="filter-input form-control" value="@minPrice"/>*@
-                @Html.TextBoxFor(x=>x.minPrice, htmlAttributes: new { @class = "filter-input form-control" })
-                @Html.ValidationMessageFor(x=>x.minPrice)
-                <span>—</span>
-                @*<input id="price_max" name="price_max" type="text" class="filter-input form-control" value="@maxPrice"/>*@
-                @Html.TextBoxFor(x => x.maxPrice, htmlAttributes: new { @class = "filter-input form-control" })
-            </div>
-            <div id="price_range"></div>
-            <br/>
-        </div>
-
-        <div id="Marks" class="filter-section">
-            <p>Марка</p>
-            @foreach (var mark in Model.Marks)
-            {
-                <div class="checkbox-item">
-                    @*@Html.CheckBox(mark.Name, htmlAttributes: new { @class = "checkbox" })
-                    @Html.Label(mark.Name, htmlAttributes: new { @style = "margin-left: 5px" })*@
-                    @Html.CheckBoxFor(markItem => mark.Value, htmlAttributes: new { @class = "checkbox" })
-                    @Html.LabelFor(markItem => mark.Name, htmlAttributes: new { @style = "margin-left: 5px" })
+        @Html.AntiForgeryToken()
+        <div id="filter" class="col-md-3">
+            <div class="filter-section">
+                <p>Цена</p>
+                <div>
+                    @Html.TextBoxFor(x => x.minPrice, htmlAttributes: new { @class = "filter-input form-control" })
+                    <span>—</span>
+                    @Html.TextBoxFor(x => x.maxPrice, htmlAttributes: new { @class = "filter-input form-control" })
                 </div>
-            }
-        </div>
-
-        <div class="filter-section">
-            <p>Высота, см.</p>
-            <div>
-                @*<input id="height_min" name="height_min" type="text" class="filter-input form-control" value="@minHeight" />*@
-                @Html.TextBoxFor(x => x.minHeight, htmlAttributes: new { @class = "filter-input form-control" })
-                <span>—</span>
-                @*<input id="height_max" name="height_max" type="text" class="filter-input form-control" value="@maxHeight" />*@
-                @Html.TextBoxFor(x => x.maxHeight, htmlAttributes: new { @class = "filter-input form-control" })
+                <input id="price_range"/>
+                <br/>
             </div>
-            <div id="height_range"></div>
-            <br />
+
+            <div class="filter-section">
+                <p>Марка</p>
+                    @foreach (var mark in Model.Marks)
+                    {
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="checkbox" id="[@mark]" name="SelectedMarks" value="@mark"/>
+                        @Html.Label(mark, htmlAttributes: new { @style = "margin-left: 5px" })
+                    </div>
+                    }
+            </div>
+
+            <div class="filter-section">
+                <p>Высота, см.</p>
+                <div>
+                    @Html.TextBoxFor(x => x.minHeight, htmlAttributes: new { @class = "filter-input form-control" })
+                    <span>—</span>
+                    @Html.TextBoxFor(x => x.maxHeight, htmlAttributes: new { @class = "filter-input form-control" })
+                </div>
+                <input id="height_range"/>
+                <br />
+            </div>
+            <div class="filter-section">
+                <input type="submit" class="btn-default" value="Применить" />
+                <input type="reset" class="btn-default" value="Сбросить фильтр" />
+            </div>
         </div>
-        <div class="filter-section">
-            <input type="submit" class="btn-primary" value="Применить" />
-        </div>
-    </div>
     }
-
-
-
+   
     <div id="productList" class="col-md-9 list-group">
-        @{ Html.RenderPartial("_ProductList", Model.Products);}
-
-        @*@foreach (var item in Model)
-        {
-            <div class="col-md-2">
-                <p>Кальян @Html.DisplayFor(modelItem => item.Mark) @Html.DisplayFor(modelItem => item.Model)</p>
-
-                <p>Высота @Html.DisplayFor(modelItem => item.Height) см.</p>
-
-                <p>@Html.DisplayFor(modelItem => item.Price) руб.</p>
-
-                @using (Html.BeginForm("AddToCart", "Hookah", FormMethod.Post))
-                {
-                    <input class="btn-success" type="button" value="Купить" />
-                }
-                
-            </div>
-        }*@
+        @{Html.RenderPartial("_ProductList", Model.Products);}
     </div>
-    <div id="resultID"></div>
-    <input id="asdf" onclick="cl()" type="button" value="123"/>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $("#asdf").click(function () {
-            var s = $("#marks").serializeArray();
-            console.log(s);
-        });
-    });
-
-    function cl() {
-        var json = $.toJSON
-
-        var s = $("#marks").children("div").children(".checkbox").serializeArray();
-        console.log(s.length);
-        $.each(s, function (i, field) {
-            console.log(field.name + ":" + field.value + "\n");
-        });
-        console.log(s);
-
-        var q = $("filter ").find("*").length;
-        console.log(q.length);
-    };
-</script>

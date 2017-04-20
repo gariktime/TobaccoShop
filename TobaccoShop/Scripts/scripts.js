@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
-    var min_price = $("#price_min").val();
-    var max_price = $("#price_max").val();
-    var min_height = $("height_min").val();
-    var max_height = $("height_max").val();
+    var min_price = $("#minPrice").val();
+    var max_price = $("#maxPrice").val();
+    var min_height = $("minHeight").val();
+    var max_height = $("maxHeight").val();
 
     //$("#price_min #price_max").on("change keydown keypress keyup mousedown click mouseup", function () {
     //    //$("#price_range").prop("from").val($("#price_min").val());
@@ -12,10 +12,7 @@
     //        to: $("#price_max").val()
     //    });
     //});
-
-
-
-
+        
     $("#price_range").ionRangeSlider({
         type: "double",
         min: min_price,

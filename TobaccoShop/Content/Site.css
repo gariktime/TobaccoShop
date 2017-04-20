@@ -23,6 +23,32 @@ textarea {
     max-width: 280px;
 }
 
+/* Validation errors */
+
+.field-validation-error {
+    color: #f00;
+}
+
+.field-validation-valid {
+    display: none;
+}
+
+.validation-summary-errors {
+    color: #f00;
+    font-weight: bold;
+}
+
+.validation-summary-valid {
+    display: none;
+}
+
+.input-validation-error {
+    border: 2px solid #f00;
+    background-color: #fee;
+}
+
+/* Custom */
+
 .img-center{
     display:block;
     margin: 0 auto;

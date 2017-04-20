@@ -44,25 +44,13 @@ namespace TobaccoShop.Models
 
         public IEnumerable<Hookah> Products;
 
-        public List<MarkItem> Marks;
+        public List<string> Marks;
+
+        public string[] SelectedMarks { get; set; }
 
         public HookahListViewModel()
         {
-
-        }
-
-
-    }
-
-    public class MarkItem
-    {
-        public string Name { get; set; }
-        public bool Value { get; set; }
-
-        public MarkItem(string name, bool value)
-        {
-            this.Name = name;
-            this.Value = value;
+            this.Marks = new List<string>();
         }
     }
 }

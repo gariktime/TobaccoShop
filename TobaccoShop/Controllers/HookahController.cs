@@ -22,28 +22,41 @@ namespace TobaccoShop.Controllers
             hlvm.maxPrice = await db.Hookahs.Select(p => p.Price).MaxAsync();
             hlvm.minHeight = await db.Hookahs.Select(p => p.Height).MinAsync();
             hlvm.maxHeight = await db.Hookahs.Select(p => p.Height).MaxAsync();
-            hlvm.Marks = new List<MarkItem>();
-            var mrks = db.Hookahs.Select(p => p.Mark).ToList();
-            for (int i = 0; i < mrks.Count(); i++)
-            {
-                hlvm.Marks.Add(new MarkItem(mrks[i], false));
-            }
+            hlvm.Marks = await db.Hookahs.Select(p => p.Mark).ToListAsync();
 
             return View(hlvm);
         }
 
         [HttpPost]
-        public ActionResult ProductList(HookahListViewModel hlvm)
+        public async Task<ActionResult> ProductFilter(HookahListViewModel hlvm)
         {
-            var tt = hlvm;
+            if (hlvm.minPrice < 1)
+                ModelState.AddModelError("minPrice", "Минимальная цена не может быть отрицательной");
+
             if (Request.IsAjaxRequest())
             {
-                
-                int minPrice = int.Parse( Request.Form.GetValues("price_min")[0]);
-                var k = 0;
-                return PartialView();
+                if (ModelState.IsValid)
+                {
+                    IQueryable<Hookah> seq = null;
+                    if (hlvm.SelectedMarks == null)
+                        seq = db.Hookahs.Where(p => p.Price >= hlvm.minPrice &&
+                                                    p.Price <= hlvm.maxPrice &&
+                                                    p.Height >= hlvm.minHeight &&
+                                                    p.Height <= hlvm.maxHeight);
+                    else
+                        seq = db.Hookahs.Where(p => p.Price >= hlvm.minPrice &&
+                                                    p.Price <= hlvm.maxPrice &&
+                                                    p.Height >= hlvm.minHeight &&
+                                                    p.Height <= hlvm.maxHeight &&
+                                                    hlvm.SelectedMarks.Contains(p.Mark));
+
+                    return PartialView("_ProductList", await seq.ToListAsync());
+                }
+                else
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            return PartialView("_ProductList");
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         public async Task<ActionResult> Item(int? id)
