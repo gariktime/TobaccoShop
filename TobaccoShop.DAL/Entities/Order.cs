@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TobaccoShop.Models
+namespace TobaccoShop.DAL.Entities
 {
     public class Order
     {

@@ -1,6 +1,6 @@
-﻿namespace TobaccoShop.Models
+﻿namespace TobaccoShop.DAL.Entities
 {
-    public class OrederInfo
+    public class OrderInfo
     {
         public int ID { get; set; }
         public int Quantity { get; set; }
@@ -11,7 +11,7 @@
         public int OrderID { get; set; }
         public Order Order { get; set; }
 
-        public OrederInfo()
+        public OrderInfo()
         {
 
         }

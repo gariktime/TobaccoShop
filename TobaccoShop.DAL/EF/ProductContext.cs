@@ -2,15 +2,24 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using TobaccoShop.DAL.Entities;
 
-namespace TobaccoShop.Models
+namespace TobaccoShop.DAL.EF
 {
     public class ProductContext : DbContext
     {
-        public ProductContext()
-            : base("DbConnection")
+        static ProductContext()
         {
             Database.SetInitializer<ProductContext>(new MyContextInitializer());
+        }
+
+        public ProductContext(string connectionString)
+            : base(connectionString)
+        {
+
         }
 
         /// <summary>

@@ -20,7 +20,7 @@
                 <input id="price_range"/>
                 <br/>
             </div>
-
+            
             <div class="filter-section">
                 <p>Марка</p>
                     @foreach (var mark in Model.Marks)
@@ -48,7 +48,7 @@
             </div>
         </div>
     }
-   
+
     <div id="productList" class="col-md-9 list-group">
         @{Html.RenderPartial("_ProductList", Model.Products);}
     </div>

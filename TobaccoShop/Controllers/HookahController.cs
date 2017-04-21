@@ -28,6 +28,7 @@ namespace TobaccoShop.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> ProductFilter(HookahListViewModel hlvm)
         {
             if (hlvm.minPrice < 1)
