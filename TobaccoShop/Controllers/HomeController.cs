@@ -10,8 +10,6 @@ namespace TobaccoShop.Controllers
 {
     public class HomeController : Controller
     {
-        ProductContext context = new ProductContext();
-
         public ActionResult Index()
         {
             return View();

@@ -10,8 +10,10 @@ namespace TobaccoShop.DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        ProductRepository Products { get; }
-        OrderRepository Orders { get; }
+        IGenericRepository<Product> Products { get; }
+        IGenericRepository<Hookah> Hookahs { get; }
+
+        OrderRepository Orders { get; } //хуйня
         void Save();
     }
 }

@@ -24,15 +24,11 @@ namespace TobaccoShop.Models
         [Range(1, 999999, ErrorMessage = "Неверные данные")]
         public double maxHeight { get; set; }
 
-        public IEnumerable<Hookah> Products;
-
-        public List<string> Marks;
-
         public string[] SelectedMarks { get; set; }
 
         public HookahListViewModel()
         {
-            this.Marks = new List<string>();
+            
         }
     }
 }

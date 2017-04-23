@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using TobaccoShop.BLL.ListModels;
+using TobaccoShop.BLL.Services;
+using TobaccoShop.DAL.Interfaces;
 using TobaccoShop.DAL.Repositories;
 using TobaccoShop.Models;
 
@@ -18,29 +22,35 @@ namespace TobaccoShop.Controllers
             return View();
         }
 
-        EFUnitOfWork uow;
+        private IUnitOfWork db;
+        private ProductService productService;
 
-        public ProductsController()
+        public ProductsController(IUnitOfWork uow)
         {
-            //uow = new EFUnitOfWork();
+            db = uow;
+            productService = new ProductService(db);
         }
 
-        public async Task<ActionResult> Hookahs()
+        public ActionResult Hookahs()
         {
-            HookahListViewModel hlvm = new HookahListViewModel();
-            hlvm.Products = await uow.Products.GetHookahs().ToListAsync();
-            hlvm.Marks = await uow.Products.GetMarksAsync("Hookah");
-            hlvm.minPrice = await uow.Products.GetMinPriceAsync();
-            hlvm.maxPrice = await uow.Products.GetMaxPriceAsync();
-            hlvm.minHeight = await uow.Products.GetHookahs().Select(c => c.Height).MinAsync();
-            hlvm.maxHeight = await uow.Products.GetHookahs().Select(c => c.Height).MaxAsync();
-
-            return View(hlvm);
+            HookahListModel hlm = new HookahListModel(db);
+            return View(hlm);
         }
 
         public async Task<ActionResult> HookahFilter(HookahListViewModel hlvm)
         {
-            return PartialView("_ProductList", null);
+            if (Request.IsAjaxRequest())
+            {
+                if (ModelState.IsValid)
+                {
+                    var result = await productService.GetHookahsAsync(hlvm.minPrice, hlvm.maxPrice, hlvm.minHeight, hlvm.maxHeight, hlvm.SelectedMarks);
+                    return PartialView("_ProductList", result);
+                }
+                else
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
     }
 }

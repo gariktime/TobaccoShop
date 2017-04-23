@@ -12,7 +12,8 @@ namespace TobaccoShop.DAL.Repositories
     public class EFUnitOfWork : IUnitOfWork
     {
         private ProductContext db;
-        private ProductRepository productRepository;
+        private ProductGRepository<Product> productRepository;
+        private ProductGRepository<Hookah> hookahRepository;
         private OrderRepository orderRepository;
 
         public EFUnitOfWork(string connectionString)
@@ -20,15 +21,35 @@ namespace TobaccoShop.DAL.Repositories
             db = new ProductContext(connectionString);
         }
 
-        public ProductRepository Products
+        public IGenericRepository<Product> Products
         {
             get
             {
                 if (productRepository == null)
-                    productRepository = new ProductRepository(db);
+                    productRepository = new ProductGRepository<Product>(db);
                 return productRepository;
             }
         }
+
+        public IGenericRepository<Hookah> Hookahs
+        {
+            get
+            {
+                if (hookahRepository == null)
+                    hookahRepository = new ProductGRepository<Hookah>(db);
+                return hookahRepository;
+            }
+        }
+
+        //public ProductRepository Products
+        //{
+        //    get
+        //    {
+        //        if (productRepository == null)
+        //            productRepository = new ProductRepository(db);
+        //        return productRepository;
+        //    }
+        //}
 
         public OrderRepository Orders
         {

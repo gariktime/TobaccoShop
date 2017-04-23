@@ -57,6 +57,19 @@ namespace TobaccoShop.DAL.Repositories
 
         #region Функции множеств
 
+        public List<string> GetMarks(string type)
+        {
+            switch (type)
+            {
+                case "Hookah":
+                    return db.Products.OfType<Hookah>().Select(c => c.Mark).ToList();
+                case "HookahTobacco":
+                    return db.Products.OfType<HookahTobacco>().Select(c => c.Mark).ToList();
+                default:
+                    return null;
+            }
+        }
+
         public async Task<List<string>> GetMarksAsync(string type)
         {
             switch (type)
