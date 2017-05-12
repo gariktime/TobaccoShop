@@ -43,8 +43,8 @@ namespace TobaccoShop.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var result = await productService.GetHookahsAsync(hlvm.minPrice, hlvm.maxPrice, hlvm.minHeight, hlvm.maxHeight, hlvm.SelectedMarks);
-                    return PartialView("_ProductList", result);
+                    var hookahs = await productService.GetHookahsAsync(hlvm.minPrice, hlvm.maxPrice, hlvm.minHeight, hlvm.maxHeight, hlvm.SelectedMarks);
+                    return PartialView("_ProductList", hookahs);
                 }
                 else
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

@@ -33,7 +33,5 @@ namespace TobaccoShop.Util
         {
             kernel.Bind<IProductService>().To<ProductService>();
         }
-
-
     }
 }
