@@ -1,25 +1,61 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TobaccoShop.DAL.EF;
 using TobaccoShop.DAL.Entities;
+using TobaccoShop.DAL.Entities.Identity;
+using TobaccoShop.DAL.Entities.Products;
+using TobaccoShop.DAL.Identity;
 using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.DAL.Repositories
 {
     public class EFUnitOfWork : IUnitOfWork
     {
-        private ProductContext db;
+        private ApplicationContext db;
+
+        //классы Identity
+        private ApplicationUserManager userManager;
+        private ApplicationRoleManager roleManager;
+        private IClientManager clientManager;
+
+        //репозитории продуктов
         private ProductGRepository<Product> productRepository;
         private ProductGRepository<Hookah> hookahRepository;
+
         private OrderRepository orderRepository;
 
         public EFUnitOfWork(string connectionString)
         {
-            db = new ProductContext(connectionString);
+            db = new ApplicationContext(connectionString);
+            userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
+            roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(db));
+            clientManager = new ClientManager(db);
         }
+
+        #region Работа с Identity
+
+        public ApplicationUserManager UserManager
+        {
+            get { return userManager; }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get { return roleManager; }
+        }
+
+        public IClientManager ClientManager
+        {
+            get { return clientManager; }
+        }
+
+        #endregion
+
+        #region Репозитории продуктов
 
         public IGenericRepository<Product> Products
         {
@@ -41,15 +77,7 @@ namespace TobaccoShop.DAL.Repositories
             }
         }
 
-        //public ProductRepository Products
-        //{
-        //    get
-        //    {
-        //        if (productRepository == null)
-        //            productRepository = new ProductRepository(db);
-        //        return productRepository;
-        //    }
-        //}
+        #endregion
 
         public OrderRepository Orders
         {
@@ -66,6 +94,11 @@ namespace TobaccoShop.DAL.Repositories
             db.SaveChanges();
         }
 
+        public async Task SaveAsync()
+        {
+            await db.SaveChangesAsync();
+        }
+
         private bool disposed = false;
 
         public virtual void Dispose(bool disposing)
@@ -74,6 +107,9 @@ namespace TobaccoShop.DAL.Repositories
             {
                 if (disposing)
                 {
+                    userManager.Dispose();
+                    roleManager.Dispose();
+                    clientManager.Dispose();
                     db.Dispose();
                 }
                 this.disposed = true;

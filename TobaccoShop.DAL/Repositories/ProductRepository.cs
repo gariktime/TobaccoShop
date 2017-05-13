@@ -6,15 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TobaccoShop.DAL.EF;
 using TobaccoShop.DAL.Entities;
+using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.DAL.Repositories
 {
     public class ProductRepository : IRepository<Product>
     {
-        private ProductContext db;
+        private EF.ApplicationContext db;
 
-        public ProductRepository(ProductContext context)
+        public ProductRepository(EF.ApplicationContext context)
         {
             this.db = context;
         }

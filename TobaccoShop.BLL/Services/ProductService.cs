@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.DAL.Entities;
+using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.BLL.Services
 {
     public class ProductService : IProductService
     {
-        IUnitOfWork db;
+        private IUnitOfWork db;
 
         public ProductService(IUnitOfWork uow)
         {

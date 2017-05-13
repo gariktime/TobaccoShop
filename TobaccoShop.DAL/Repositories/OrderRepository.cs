@@ -12,9 +12,9 @@ namespace TobaccoShop.DAL.Repositories
 {
     public class OrderRepository: IRepository<Order>
     {
-        private ProductContext db;
+        private EF.ApplicationContext db;
 
-        public OrderRepository(ProductContext context)
+        public OrderRepository(EF.ApplicationContext context)
         {
             this.db = context;
         }

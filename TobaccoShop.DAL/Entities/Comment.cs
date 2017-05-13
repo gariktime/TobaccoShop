@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TobaccoShop.DAL.Entities.Products;
 
 namespace TobaccoShop.DAL.Entities
 {

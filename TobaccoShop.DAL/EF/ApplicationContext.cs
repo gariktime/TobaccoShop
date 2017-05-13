@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
@@ -6,17 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TobaccoShop.DAL.Entities;
+using TobaccoShop.DAL.Entities.Identity;
+using TobaccoShop.DAL.Entities.Products;
 
 namespace TobaccoShop.DAL.EF
 {
-    public class ProductContext : DbContext
+    public class ApplicationContext : IdentityDbContext<ApplicationUser>
     {
-        static ProductContext()
+        static ApplicationContext()
         {
-            Database.SetInitializer<ProductContext>(new MyContextInitializer());
+            Database.SetInitializer<ApplicationContext>(new MyContextInitializer());
         }
 
-        public ProductContext(string connectionString)
+        public ApplicationContext(string connectionString)
             : base(connectionString)
         {
 
@@ -38,6 +41,7 @@ namespace TobaccoShop.DAL.EF
         public DbSet<Order> Orders { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<OrderInfo> OrderedProductInfo { get; set; }
+        public DbSet<ClientProfile> ClientProfiles { get; set; }
     }
 
     #region Model Configuration Fluent API
@@ -50,9 +54,9 @@ namespace TobaccoShop.DAL.EF
     }
     #endregion
 
-    class MyContextInitializer : DropCreateDatabaseAlways<ProductContext>
+    class MyContextInitializer : DropCreateDatabaseAlways<ApplicationContext>
     {
-        protected override void Seed(ProductContext db)
+        protected override void Seed(ApplicationContext db)
         {
             HookahTobacco p1 = new HookahTobacco("Al Fakher", "Apple", 35, 75, 20);
             HookahTobacco p2 = new HookahTobacco("Al Fakher", "Cherry", 70, 75, 20);

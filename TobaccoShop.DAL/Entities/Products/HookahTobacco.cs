@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TobaccoShop.DAL.Entities
+namespace TobaccoShop.DAL.Entities.Products
 {
     public class HookahTobacco : Product
     {

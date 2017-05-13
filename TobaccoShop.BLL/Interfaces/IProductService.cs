@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using TobaccoShop.DAL.Entities;
+using TobaccoShop.DAL.Entities.Products;
 
 namespace TobaccoShop.BLL.Interfaces
 {

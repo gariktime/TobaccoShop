@@ -1,4 +1,6 @@
-﻿namespace TobaccoShop.DAL.Entities
+﻿using TobaccoShop.DAL.Entities.Products;
+
+namespace TobaccoShop.DAL.Entities
 {
     public class OrderInfo
     {
