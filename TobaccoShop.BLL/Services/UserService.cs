@@ -22,6 +22,11 @@ namespace TobaccoShop.BLL.Services
             db = uow;
         }
 
+        /// <summary>
+        /// Создание пользователя.
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
         public async Task<OperationDetails> Create(UserDTO userDto)
         {
             ApplicationUser user = await db.UserManager.FindByEmailAsync(userDto.Email);
@@ -35,7 +40,7 @@ namespace TobaccoShop.BLL.Services
                 //добавляем пользователю роль
                 await db.UserManager.AddToRoleAsync(user.Id, userDto.Role);
                 //создаём профиль пользователя
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, Address = userDto.Address, Name = userDto.Name };
+                ClientProfile clientProfile = new ClientProfile { Id = user.Id, UserName = userDto.UserName };
                 db.ClientManager.Create(clientProfile);
                 await db.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно завершена", "");
@@ -46,6 +51,11 @@ namespace TobaccoShop.BLL.Services
             }
         }
 
+        /// <summary>
+        /// Аутентификация пользователя.
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
         public async Task<ClaimsIdentity> Authenticate (UserDTO userDto)
         {
             ClaimsIdentity claim = null;
@@ -74,6 +84,7 @@ namespace TobaccoShop.BLL.Services
 
         public void Dispose()
         {
+
             db.Dispose();
         }
     }
