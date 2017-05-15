@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Identity;
 using TobaccoShop.DAL.Entities.Products;
+using TobaccoShop.DAL.Identity;
 
 namespace TobaccoShop.DAL.EF
 {
@@ -91,7 +92,6 @@ namespace TobaccoShop.DAL.EF
             db.Orders.Add(or2);
 
             db.SaveChanges();
-            base.Seed(db);
         }
     }
 }

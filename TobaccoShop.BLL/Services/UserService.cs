@@ -82,9 +82,25 @@ namespace TobaccoShop.BLL.Services
             await Create(adminDto);
         }
 
+        //инициализация ролей и админа в Identity
+        public async Task Init()
+        {
+            ApplicationRole userRole = new ApplicationRole { Name = "User" };
+            ApplicationRole modRole = new ApplicationRole { Name = "Moderator" };
+            ApplicationRole adminRole = new ApplicationRole { Name = "Admin" };
+            await db.RoleManager.CreateAsync(userRole);
+            await db.RoleManager.CreateAsync(modRole);
+            await db.RoleManager.CreateAsync(adminRole);
+            ApplicationUser admin = new ApplicationUser { Email = "asdqt@gmail.com", UserName = "Admin" };
+            await db.UserManager.CreateAsync(admin, "123456");
+            await db.UserManager.AddToRoleAsync(admin.Id, "Admin");
+            ClientProfile adminProfile = new ClientProfile { Id = admin.Id, UserName = admin.UserName };
+            db.ClientManager.Create(adminProfile);
+            await db.SaveAsync();
+        }
+
         public void Dispose()
         {
-
             db.Dispose();
         }
     }

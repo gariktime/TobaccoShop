@@ -16,8 +16,13 @@ namespace TobaccoShop.DAL.Entities.Identity
 
         public string UserName { get; set; }
 
-        public string Address { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
         public virtual ApplicationUser ApplicationUser { get; set; }
+
+        public ClientProfile()
+        {
+            Orders = new List<Order>();
+        }
     }
 }
