@@ -47,7 +47,7 @@ namespace TobaccoShop.BLL.Services
             }
             else
             {
-                return new OperationDetails(false, "Пользователь с таким e-mail уже существует", "Email");
+                return new OperationDetails(false, "Пользователь с таким email уже существует", "Email");
             }
         }
 
@@ -59,8 +59,17 @@ namespace TobaccoShop.BLL.Services
         public async Task<ClaimsIdentity> Authenticate (UserDTO userDto)
         {
             ClaimsIdentity claim = null;
-            //находим пользователя в бд
-            ApplicationUser user = await db.UserManager.FindAsync(userDto.Email, userDto.Password);
+            //находим пользователя в бд по email
+            ApplicationUser user = await db.UserManager.FindByEmailAsync(userDto.Email);
+            if (user != null)
+            {
+                user = await db.UserManager.FindAsync(user.Email, userDto.Password);
+            }
+            else //находим по UserName
+            {
+                user = await db.UserManager.FindAsync(userDto.Email, userDto.Password);
+            }
+            //ApplicationUser user = await db.UserManager.FindAsync(userDto.Email, userDto.Password);
             //авторизуем пользователя и возвращаем объект ClaimsIdentity
             if (user != null)
                 claim = await db.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);

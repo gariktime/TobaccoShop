@@ -5,5 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Вход</h2>
-
+<div class="login-form">
+   @using (Html.BeginForm("Login", "Connect", FormMethod.Post))
+   {
+       @Html.AntiForgeryToken()
+        <div class="form-group login-form-section">
+            <div>
+                @Html.LabelFor(x => x.Email)
+            </div>
+            <div>
+                @Html.TextBoxFor(x => x.Email, new { @class = "login-input" })
+            </div>
+        </div>
+        <div class="form-group login-form-section">
+            <div>
+                @Html.LabelFor(x => x.Password)
+            </div>
+            <div>
+                @Html.PasswordFor(x => x.Password, new { @class = "login-input" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.ValidationSummary()
+        </div>
+        <div class="form-group login-form-section">
+            <button class="btn btn-default" type="submit">Вход</button>
+        </div>
+        <div class="form-group login-form-section">
+            <label>Нет аккаунта? <a href="/Connect/Register/">Регистрация</a></label>
+        </div>
+   }
+</div>

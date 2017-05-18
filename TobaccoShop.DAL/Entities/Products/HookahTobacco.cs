@@ -7,8 +7,7 @@ namespace TobaccoShop.DAL.Entities.Products
         /// <summary>
         /// Вес табака в граммах.
         /// </summary>
-        [Required(ErrorMessage ="Введите вес табака в граммах.")]
-        [Range(1, 5000, ErrorMessage = "Вес табака должен быть от 1 до 5000 грамм")]
+        [Range(1, 10000)]
         public double Weight { get; set; }
 
         public HookahTobacco()
@@ -16,10 +15,10 @@ namespace TobaccoShop.DAL.Entities.Products
 
         }
 
-        public HookahTobacco(string mark, string model, double weight, int price, int available)
-            : base(mark, model, price, available)
+        public HookahTobacco(string mark, string model, int price, int available, string description, string country, double weight)
+            : base(mark, model, price, available, description, country)
         {
-            this.Weight = weight;
+            Weight = weight;
         }
     }
 }

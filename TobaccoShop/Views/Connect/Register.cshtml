@@ -32,6 +32,8 @@
             @Html.PasswordFor(p => p.ConfirmPassword, new { @class = "form-control" })
         </div>
 
+        @Html.ValidationSummary()
+
         <div class="col-md-10">
             <input type="submit" class="btn-default"/>
         </div>

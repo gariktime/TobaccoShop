@@ -1,0 +1,26 @@
+﻿@model string
+
+@{
+    ViewBag.Title = "Addproduct";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<label class="control-label">Добавление нового продукта</label>
+
+<div>
+    @using (Ajax.BeginForm("AddProduct", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "AddProductForm" }))
+    {
+        <div>
+            <label class="control-label">Выберите тип продукта: </label>
+        </div>
+        <div>
+            @Html.DropDownList("ProductType", ViewBag.Types as SelectList)
+        </div>
+        <div>
+            <input type="submit" value="ОК" />
+        </div>
+    }
+</div>
+<div id="AddProductForm">
+    @{Html.RenderPartial("_AddHookah");}
+</div>

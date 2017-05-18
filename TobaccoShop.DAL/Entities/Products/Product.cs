@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TobaccoShop.DAL.Entities.Products
 {
-    public class Product
+    public abstract class Product
     {
         public int ProductID { get; set; }
 
@@ -24,6 +24,10 @@ namespace TobaccoShop.DAL.Entities.Products
         [Range(0, 5000)]
         public int Available { get; set; }
 
+        [Required]
+        [StringLength(25, MinimumLength = 2)]
+        public string Country { get; set; }
+
         public ICollection<Comment> Comments { get; set; }
 
         public Product()
@@ -31,12 +35,14 @@ namespace TobaccoShop.DAL.Entities.Products
             Comments = new List<Comment>();
         }
 
-        public Product(string mark, string model, int price, int available)
+        public Product(string mark, string model, int price, int available, string description, string country)
         {
-            this.Mark = mark;
-            this.Model = model;
-            this.Price = price;
-            this.Available = available;
+            Mark = mark;
+            Model = model;
+            Price = price;
+            Available = available;
+            Country = country;
+            Description = description;
             Comments = new List<Comment>();
         }
     }

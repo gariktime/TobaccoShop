@@ -89,5 +89,25 @@ textarea {
     position: relative;
     display: inline-block;
     margin-bottom: 10px;
+}
 
+.login-form {
+    width: 300px;
+    height: 280px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -300px 0 0 -280px;
+    border: 1px solid #dfe3e9;
+}
+
+.login-form-section {
+    margin: 25px 15px;
+}
+
+.login-input {
+    width: 100%;
+    background-color: #f8fafc;
+    font-weight: bold;
+    position: relative;
 }

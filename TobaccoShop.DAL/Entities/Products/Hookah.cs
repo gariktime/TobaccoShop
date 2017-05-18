@@ -8,8 +8,7 @@ namespace TobaccoShop.DAL.Entities.Products
         /// <summary>
         /// Высота кальяна в сантиметрах.
         /// </summary>
-        [Required(ErrorMessage = "Введите высоту кальяна")]
-        [Range(10, 200, ErrorMessage = "Высота кальяна должна быть от 10 до 200 сантиметров")]
+        [Range(10, 200)]
         public double Height { get; set; }
 
         public Hookah()
@@ -17,10 +16,10 @@ namespace TobaccoShop.DAL.Entities.Products
 
         }
 
-        public Hookah(string mark, string model, double height, int price, int available)
-            : base(mark, model, price, available)
+        public Hookah(string mark, string model, int price, int available, string description, string country, double height)
+            : base(mark, model, price, available, description, country)
         {
-            this.Height = height;
+            Height = height;
         }
     }
 }
