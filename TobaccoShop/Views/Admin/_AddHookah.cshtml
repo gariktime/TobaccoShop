@@ -1,6 +1,6 @@
 ﻿@model TobaccoShop.Models.ProductModels.HookahViewModel
 
-@using (Html.BeginForm("AddHookah", "Admin"))
+@using (Html.BeginForm("AddHookah", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
@@ -64,6 +64,12 @@
         <div>
             @Html.EditorFor(x => x.Available, new { @class = "form-control" })
             @Html.ValidationMessageFor(x => x.Available)
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <label class="control-label">Изображение, максимальный размер 270x270</label>
+            <input type="file" name="uploadImage" />
         </div>
     </div>
     <div class="form-group">

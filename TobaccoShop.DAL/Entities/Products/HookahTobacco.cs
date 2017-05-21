@@ -15,8 +15,8 @@ namespace TobaccoShop.DAL.Entities.Products
 
         }
 
-        public HookahTobacco(string mark, string model, int price, int available, string description, string country, double weight)
-            : base(mark, model, price, available, description, country)
+        public HookahTobacco(string mark, string model, int price, int available, string description, string country, double weight, byte[] image)
+            : base(mark, model, price, available, description, country, image)
         {
             Weight = weight;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -59,17 +60,26 @@ namespace TobaccoShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddHookah(HookahViewModel hvm)
+        public async Task<ActionResult> AddHookah(HookahViewModel hvm, HttpPostedFileBase uploadImage)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && uploadImage != null)
             {
+                byte[] imageData = null;
+                using (var binaryReader = new BinaryReader(uploadImage.InputStream))
+                {
+                    imageData = binaryReader.ReadBytes(uploadImage.ContentLength);
+                }
+
                 HookahDTO hookahDto = new HookahDTO
                 {
                     Mark = hvm.Mark,
                     Model = hvm.Model,
                     Height = hvm.Height,
                     Price = hvm.Price,
-                    Available = hvm.Available
+                    Available = hvm.Available,
+                    Country = hvm.Country,
+                    Description = hvm.Description,
+                    Image = imageData
                 };
                 await productService.AddHookah(hookahDto);
                 return RedirectToAction("AddProduct");

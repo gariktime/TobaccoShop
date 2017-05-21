@@ -16,8 +16,8 @@ namespace TobaccoShop.DAL.Entities.Products
 
         }
 
-        public Hookah(string mark, string model, int price, int available, string description, string country, double height)
-            : base(mark, model, price, available, description, country)
+        public Hookah(string mark, string model, int price, int available, string description, string country, double height, byte[] image)
+            : base(mark, model, price, available, description, country, image)
         {
             Height = height;
         }

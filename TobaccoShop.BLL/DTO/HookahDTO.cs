@@ -15,5 +15,7 @@
         public int Available { get; set; }
 
         public double Height { get; set; }
+
+        public byte[] Image { get; set; }
     }
 }
