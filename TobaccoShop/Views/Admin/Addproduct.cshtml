@@ -1,6 +1,4 @@
-﻿@model string
-
-@{
+﻿@{
     ViewBag.Title = "Addproduct";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
@@ -14,7 +12,7 @@
             <label class="control-label">Выберите тип продукта: </label>
         </div>
         <div>
-            @Html.DropDownList("ProductType", ViewBag.Types as SelectList)
+            @Html.DropDownList("ProductType", ViewBag.Types as SelectList, new { @class = "form-control" })
         </div>
         <div>
             <input type="submit" value="ОК" />

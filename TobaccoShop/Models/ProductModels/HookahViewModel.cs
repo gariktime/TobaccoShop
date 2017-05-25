@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TobaccoShop.Models.ProductModels
 {
     public class HookahViewModel
     {
+        public Guid ProductId { get; set; }
+
         [Required(ErrorMessage = "Введите марку товара")]
         [Display(Name = "Марка")]
         [StringLength(50, MinimumLength = 1, ErrorMessage = "Некорректные данные")]
@@ -20,6 +23,7 @@ namespace TobaccoShop.Models.ProductModels
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Введите страну")]
+        [Display(Name = "Страна")]
         [StringLength(25, MinimumLength = 2)]
         public string Country { get; set; }
 
@@ -30,7 +34,7 @@ namespace TobaccoShop.Models.ProductModels
 
         [Required(ErrorMessage = "Введите количество товара")]
         [Display(Name = "Доступно")]
-        [Range(0, 99999, ErrorMessage = "Некорректное количество товара")]
+        [Range(0, 999999, ErrorMessage = "Некорректное количество товара")]
         public int Available { get; set; }
 
         [Required(ErrorMessage = "Введите высоту кальяна в сантиметрах")]

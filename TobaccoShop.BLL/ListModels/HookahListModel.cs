@@ -30,7 +30,7 @@ namespace TobaccoShop.BLL.ListModels
             minHeight = db.Hookahs.GetPropMinValue(p => p.Height);
             maxHeight = db.Hookahs.GetPropMaxValue(p => p.Height);
             Marks = db.Hookahs.GetPropValues(p => p.Mark);
-            Products = db.Hookahs.GetList();
+            Products = db.Hookahs.GetAll();
         }
     }
 }

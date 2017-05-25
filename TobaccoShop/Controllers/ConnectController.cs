@@ -29,11 +29,9 @@ namespace TobaccoShop.Controllers
             get { return HttpContext.GetOwinContext().Authentication; }
         }
 
-        private IUnitOfWork db;
-
-        public ConnectController(IUnitOfWork uow)
+        public ConnectController()
         {
-            db = uow;
+
         }
 
         public ActionResult Login()

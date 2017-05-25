@@ -64,7 +64,6 @@
     <Compile Include="Infrastructure\ValidationException.cs" />
     <Compile Include="Interfaces\IOrderService.cs" />
     <Compile Include="Interfaces\IProductService.cs" />
-    <Compile Include="Interfaces\IServiceCreator.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ListModels\HookahListModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

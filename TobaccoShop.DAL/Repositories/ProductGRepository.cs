@@ -38,31 +38,36 @@ namespace TobaccoShop.DAL.Repositories
             _context.Entry(item).State = EntityState.Deleted;
         }
 
-        public TEntity FindById(int id)
+        public TEntity FindById(Guid id)
         {
             return _dbSet.Find(id);
+        }
+
+        public async Task<TEntity> FindByIdAsync(Guid id)
+        {
+            return await _dbSet.FindAsync(id);
         }
 
         #endregion
 
         #region Функции множеств
 
-        public List<TEntity> GetList()
+        public List<TEntity> GetAll()
         {
             return _dbSet.ToList();
         }
 
-        public List<TEntity> GetList(Func<TEntity, bool> predicate)
+        public List<TEntity> GetAll(Func<TEntity, bool> predicate)
         {
             return _dbSet.Where(predicate).ToList();
         }
 
-        public async Task<List<TEntity>> GetListAsync()
+        public async Task<List<TEntity>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).ToListAsync();
         }

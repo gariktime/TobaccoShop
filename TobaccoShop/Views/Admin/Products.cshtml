@@ -1,0 +1,19 @@
+﻿@model IEnumerable<TobaccoShop.DAL.Entities.Products.Product>
+
+@{
+    ViewBag.Title = "Products";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<div>
+    @using (Ajax.BeginForm("Products", "Admin", new AjaxOptions { UpdateTargetId = "productList", InsertionMode = InsertionMode.Replace }))
+    {
+        <input class="form-control" name="searchQuery" type="text" />
+        <input type="submit" value="Поиск" />
+    }
+</div>
+
+<div id="productList">
+    @{ Html.RenderPartial("_ProductList", Model); }
+</div>

@@ -12,11 +12,12 @@ namespace TobaccoShop.DAL.Interfaces
         void Add(TEntity item);
         void Update(TEntity item);
         void Delete(TEntity item);
-        List<TEntity> GetList();
-        List<TEntity> GetList(Func<TEntity, bool> predicate);
-        Task<List<TEntity>> GetListAsync();
-        Task<List<TEntity>> GetListAsync(Expression<Func<TEntity,bool>> predicate);
-        TEntity FindById(int id);
+        List<TEntity> GetAll();
+        List<TEntity> GetAll(Func<TEntity, bool> predicate);
+        Task<List<TEntity>> GetAllAsync();
+        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity,bool>> predicate);
+        TEntity FindById(Guid id);
+        Task<TEntity> FindByIdAsync(Guid id);
         List<X> GetPropValues<X>(Func<TEntity, X> selector);
         Task<List<X>> GetPropValuesAsync<X>(Expression<Func<TEntity, X>> selector);
         X GetPropMinValue<X>(Func<TEntity, X> selector);

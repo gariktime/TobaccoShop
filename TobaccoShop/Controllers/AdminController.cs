@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TobaccoShop.BLL.DTO;
+using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Services;
 using TobaccoShop.DAL.Interfaces;
 using TobaccoShop.Models;
@@ -16,40 +17,33 @@ namespace TobaccoShop.Controllers
 {
     public class AdminController : Controller
     {
-        private IUnitOfWork db;
-        private ProductService productService;
+        private IProductService productService;
 
-        public AdminController(IUnitOfWork uow)
+        public AdminController(IProductService prService)
         {
-            db = uow;
-            productService = new ProductService(db);
+            productService = prService;
         }
 
-        // GET: Admin
-        public ActionResult Index()
-        {
-            return View();
-        }
+        #region Добавление/редактирование/удаление товаров
 
-        #region Добавление новых товаров
-
+        //добавление нового товара
         public ActionResult AddProduct()
         {
-            List<string> list = new List<string>() { "Кальян", "Табак для кальяна" };
-            SelectList types = new SelectList(list);
+            var st = from ProductType pt in Enum.GetValues(typeof(ProductType))
+                     select new { ID = (int)pt, Name = pt.ToString() };
+            SelectList types = new SelectList(st, "ID", "Name", ProductType.Hookah);
             ViewBag.Types = types;
-            ViewBag.HookahModel = new HookahViewModel();
             return View();
         }
 
         [HttpPost]
-        public ActionResult AddProduct(string productType)
+        public ActionResult AddProduct(ProductType productType)
         {
             if (Request.IsAjaxRequest())
             {
-                if (productType == "Кальян")
+                if (productType == ProductType.Hookah)
                     return PartialView("_AddHookah");
-                else if (productType == "Табак для кальяна")
+                else if (productType == ProductType.HookahTobacco)
                     return PartialView("_AddHookahTobacco");
                 else
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -58,18 +52,63 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        //редактирование товара
+        public async Task<ActionResult> Edit(Guid id)
+        {
+            var product = await productService.FindByIdAsync(id);
+            ProductType type = productService.GetProductType(product);
+            if (type == ProductType.Hookah)
+            {
+                var hookah = productService.ProductAsHookah(product);
+                HookahViewModel hvm = new HookahViewModel() { ProductId = hookah.ProductId, Mark = hookah.Mark, Model = hookah.Model, Country = hookah.Country, Description = hookah.Description, Available = hookah.Available, Price = hookah.Price, Height = hookah.Height, Image = hookah.Image };
+                return PartialView("_AddHookah", hvm);
+            }
+            return RedirectToAction("Products");
+        }
+
+        //удаление товара
+        public async Task<ActionResult> Remove(Guid id)
+        {
+            await productService.RemoveProduct(id);
+            return RedirectToAction("Products");
+        }
+
+        //список всех продуктов
+        public ActionResult Products()
+        {
+            var products = productService.GetProducts();
+            return View(products);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Products(string searchQuery)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                var products = await productService.GetProductsAsync(p => p.Mark.Contains(searchQuery) ||
+                                                                          p.Model.Contains(searchQuery));
+                return PartialView("_ProductList", products);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddHookah(HookahViewModel hvm, HttpPostedFileBase uploadImage)
+        public async Task<ActionResult> AddHookah([Bind(Exclude = "Image")] HookahViewModel hvm, HttpPostedFileBase uploadImage)
         {
-            if (ModelState.IsValid && uploadImage != null)
+            if (ModelState.IsValid)
             {
                 byte[] imageData = null;
-                using (var binaryReader = new BinaryReader(uploadImage.InputStream))
+                if (uploadImage != null)
                 {
-                    imageData = binaryReader.ReadBytes(uploadImage.ContentLength);
+                    using (var binaryReader = new BinaryReader(uploadImage.InputStream))
+                    {
+                        imageData = binaryReader.ReadBytes(uploadImage.ContentLength);
+                    }
                 }
 
+                //создание DTO из ViewModel
                 HookahDTO hookahDto = new HookahDTO
                 {
                     Mark = hvm.Mark,
@@ -81,8 +120,17 @@ namespace TobaccoShop.Controllers
                     Description = hvm.Description,
                     Image = imageData
                 };
-                await productService.AddHookah(hookahDto);
-                return RedirectToAction("AddProduct");
+
+                if (hvm.ProductId == null) //добавление нового продукта
+                {
+                    await productService.AddHookah(hookahDto);
+                    return RedirectToAction("AddProduct");
+                }
+                else //изменение существующего
+                {
+                    await productService.EditHookah(hvm.ProductId, hookahDto);
+                    return RedirectToAction("Products");
+                }
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
