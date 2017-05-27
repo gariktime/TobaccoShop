@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TobaccoShop.DAL.Interfaces;
-using System.Data.Entity;
-using System.Linq.Expressions;
 
 namespace TobaccoShop.DAL.Repositories
 {
@@ -101,9 +100,9 @@ namespace TobaccoShop.DAL.Repositories
             return _dbSet.Select(selector).Max();
         }
 
-        public Task<X> GetPropMaxValueAsync<X>(Expression<Func<TEntity, X>> selector)
+        public async Task<X> GetPropMaxValueAsync<X>(Expression<Func<TEntity, X>> selector)
         {
-            return _dbSet.Select(selector).MinAsync();
+            return await _dbSet.Select(selector).MaxAsync();
         }
 
         #endregion

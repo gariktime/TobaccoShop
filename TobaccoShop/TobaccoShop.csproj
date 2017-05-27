@@ -118,6 +118,9 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -182,16 +185,14 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Controllers\AdminController.cs" />
-    <Compile Include="Controllers\ASDController.cs" />
     <Compile Include="Controllers\ConnectController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\HookahController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\HookahListViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\ProductListModels\HookahListViewModel.cs" />
     <Compile Include="Models\ProductModels\HookahTobaccoViewModel.cs" />
     <Compile Include="Models\ProductModels\HookahViewModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
@@ -255,15 +256,6 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\Products.cshtml" />
-    <Content Include="Views\ASD\Create.cshtml" />
-    <Content Include="Views\ASD\Delete.cshtml" />
-    <Content Include="Views\ASD\Details.cshtml" />
-    <Content Include="Views\ASD\Edit.cshtml" />
-    <Content Include="Views\ASD\Index.cshtml" />
-    <Content Include="Views\Hookah\List.cshtml" />
-    <Content Include="Views\Hookah\_Test.cshtml" />
-    <Content Include="Views\Hookah\_ProductList.cshtml" />
     <Content Include="Views\Products\Hookahs.cshtml" />
     <Content Include="Views\Products\_ProductList.cshtml" />
     <Content Include="Views\Connect\Register.cshtml" />

@@ -124,7 +124,7 @@ namespace TobaccoShop.BLL.Services
 
                 return new OperationDetails(true, "Товар успешно обновлен", "");
             }
-            catch(DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
             {
                 return new OperationDetails(false, "Данный товар ранее уже был изменен", "");
             }
@@ -158,34 +158,39 @@ namespace TobaccoShop.BLL.Services
             return await db.Products.GetAllAsync(predicate);
         }
 
-        public List<Hookah> GetHookahs(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks)
+        public async Task<List<Hookah>> GetHookahsAsync()
         {
-            if (marks == null)
-                return db.Hookahs.GetAll(p => p.Price >= minPrice &&
-                                               p.Price <= maxPrice &&
-                                               p.Height >= minHeight &&
-                                               p.Height <= maxHeight);
-            else
-                return db.Hookahs.GetAll(p => p.Price >= minPrice &&
-                                               p.Price <= maxPrice &&
-                                               p.Height >= minHeight &&
-                                               p.Height <= maxHeight &&
-                                               marks.Contains(p.Mark));
+            return await db.Hookahs.GetAllAsync();
         }
 
-        public async Task<List<Hookah>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks)
+        public async Task<List<Hookah>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries)
         {
             if (marks == null)
-                return await db.Hookahs.GetAllAsync(p => p.Price >= minPrice &&
-                                                          p.Price <= maxPrice &&
-                                                          p.Height >= minHeight &&
-                                                          p.Height <= maxHeight);
-            else
-                return await db.Hookahs.GetAllAsync(p => p.Price >= minPrice &&
-                                                          p.Price <= maxPrice &&
-                                                          p.Height >= minHeight &&
-                                                          p.Height <= maxHeight &&
-                                                          marks.Contains(p.Mark));
+                marks = db.Hookahs.GetPropValues(p => p.Mark).ToArray();
+            if (countries == null)
+                countries = db.Hookahs.GetPropValues(p => p.Country).ToArray();
+
+            return await db.Hookahs.GetAllAsync(p => p.Price >= minPrice &&
+                                                     p.Price <= maxPrice &&
+                                                     p.Height >= minHeight &&
+                                                     p.Height <= maxHeight &&
+                                                     marks.Contains(p.Mark) &&
+                                                     countries.Contains(p.Country));
+        }
+
+        #endregion
+
+        #region Property methods
+
+        public async Task<(int, int, double, double, List<string>, List<string>)> GetHookahProperties()
+        {
+            int minPrice = await db.Hookahs.GetPropMinValueAsync(p => p.Price);
+            int maxPrice = await db.Hookahs.GetPropMaxValueAsync(p => p.Price);
+            double minHeight = await db.Hookahs.GetPropMinValueAsync(p => p.Height);
+            double maxHeight = await db.Hookahs.GetPropMaxValueAsync(p => p.Height);
+            List<string> marks = await db.Hookahs.GetPropValuesAsync(p => p.Mark);
+            List<string> countries = await db.Hookahs.GetPropValuesAsync(p => p.Country);
+            return (minPrice, maxPrice, minHeight, maxHeight, marks, countries);
         }
 
         #endregion
@@ -211,6 +216,11 @@ namespace TobaccoShop.BLL.Services
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            db.Dispose();
+        }
     }
 
     public enum ProductType

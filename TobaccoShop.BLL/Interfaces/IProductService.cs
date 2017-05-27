@@ -21,18 +21,24 @@ namespace TobaccoShop.BLL.Interfaces
         //удаление продукта
         Task<OperationDetails> RemoveProduct(Guid id);
 
+        //методы множеств
         Product FindById(Guid id);
         Task<Product> FindByIdAsync(Guid id);
         List<Product> GetProducts();
         List<Product> GetProducts(Func<Product, bool> predicate);
         Task<List<Product>> GetProductsAsync();
         Task<List<Product>> GetProductsAsync(Expression<Func<Product, bool>> predicate);
-        List<Hookah> GetHookahs(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks);
-        Task<List<Hookah>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks);
+        Task<List<Hookah>> GetHookahsAsync();
+        Task<List<Hookah>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries);
+
+        //property methods
+        Task<(int, int, double, double, List<string>, List<string>)> GetHookahProperties();
 
         //вспомогательные методы
         ProductType GetProductType(Product product);
         Hookah ProductAsHookah(Product product);
         HookahTobacco ProductAsHookahTobacco(Product product);
+
+        void Dispose();
     }
 }

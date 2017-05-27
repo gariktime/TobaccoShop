@@ -6,44 +6,46 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using TobaccoShop.BLL.ListModels;
+using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Services;
 using TobaccoShop.DAL.Interfaces;
 using TobaccoShop.DAL.Repositories;
 using TobaccoShop.Models;
+using TobaccoShop.Models.ProductListModels;
 
 namespace TobaccoShop.Controllers
 {
     public class ProductsController : Controller
     {
-        // GET: Products
-        public ActionResult Index()
+        private IProductService productService;
+
+        public ProductsController(IProductService prService)
         {
-            return View();
+            productService = prService;
         }
 
-        private IUnitOfWork db;
-        private ProductService productService;
-
-        public ProductsController(IUnitOfWork uow)
+        public async Task<ActionResult> Hookahs()
         {
-            db = uow;
-            productService = new ProductService(db);
+            ViewData["Products"] = await productService.GetHookahsAsync();
+            HookahListViewModel hlvm = new HookahListViewModel();
+            var hookahProps = await productService.GetHookahProperties();
+            hlvm.MinPrice = hookahProps.Item1;
+            hlvm.MaxPrice = hookahProps.Item2;
+            hlvm.MinHeight = hookahProps.Item3;
+            hlvm.MaxHeight = hookahProps.Item4;
+            hlvm.Marks = hookahProps.Item5;
+            hlvm.Countries = hookahProps.Item6;
+            return View(hlvm);
         }
 
-        public ActionResult Hookahs()
-        {
-            HookahListModel hlm = new HookahListModel(db);
-            return View(hlm);
-        }
-
+        [HttpPost]
         public async Task<ActionResult> HookahFilter(HookahListViewModel hlvm)
         {
             if (Request.IsAjaxRequest())
             {
                 if (ModelState.IsValid)
                 {
-                    var hookahs = await productService.GetHookahsAsync(hlvm.minPrice, hlvm.maxPrice, hlvm.minHeight, hlvm.maxHeight, hlvm.SelectedMarks);
+                    var hookahs = await productService.GetHookahsAsync(hlvm.MinPrice, hlvm.MaxPrice, hlvm.MinHeight, hlvm.MaxHeight, hlvm.SelectedMarks, hlvm.SelectedCountries);
                     return PartialView("_ProductList", hookahs);
                 }
                 else

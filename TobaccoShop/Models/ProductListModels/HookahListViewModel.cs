@@ -1,34 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
-namespace TobaccoShop.Models
+namespace TobaccoShop.Models.ProductListModels
 {
     public class HookahListViewModel
     {
         [Required(ErrorMessage = "Введите минимальную цену")]
         [Range(1, 999999, ErrorMessage = "Неверные данные")]
-        public int minPrice { get; set; }
+        public int MinPrice { get; set; }
 
         [Required(ErrorMessage = "Введите максимальную цену")]
         [Range(1, 999999, ErrorMessage = "Неверные данные")]
-        public int maxPrice { get; set; }
+        public int MaxPrice { get; set; }
 
         [Required(ErrorMessage = "Введите минимальную высоту")]
         [Range(1, 999999, ErrorMessage = "Неверные данные")]
-        public double minHeight { get; set; }
+        public double MinHeight { get; set; }
 
         [Required(ErrorMessage = "Введите максимальную высоту")]
         [Range(1, 999999, ErrorMessage = "Неверные данные")]
-        public double maxHeight { get; set; }
+        public double MaxHeight { get; set; }
+
+        public List<string> Marks { get; set; }
+
+        public List<string> Countries { get; set; }
 
         public string[] SelectedMarks { get; set; }
 
-        public HookahListViewModel()
-        {
-            
-        }
+        public string[] SelectedCountries { get; set; }
+
+
     }
 }

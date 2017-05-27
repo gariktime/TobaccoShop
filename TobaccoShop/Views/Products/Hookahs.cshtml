@@ -1,4 +1,4 @@
-﻿@model TobaccoShop.BLL.ListModels.HookahListModel
+﻿@model TobaccoShop.Models.ProductListModels.HookahListViewModel
 
 @{
     ViewBag.Title = "Кальяны";
@@ -13,9 +13,9 @@
             <div class="filter-section">
                 <p>Цена</p>
                 <div>
-                    @Html.TextBoxFor(x => x.minPrice, htmlAttributes: new { @class = "filter-input form-control" })
+                    @Html.TextBoxFor(x => x.MinPrice, htmlAttributes: new { @class = "filter-input form-control" })
                     <span>—</span>
-                    @Html.TextBoxFor(x => x.maxPrice, htmlAttributes: new { @class = "filter-input form-control" })
+                    @Html.TextBoxFor(x => x.MaxPrice, htmlAttributes: new { @class = "filter-input form-control" })
                 </div>
                 <input id="price_range" />
                 <br />
@@ -33,11 +33,22 @@
             </div>
 
             <div class="filter-section">
+                <p>Страна</p>
+                @foreach (var country in Model.Countries)
+                {
+                    <div class="checkbox-item">
+                        <input type="checkbox" class="checkbox" id="[@country]" name="SelectedCountries" value="@country" />
+                        @Html.Label(country, htmlAttributes: new { @style = "margin-left: 5px" })
+                    </div>
+                }
+            </div>
+
+            <div class="filter-section">
                 <p>Высота, см.</p>
                 <div>
-                    @Html.TextBoxFor(x => x.minHeight, htmlAttributes: new { @class = "filter-input form-control" })
+                    @Html.TextBoxFor(x => x.MinHeight, htmlAttributes: new { @class = "filter-input form-control" })
                     <span>—</span>
-                    @Html.TextBoxFor(x => x.maxHeight, htmlAttributes: new { @class = "filter-input form-control" })
+                    @Html.TextBoxFor(x => x.MaxHeight, htmlAttributes: new { @class = "filter-input form-control" })
                 </div>
                 <input id="height_range" />
                 <br />
@@ -50,7 +61,7 @@
     }
 
     <div id="productList" class="col-md-9 list-group">
-        @{Html.RenderPartial("_ProductList", Model.Products);}
+        @{Html.RenderPartial("_ProductList", ViewData["Products"]);}
     </div>
 </div>
 
