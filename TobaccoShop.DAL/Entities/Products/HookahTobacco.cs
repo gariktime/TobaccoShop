@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace TobaccoShop.DAL.Entities.Products
 {
@@ -15,8 +16,8 @@ namespace TobaccoShop.DAL.Entities.Products
 
         }
 
-        public HookahTobacco(string mark, string model, int price, int available, string description, string country, double weight, byte[] image)
-            : base(mark, model, price, available, description, country, image)
+        public HookahTobacco(Guid Id, string mark, string model, int price, string description, string country, double weight, byte[] image)
+            : base(Id, mark, model, price, description, country, image)
         {
             Weight = weight;
         }

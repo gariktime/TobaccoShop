@@ -59,10 +59,10 @@ namespace TobaccoShop.DAL.EF
     {
         protected override void Seed(ApplicationContext db)
         {
-            HookahTobacco p1 = new HookahTobacco("Al Fakher", "Apple", 70, 25, "Табак1", "Египет", 45, null);
-            HookahTobacco p2 = new HookahTobacco("Al Fakher", "Cherry", 45, 20, "Табак2", "Пакистан", 45, null);
-            HookahTobacco p3 = new HookahTobacco("Al Fakher", "Mint", 100, 25, "Табак3", "Камыши", 45, null);
-            HookahTobacco p4 = new HookahTobacco("Al Fakher", "Orange", 100, 50, "Табак4", "Египет", 45, null);
+            HookahTobacco p1 = new HookahTobacco(Guid.NewGuid(), "Al Fakher", "Apple", 70, "Табак1", "Египет", 45, null);
+            HookahTobacco p2 = new HookahTobacco(Guid.NewGuid(), "Al Fakher", "Cherry", 45, "Табак2", "Пакистан", 45, null);
+            HookahTobacco p3 = new HookahTobacco(Guid.NewGuid(), "Al Fakher", "Mint", 100, "Табак3", "Камыши", 45, null);
+            HookahTobacco p4 = new HookahTobacco(Guid.NewGuid(), "Al Fakher", "Orange", 100, "Табак4", "Египет", 45, null);
             Comment com1 = new Comment { Text = "Заебок" };
             Comment com2 = new Comment { Text = "Нормас" };
             p1.Comments.Add(com1);
@@ -71,8 +71,8 @@ namespace TobaccoShop.DAL.EF
             db.Comments.AddRange(new List<Comment> { com1, com2 });
 
 
-            Hookah p5 = new Hookah("KM", "BOER GL Bronze", 9000, 2, "Описание", "Германия", 45, null);
-            Hookah p6 = new Hookah("Khalil", "Mamoon Halazone Trimetal", 6800, 1,"Описание", "Азербайджан", 85, null);
+            Hookah p5 = new Hookah(Guid.NewGuid(), "KM", "BOER GL Bronze", 9000, "Описание", "Германия", 45, null);
+            Hookah p6 = new Hookah(Guid.NewGuid(), "Khalil", "Mamoon Halazone Trimetal", 6800, "Описание", "Азербайджан", 85, null);
             db.Hookahs.AddRange(new List<Hookah> { p5, p6 });
 
             List<OrderInfo> infos = new List<OrderInfo>();

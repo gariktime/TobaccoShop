@@ -28,7 +28,5 @@ namespace TobaccoShop.Models.ProductListModels
         public string[] SelectedMarks { get; set; }
 
         public string[] SelectedCountries { get; set; }
-
-
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -25,29 +26,16 @@ namespace TobaccoShop.BLL.Services
             db = uow;
         }
 
-        public Product FindById(Guid id)
+        public ProductDTO FindById(Guid id)
         {
-            return db.Products.FindById(id);
+            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
+            return Mapper.Map<Product, ProductDTO>(db.Products.FindById(id));
         }
 
-        public async Task<Product> FindByIdAsync(Guid id)
+        public async Task<ProductDTO> FindByIdAsync(Guid id)
         {
-            return await db.Products.FindByIdAsync(id);
-        }
-
-        public async Task<OperationDetails> RemoveProduct(Guid id)
-        {
-            try
-            {
-                Product product = await db.Products.FindByIdAsync(id);
-                db.Products.Delete(product);
-                await db.SaveAsync();
-                return new OperationDetails(true, "Товар успешно удален", "");
-            }
-            catch
-            {
-                return new OperationDetails(false, "При удалении товара произошла ошибка", "");
-            }
+            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
+            return Mapper.Map<Product, ProductDTO>(await db.Products.FindByIdAsync(id));
         }
 
         #region Создание новых продуктов
@@ -58,13 +46,14 @@ namespace TobaccoShop.BLL.Services
             {
                 Hookah hookah = new Hookah()
                 {
-                    Mark = hookahDto.Mark,
-                    Model = hookahDto.Model,
-                    Description = hookahDto.Description,
-                    Country = hookahDto.Country,
+                    ProductId = Guid.NewGuid(),
+                    Mark = hookahDto.Mark.Trim(),
+                    Model = hookahDto.Model.Trim(),
+                    Description = (hookahDto.Description == null) ? null : hookahDto.Description.Trim() ,
+                    Country = (hookahDto.Country == null) ? null : hookahDto.Country.Trim(),
                     Height = hookahDto.Height,
                     Price = hookahDto.Price,
-                    Available = hookahDto.Available
+                    Image = hookahDto.Image
                 };
                 db.Hookahs.Add(hookah);
                 await db.SaveAsync();
@@ -87,8 +76,7 @@ namespace TobaccoShop.BLL.Services
                     Description = htDto.Description,
                     Country = htDto.Country,
                     Weight = htDto.Weight,
-                    Price = htDto.Price,
-                    Available = htDto.Available
+                    Price = htDto.Price
                 };
                 //db.HookahTobacco.Add(tobacco);
                 await db.SaveAsync();
@@ -110,13 +98,12 @@ namespace TobaccoShop.BLL.Services
             {
                 Hookah hookah = await db.Hookahs.FindByIdAsync(id);
 
-                hookah.Mark = hookahDto.Mark;
-                hookah.Model = hookahDto.Model;
-                hookah.Country = hookahDto.Country;
-                hookah.Description = hookahDto.Description;
+                hookah.Mark = hookahDto.Mark.Trim();
+                hookah.Model = hookahDto.Model.Trim();
+                hookah.Description = (hookahDto.Description == null) ? null : hookahDto.Description.Trim();
+                hookah.Country = (hookahDto.Country == null) ? null : hookahDto.Country.Trim();
                 hookah.Height = hookahDto.Height;
                 hookah.Price = hookahDto.Price;
-                hookah.Available = hookahDto.Available;
                 hookah.Image = (hookahDto.Image == null) ? hookah.Image : hookahDto.Image;
 
                 db.Hookahs.Update(hookah);
@@ -136,46 +123,76 @@ namespace TobaccoShop.BLL.Services
 
         #endregion
 
+        //удаление продукта
+        public async Task<OperationDetails> RemoveProduct(Guid id)
+        {
+            try
+            {
+                Product product = await db.Products.FindByIdAsync(id);
+                db.Products.Delete(product);
+                await db.SaveAsync();
+                return new OperationDetails(true, "Товар успешно удален", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "При удалении товара произошла ошибка", "");
+            }
+        }
+
         #region Функции множеств
 
-        public List<Product> GetProducts()
+        public List<ProductDTO> GetProducts()
         {
-            return db.Products.GetAll();
+            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
+            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(db.Products.GetAll());
         }
 
-        public List<Product> GetProducts(Func<Product, bool> predicate)
+        public List<ProductDTO> GetProducts(Func<Product, bool> predicate)
         {
-            return db.Products.GetAll(predicate);
+            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
+            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(db.Products.GetAll(predicate));
         }
 
-        public async Task<List<Product>> GetProductsAsync()
+        public async Task<List<ProductDTO>> GetProductsAsync()
         {
-            return await db.Products.GetAllAsync();
+            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
+            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(await db.Products.GetAllAsync());
         }
 
-        public async Task<List<Product>> GetProductsAsync(Expression<Func<Product, bool>> predicate)
+        public async Task<List<ProductDTO>> GetProductsAsync(Expression<Func<Product, bool>> predicate)
         {
-            return await db.Products.GetAllAsync(predicate);
+            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
+            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(await db.Products.GetAllAsync(predicate));
         }
 
-        public async Task<List<Hookah>> GetHookahsAsync()
+        public async Task<List<HookahDTO>> GetHookahsAsync()
         {
-            return await db.Hookahs.GetAllAsync();
+            Mapper.Initialize(cfg => cfg.CreateMap<Hookah, HookahDTO>());
+            return Mapper.Map<IEnumerable<Hookah>, List<HookahDTO>>(await db.Hookahs.GetAllAsync());
         }
 
-        public async Task<List<Hookah>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries)
+        public async Task<List<HookahDTO>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries)
         {
             if (marks == null)
-                marks = db.Hookahs.GetPropValues(p => p.Mark).ToArray();
+            {
+                List<string> _marks = await db.Hookahs.GetPropValuesAsync(p => p.Mark);
+                marks = _marks.ToArray();
+            }
             if (countries == null)
-                countries = db.Hookahs.GetPropValues(p => p.Country).ToArray();
+            {
+                List<string> _countries = await db.Hookahs.GetPropValuesAsync(p => p.Country);
+                countries = _countries.ToArray();
+            }
 
-            return await db.Hookahs.GetAllAsync(p => p.Price >= minPrice &&
-                                                     p.Price <= maxPrice &&
-                                                     p.Height >= minHeight &&
-                                                     p.Height <= maxHeight &&
-                                                     marks.Contains(p.Mark) &&
-                                                     countries.Contains(p.Country));
+            var hookahs = await db.Hookahs.GetAllAsync(p => p.Price >= minPrice &&
+                                                            p.Price <= maxPrice &&
+                                                            p.Height >= minHeight &&
+                                                            p.Height <= maxHeight &&
+                                                            marks.Contains(p.Mark) &&
+                                                            countries.Contains(p.Country));
+
+            Mapper.Initialize(cfg => cfg.CreateMap<Hookah, HookahDTO>());
+            return Mapper.Map<IEnumerable<Hookah>, List<HookahDTO>>(hookahs);
         }
 
         #endregion
@@ -197,22 +214,17 @@ namespace TobaccoShop.BLL.Services
 
         #region Вспомогательные методы #Кудажeбезкостылей
 
-        public ProductType GetProductType(Product product)
+        public async Task<(ProductDTO, ProductType)> GetProductParams(Guid id)
         {
+            var product = await db.Products.FindByIdAsync(id);
             if (product is Hookah)
-                return ProductType.Hookah;
+            {
+                Mapper.Initialize(cfg => cfg.CreateMap<Hookah, HookahDTO>());
+                var hookah = Mapper.Map<Hookah, HookahDTO>(product as Hookah);
+                return (hookah, ProductType.Hookah);
+            }
             else
-                return ProductType.HookahTobacco;
-        }
-
-        public Hookah ProductAsHookah(Product product)
-        {
-            return product as Hookah;
-        }
-
-        public HookahTobacco ProductAsHookahTobacco(Product product)
-        {
-            return product as HookahTobacco;
+                return (null, ProductType.HookahTobacco);
         }
 
         #endregion

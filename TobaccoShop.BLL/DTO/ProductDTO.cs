@@ -1,7 +1,11 @@
-﻿namespace TobaccoShop.BLL.DTO
+﻿using System;
+
+namespace TobaccoShop.BLL.DTO
 {
-    public class HookahTobaccoDTO
+    public class ProductDTO
     {
+        public Guid ProductId { get; set; }
+
         public string Mark { get; set; }
 
         public string Model { get; set; }
@@ -12,6 +16,6 @@
 
         public int Price { get; set; }
 
-        public double Weight { get; set; }
+        public byte[] Image { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TobaccoShop.DAL.Entities.Products.Product>
+﻿@model IEnumerable<TobaccoShop.BLL.DTO.ProductDTO>
 
 
 
@@ -15,9 +15,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Available)
         </th>
         <th></th>
     </tr>
@@ -36,9 +33,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Available)
             </td>
             <td>
                 @Html.ActionLink("Редактировать", "Edit", new { id = item.ProductId }) |

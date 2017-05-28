@@ -1,8 +1,8 @@
 ﻿$(document).ready(function () {
-    var min_price = $("#minPrice").val();
-    var max_price = $("#maxPrice").val();
-    var min_height = $("minHeight").val();
-    var max_height = $("maxHeight").val();
+    var min_price = $("#MinPrice").val();
+    var max_price = $("#MaxPrice").val();
+    var min_height = $("MinHeight").val();
+    var max_height = $("MaxHeight").val();
 
     //$("#price_min #price_max").on("change keydown keypress keyup mousedown click mouseup", function () {
     //    //$("#price_range").prop("from").val($("#price_min").val());
@@ -23,8 +23,8 @@
         hide_from_to: true,
         grid: false,
         onChange: function (data) {
-            $("#minPrice").val(data.from);
-            $("#maxPrice").val(data.to);
+            $("#MinPrice").val(data.from);
+            $("#MaxPrice").val(data.to);
         }    
     });
 
@@ -38,8 +38,8 @@
         hide_from_to: true,
         grid: false,
         onChange: function (data) {
-            $("#minHeight").val(data.from);
-            $("#maxHeight").val(data.to);
+            $("#MinHeight").val(data.from);
+            $("#MaxHeight").val(data.to);
         }
     });
 

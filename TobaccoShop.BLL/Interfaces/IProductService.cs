@@ -22,22 +22,21 @@ namespace TobaccoShop.BLL.Interfaces
         Task<OperationDetails> RemoveProduct(Guid id);
 
         //методы множеств
-        Product FindById(Guid id);
-        Task<Product> FindByIdAsync(Guid id);
-        List<Product> GetProducts();
-        List<Product> GetProducts(Func<Product, bool> predicate);
-        Task<List<Product>> GetProductsAsync();
-        Task<List<Product>> GetProductsAsync(Expression<Func<Product, bool>> predicate);
-        Task<List<Hookah>> GetHookahsAsync();
-        Task<List<Hookah>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries);
+        ProductDTO FindById(Guid id);
+        Task<ProductDTO> FindByIdAsync(Guid id);
+        List<ProductDTO> GetProducts();
+        List<ProductDTO> GetProducts(Func<Product, bool> predicate);
+        Task<List<ProductDTO>> GetProductsAsync();
+        Task<List<ProductDTO>> GetProductsAsync(Expression<Func<Product, bool>> predicate);
+        Task<List<HookahDTO>> GetHookahsAsync();
+        Task<List<HookahDTO>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries);
 
         //property methods
         Task<(int, int, double, double, List<string>, List<string>)> GetHookahProperties();
 
         //вспомогательные методы
-        ProductType GetProductType(Product product);
-        Hookah ProductAsHookah(Product product);
-        HookahTobacco ProductAsHookahTobacco(Product product);
+        Task<(ProductDTO, ProductType)> GetProductParams(Guid id);
+
 
         void Dispose();
     }

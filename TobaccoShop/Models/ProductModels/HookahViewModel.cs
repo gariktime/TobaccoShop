@@ -22,7 +22,6 @@ namespace TobaccoShop.Models.ProductModels
         [StringLength(2000, MinimumLength = 5)]
         public string Description { get; set; }
 
-        [Required(ErrorMessage = "Введите страну")]
         [Display(Name = "Страна")]
         [StringLength(25, MinimumLength = 2)]
         public string Country { get; set; }
@@ -31,11 +30,6 @@ namespace TobaccoShop.Models.ProductModels
         [Display(Name = "Цена")]
         [Range(1, 999999, ErrorMessage = "Некорректная цена")]
         public int Price { get; set; }
-
-        [Required(ErrorMessage = "Введите количество товара")]
-        [Display(Name = "Доступно")]
-        [Range(0, 999999, ErrorMessage = "Некорректное количество товара")]
-        public int Available { get; set; }
 
         [Required(ErrorMessage = "Введите высоту кальяна в сантиметрах")]
         [Display(Name = "Высота в сантиметрах")]
