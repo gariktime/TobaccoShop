@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TobaccoShop.DAL.EF;
 using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Interfaces;
 

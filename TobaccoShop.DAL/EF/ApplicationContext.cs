@@ -3,13 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Identity;
 using TobaccoShop.DAL.Entities.Products;
-using TobaccoShop.DAL.Identity;
 
 namespace TobaccoShop.DAL.EF
 {

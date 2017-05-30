@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -10,9 +7,6 @@ using System.Web.Mvc;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Interfaces;
-using TobaccoShop.BLL.Services;
-using TobaccoShop.DAL.Entities.Identity;
-using TobaccoShop.DAL.Interfaces;
 using TobaccoShop.Models;
 
 namespace TobaccoShop.Controllers

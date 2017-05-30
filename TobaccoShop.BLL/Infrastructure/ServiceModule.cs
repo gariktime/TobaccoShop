@@ -1,7 +1,4 @@
 ﻿using Ninject.Modules;
-using TobaccoShop.BLL.Interfaces;
-using TobaccoShop.BLL.Services;
-using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
 using TobaccoShop.DAL.Repositories;
 

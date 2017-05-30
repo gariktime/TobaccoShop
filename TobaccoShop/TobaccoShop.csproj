@@ -287,10 +287,6 @@
       <Project>{cdfeb2f5-7994-4cf0-a509-6fce6ecefe4c}</Project>
       <Name>TobaccoShop.BLL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\TobaccoShop.DAL\TobaccoShop.DAL.csproj">
-      <Project>{85d12aca-5560-4b36-89c6-0fbacf715822}</Project>
-      <Name>TobaccoShop.DAL</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

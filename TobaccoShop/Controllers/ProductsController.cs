@@ -1,16 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 using TobaccoShop.BLL.Interfaces;
-using TobaccoShop.BLL.Services;
-using TobaccoShop.DAL.Interfaces;
-using TobaccoShop.DAL.Repositories;
-using TobaccoShop.Models;
 using TobaccoShop.Models.ProductListModels;
 
 namespace TobaccoShop.Controllers

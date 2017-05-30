@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Identity;
 using TobaccoShop.DAL.Repositories;

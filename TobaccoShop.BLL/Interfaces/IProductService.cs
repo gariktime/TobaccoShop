@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
 using System.Threading.Tasks;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Services;
-using TobaccoShop.DAL.Entities.Products;
 
 namespace TobaccoShop.BLL.Interfaces
 {
@@ -25,9 +23,9 @@ namespace TobaccoShop.BLL.Interfaces
         ProductDTO FindById(Guid id);
         Task<ProductDTO> FindByIdAsync(Guid id);
         List<ProductDTO> GetProducts();
-        List<ProductDTO> GetProducts(Func<Product, bool> predicate);
+        List<ProductDTO> GetProducts(Func<ProductDTO, bool> predicate);
         Task<List<ProductDTO>> GetProductsAsync();
-        Task<List<ProductDTO>> GetProductsAsync(Expression<Func<Product, bool>> predicate);
+        Task<List<ProductDTO>> GetProductsAsync(Func<ProductDTO, bool> predicate);
         Task<List<HookahDTO>> GetHookahsAsync();
         Task<List<HookahDTO>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries);
 
@@ -36,7 +34,6 @@ namespace TobaccoShop.BLL.Interfaces
 
         //вспомогательные методы
         Task<(ProductDTO, ProductType)> GetProductParams(Guid id);
-
 
         void Dispose();
     }

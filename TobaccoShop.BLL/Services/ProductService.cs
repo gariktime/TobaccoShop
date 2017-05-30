@@ -2,16 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Interfaces;
-using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
 
@@ -147,10 +143,10 @@ namespace TobaccoShop.BLL.Services
             return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(db.Products.GetAll());
         }
 
-        public List<ProductDTO> GetProducts(Func<Product, bool> predicate)
+        public List<ProductDTO> GetProducts(Func<ProductDTO, bool> predicate)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(db.Products.GetAll(predicate));
+            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(db.Products.GetAll()).Where(predicate).ToList();
         }
 
         public async Task<List<ProductDTO>> GetProductsAsync()
@@ -159,10 +155,10 @@ namespace TobaccoShop.BLL.Services
             return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(await db.Products.GetAllAsync());
         }
 
-        public async Task<List<ProductDTO>> GetProductsAsync(Expression<Func<Product, bool>> predicate)
+        public async Task<List<ProductDTO>> GetProductsAsync(Func<ProductDTO, bool> predicate)
         {
             Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(await db.Products.GetAllAsync(predicate));
+            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(await db.Products.GetAllAsync()).Where(predicate).ToList();
         }
 
         public async Task<List<HookahDTO>> GetHookahsAsync()

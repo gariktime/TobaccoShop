@@ -10,9 +10,8 @@ using System.Web.Mvc;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Services;
-using TobaccoShop.DAL.Interfaces;
-using TobaccoShop.Models;
 using TobaccoShop.Models.ProductModels;
+using System.Data.Entity;
 
 namespace TobaccoShop.Controllers
 {
@@ -89,8 +88,8 @@ namespace TobaccoShop.Controllers
         {
             if (Request.IsAjaxRequest())
             {
-                var products = await productService.GetProductsAsync(p => p.Mark.Contains(searchQuery) ||
-                                                                          p.Model.Contains(searchQuery));
+                List<ProductDTO> products = await productService.GetProductsAsync(p => p.Mark.Contains(searchQuery) ||
+                                                                                       p.Model.Contains(searchQuery));
                 return PartialView("_ProductList", products);
             }
             else
