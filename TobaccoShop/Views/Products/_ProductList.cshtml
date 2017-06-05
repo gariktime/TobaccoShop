@@ -11,9 +11,10 @@
 
         <p>@Html.DisplayFor(modelItem => item.Price) руб.</p>
 
-        @using (Html.BeginForm("AddToCart", "Hookah", FormMethod.Post))
+        @using (Ajax.BeginForm("AddToCart", "Products", new { id = item.ProductId }, new AjaxOptions { OnSuccess = "AddToCart" }))
         {
-            <input class="btn-success" type="button" value="Купить" />
+            <input class="btn-success" type="submit" value="Купить" />
         }
+
     </div>
 }

@@ -22,6 +22,7 @@ namespace TobaccoShop.DAL.Repositories
         private ProductGRepository<Product> productRepository;
         private ProductGRepository<Hookah> hookahRepository;
 
+        //репозиторий заказов
         private OrderRepository orderRepository;
 
         public EFUnitOfWork(string connectionString)

@@ -15,7 +15,8 @@ namespace TobaccoShop.DAL.Interfaces
         IGenericRepository<Product> Products { get; }
         IGenericRepository<Hookah> Hookahs { get; }
 
-        OrderRepository Orders { get; } //хуйня
+        OrderRepository Orders { get; }
+
         void Save();
         Task SaveAsync();
     }

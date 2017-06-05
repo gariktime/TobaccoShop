@@ -37,12 +37,12 @@ namespace TobaccoShop.DAL.EF
         public DbSet<HookahTobacco> HookahTobacco { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public DbSet<OrderInfo> OrderedProductInfo { get; set; }
+        public DbSet<OrderedProduct> OrderedProductInfo { get; set; }
         public DbSet<ClientProfile> ClientProfiles { get; set; }
     }
 
     #region Model Configuration Fluent API
-    class OrderInfoConfiguration : EntityTypeConfiguration<OrderInfo>
+    class OrderInfoConfiguration : EntityTypeConfiguration<OrderedProduct>
     {
         public OrderInfoConfiguration()
         {
@@ -71,18 +71,18 @@ namespace TobaccoShop.DAL.EF
             Hookah p6 = new Hookah(Guid.NewGuid(), "Khalil", "Mamoon Halazone Trimetal", 6800, "Описание", "Азербайджан", 85, null);
             db.Hookahs.AddRange(new List<Hookah> { p5, p6 });
 
-            List<OrderInfo> infos = new List<OrderInfo>();
-            OrderInfo info1 = new OrderInfo { Quantity = 3, Product = p1 };
-            OrderInfo info2 = new OrderInfo { Quantity = 4, Product = p2 };
+            List<OrderedProduct> infos = new List<OrderedProduct>();
+            OrderedProduct info1 = new OrderedProduct { Id = Guid.NewGuid(), Quantity = 3, Product = p1 };
+            OrderedProduct info2 = new OrderedProduct { Id = Guid.NewGuid(), Quantity = 4, Product = p2 };
             infos.Add(info1);
             infos.Add(info2);
             db.OrderedProductInfo.Add(info1);
             db.OrderedProductInfo.Add(info2);
-            Order or1 = new Order { OrderDate = DateTime.Now, Products = infos };
+            Order or1 = new Order { OrderId = Guid.NewGuid(), OrderDate = DateTime.Now, Products = infos };
             db.Orders.Add(or1);
 
-            List<OrderInfo> infos2 = new List<OrderInfo>();
-            OrderInfo info3 = new OrderInfo { Quantity = 26, Product = p1 };
+            List<OrderedProduct> infos2 = new List<OrderedProduct>();
+            OrderedProduct info3 = new OrderedProduct { Quantity = 26, Product = p1 };
             infos2.Add(info3);
             Order or2 = new Order { OrderDate = DateTime.Now, Products = infos2 };
             db.Orders.Add(or2);

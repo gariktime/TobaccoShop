@@ -8,7 +8,7 @@ using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.DAL.Repositories
 {
-    public class ProductRepository : IRepository<Product>
+    public class ProductRepository
     {
         private EF.ApplicationContext db;
 

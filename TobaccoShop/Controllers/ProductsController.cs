@@ -1,6 +1,9 @@
-﻿using System.Net;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.Models.ProductListModels;
 
@@ -13,6 +16,26 @@ namespace TobaccoShop.Controllers
         public ProductsController(IProductService prService)
         {
             productService = prService;
+        }
+
+        [NonAction]
+        public JsonResult AddToCart(Guid id)
+        {
+            List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
+            if (products == null)
+            {
+                products = new List<OrderedProductDTO>();
+                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id };
+                products.Add(product);
+                Session["Cart"] = products;
+            }
+            else
+            {
+                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id };
+                products.Add(product);
+            }
+            int cart_count = products.Count;
+            return Json(cart_count, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> Hookahs()

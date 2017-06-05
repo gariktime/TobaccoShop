@@ -43,4 +43,10 @@
         }
     });
 
+    function AddToCart(data) {
+        var count = data[cart_count];
+        $('#cartProductsCount').append('<p>' + count + '</p>');
+    }
+    
+
 });

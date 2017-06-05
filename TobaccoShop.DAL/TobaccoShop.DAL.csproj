@@ -64,7 +64,7 @@
     <Compile Include="Entities\Identity\ApplicationUser.cs" />
     <Compile Include="Entities\Identity\ClientProfile.cs" />
     <Compile Include="Entities\Order.cs" />
-    <Compile Include="Entities\OrderInfo.cs" />
+    <Compile Include="Entities\OrderedProduct.cs" />
     <Compile Include="Entities\Products\Product.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />

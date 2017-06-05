@@ -2,31 +2,24 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using TobaccoShop.DAL.EF;
 using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.DAL.Repositories
 {
-    public class OrderRepository: IRepository<Order>
+    public class OrderRepository : IRepository<Order>
     {
-        private EF.ApplicationContext db;
+        private ApplicationContext db;
 
-        public OrderRepository(EF.ApplicationContext context)
+        public OrderRepository(ApplicationContext context)
         {
-            this.db = context;
+            db = context;
         }
 
-        public IEnumerable<Order> GetAll()
-        {
-            return db.Orders;
-        }
-
-        public Order Get(int id)
-        {
-            return db.Orders.Find(id);
-        }
-
-        public void Create(Order order)
+        public void Add(Order order)
         {
             db.Orders.Add(order);
         }
@@ -36,16 +29,40 @@ namespace TobaccoShop.DAL.Repositories
             db.Entry(order).State = EntityState.Modified;
         }
 
-        public IEnumerable<Order> Find(Func<Order, Boolean> predicate)
+        public void Delete(Order order)
+        {
+            db.Orders.Remove(order);
+            db.Entry(order).State = EntityState.Deleted;
+        }
+
+        public Order FindById(Guid id)
+        {
+            return db.Orders.Find(id);
+        }
+
+        public async Task<Order> FindByIdAsync(Guid id)
+        {
+            return await db.Orders.FindAsync(id);
+        }
+
+        public List<Order> GetAll()
+        {
+            return db.Orders.ToList();
+        }
+
+        public List<Order> GetAll(Func<Order, bool> predicate)
         {
             return db.Orders.Where(predicate).ToList();
         }
 
-        public void Delete(int id)
+        public async Task<List<Order>> GetAllAsync()
         {
-            Order order = db.Orders.Find(id);
-            if (order != null)
-                db.Orders.Remove(order);
+            return await db.Orders.ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate)
+        {
+            return await db.Orders.Where(predicate).ToListAsync();
         }
     }
 }
