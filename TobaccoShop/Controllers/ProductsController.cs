@@ -18,24 +18,25 @@ namespace TobaccoShop.Controllers
             productService = prService;
         }
 
-        [NonAction]
-        public JsonResult AddToCart(Guid id)
+        [HttpPost]
+        public ActionResult AddToCart(Guid id)
         {
             List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
-            if (products == null)
+            if (products == null) //если товары ещё не добавлялись то создаём корзину и добавляем выбранный продукт
             {
                 products = new List<OrderedProductDTO>();
                 var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id };
                 products.Add(product);
                 Session["Cart"] = products;
             }
-            else
+            else //добавляем товар в корзину
             {
                 var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id };
-                products.Add(product);
+                //если выбранного товара ещё нет в корзине
+                if (!products.Exists(p => p.ProductId == product.ProductId))
+                    products.Add(product);
             }
-            int cart_count = products.Count;
-            return Json(cart_count, JsonRequestBehavior.AllowGet);
+            return PartialView("_CartMenu");
         }
 
         public async Task<ActionResult> Hookahs()

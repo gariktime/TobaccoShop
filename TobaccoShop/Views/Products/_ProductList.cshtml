@@ -11,7 +11,7 @@
 
         <p>@Html.DisplayFor(modelItem => item.Price) руб.</p>
 
-        @using (Ajax.BeginForm("AddToCart", "Products", new { id = item.ProductId }, new AjaxOptions { OnSuccess = "AddToCart" }))
+        @using (Ajax.BeginForm("AddToCart", "Products", new { id = item.ProductId }, new AjaxOptions { UpdateTargetId = "CartMenu" }))
         {
             <input class="btn-success" type="submit" value="Купить" />
         }

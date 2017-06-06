@@ -1,0 +1,14 @@
+﻿@using TobaccoShop.BLL.DTO;
+
+@{ 
+    var cart = (List<OrderedProductDTO>)Session["Cart"];
+    int cart_count = (cart == null || cart.Count == 0) ? 0 : cart.Count;
+}
+
+<a href="/order/cart/">
+    <span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span>
+    @if (cart_count != 0)
+    {
+        <span>[@cart_count]</span>
+    }
+</a>

@@ -1,4 +1,9 @@
-﻿$(document).ready(function () {
+﻿//function AddToCart(data) {
+//    var count = data[cart_count];
+//    $('#cartProductsCount').append('<p>' + count + '</p>');
+//}
+
+$(document).ready(function () {
     var min_price = $("#MinPrice").val();
     var max_price = $("#MaxPrice").val();
     var min_height = $("MinHeight").val();
@@ -42,11 +47,4 @@
             $("#MaxHeight").val(data.to);
         }
     });
-
-    function AddToCart(data) {
-        var count = data[cart_count];
-        $('#cartProductsCount').append('<p>' + count + '</p>');
-    }
-    
-
 });
