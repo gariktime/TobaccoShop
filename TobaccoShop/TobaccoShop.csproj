@@ -197,6 +197,7 @@
     </Compile>
     <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\ProductListModels\HookahListViewModel.cs" />
     <Compile Include="Models\ProductModels\HookahTobaccoViewModel.cs" />
     <Compile Include="Models\ProductModels\HookahViewModel.cs" />

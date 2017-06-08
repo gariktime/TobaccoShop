@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using TobaccoShop.DAL.Entities.Identity;
 
-namespace TobaccoShop.DAL.Entities
+namespace TobaccoShop.BLL.DTO
 {
-    public class Order
+    public class OrderDTO
     {
         public Guid OrderId { get; set; }
 
@@ -22,14 +21,8 @@ namespace TobaccoShop.DAL.Entities
 
         public DateTime OrderDate { get; set; }
 
-        public string UserId { get; set; }
-        public ClientProfile User { get; set; }
+        public UserDTO User { get; set; }
 
-        public ICollection<OrderedProduct> Products { get; set; }
-
-        public Order()
-        {
-            Products = new List<OrderedProduct>();
-        }
+        public List<OrderedProductDTO> Products { get; set; }
     }
 }

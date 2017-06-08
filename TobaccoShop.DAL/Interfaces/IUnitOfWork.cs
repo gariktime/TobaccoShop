@@ -8,6 +8,8 @@ namespace TobaccoShop.DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
+        System.Data.Entity.Database Database { get; }
+
         ApplicationUserManager UserManager { get; }
         IClientManager ClientManager { get; }
         ApplicationRoleManager RoleManager { get; }

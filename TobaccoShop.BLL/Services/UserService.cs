@@ -11,7 +11,7 @@ using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.BLL.Services
 {
-    public class UserService: IUserService
+    public class UserService : IUserService
     {
         private IUnitOfWork db { get; set; }
 
@@ -54,7 +54,7 @@ namespace TobaccoShop.BLL.Services
         /// </summary>
         /// <param name="userDto"></param>
         /// <returns></returns>
-        public async Task<ClaimsIdentity> Authenticate (UserDTO userDto)
+        public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
         {
             ClaimsIdentity claim = null;
             //находим пользователя в бд по email
@@ -77,7 +77,7 @@ namespace TobaccoShop.BLL.Services
         //инициализация БД
         public async Task SetInitialData(UserDTO adminDto, List<string> roles)
         {
-            foreach(string roleName in roles)
+            foreach (string roleName in roles)
             {
                 var role = await db.RoleManager.FindByNameAsync(roleName);
                 if (role == null)
@@ -104,6 +104,17 @@ namespace TobaccoShop.BLL.Services
             ClientProfile adminProfile = new ClientProfile { Id = admin.Id, UserName = admin.UserName };
             db.ClientManager.Create(adminProfile);
             await db.SaveAsync();
+        }
+
+        public async Task<UserDTO> GetCurrentUser(string id)
+        {
+            ClientProfile user = await db.ClientManager.FindByIdAsync(id);
+            UserDTO userDTO = new UserDTO()
+            {
+                Id = user.Id,
+                UserName = user.UserName
+            };
+            return userDTO;
         }
 
         public void Dispose()

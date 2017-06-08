@@ -33,6 +33,14 @@ namespace TobaccoShop.DAL.Repositories
             clientManager = new ClientManager(db);
         }
 
+        public System.Data.Entity.Database Database
+        {
+            get
+            {
+                return db.Database;
+            }
+        }
+
         #region Работа с Identity
 
         public ApplicationUserManager UserManager

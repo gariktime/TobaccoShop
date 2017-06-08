@@ -30,6 +30,7 @@ namespace TobaccoShop.Util
         public void AddBindings()
         {
             kernel.Bind<IProductService>().To<ProductService>();
+            kernel.Bind<IOrderService>().To<OrderService>();
         }
     }
 }
