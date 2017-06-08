@@ -203,6 +203,7 @@ namespace TobaccoShop.BLL.Services
             double maxHeight = await db.Hookahs.GetPropMaxValueAsync(p => p.Height);
             List<string> marks = await db.Hookahs.GetPropValuesAsync(p => p.Mark);
             List<string> countries = await db.Hookahs.GetPropValuesAsync(p => p.Country);
+
             return (minPrice, maxPrice, minHeight, maxHeight, marks, countries);
         }
 

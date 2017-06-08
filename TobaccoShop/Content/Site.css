@@ -111,3 +111,8 @@ textarea {
     font-weight: bold;
     position: relative;
 }
+
+.quantity-items{
+    position: relative;
+    display: flex;
+}

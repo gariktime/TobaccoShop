@@ -195,6 +195,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CartViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ProductListModels\HookahListViewModel.cs" />
     <Compile Include="Models\ProductModels\HookahTobaccoViewModel.cs" />
@@ -271,10 +272,12 @@
     <Content Include="Views\Admin\_ProductList.cshtml" />
     <Content Include="Views\Admin\Edit.cshtml" />
     <Content Include="Views\Shared\_CartMenu.cshtml" />
+    <Content Include="Views\Shared\_ProfileMenu.cshtml" />
+    <Content Include="Views\Order\Cart.cshtml" />
+    <Content Include="Views\Order\_CartTable.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

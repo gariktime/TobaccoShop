@@ -19,19 +19,19 @@ namespace TobaccoShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddToCart(Guid id)
+        public ActionResult AddToCart(Guid id, int price, string mark, string model)
         {
             List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
             if (products == null) //если товары ещё не добавлялись то создаём корзину и добавляем выбранный продукт
             {
                 products = new List<OrderedProductDTO>();
-                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id };
+                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id,  Quantity = 1, Price = price, MarkModel = mark + " " + model };
                 products.Add(product);
                 Session["Cart"] = products;
             }
             else //добавляем товар в корзину
             {
-                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id };
+                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id,  Quantity = 1, Price = price, MarkModel = mark + " " + model };
                 //если выбранного товара ещё нет в корзине
                 if (!products.Exists(p => p.ProductId == product.ProductId))
                     products.Add(product);

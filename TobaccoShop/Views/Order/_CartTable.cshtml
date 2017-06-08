@@ -1,0 +1,63 @@
+﻿@model TobaccoShop.Models.CartViewModel
+
+
+@if (Model.Products == null || Model.Products.Count == 0)
+{
+    <h3>Ваша корзина пуста</h3>
+}
+else
+{
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                Наименование товара
+            </th>
+            <th>
+                Цена, шт.
+            </th>
+            <th>
+                Количество
+            </th>
+            <th>
+                Цена
+            </th>
+            <th>
+
+            </th>
+
+        </tr>
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(p => item.MarkModel)
+                </td>
+                <td>
+                    @Html.DisplayFor(p => item.Price)
+                </td>
+                <td>
+                    <div class="quantity-items">
+                        @using (Ajax.BeginForm("DecreaseItem", "Order", new { id = item.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
+                        {
+                            <input type="submit" class="btn" value="-" />
+                        }
+                        @Html.DisplayFor(p => item.Quantity, new { @style = "display: flex" })
+                        @using (Ajax.BeginForm("IncreaseItem", "Order", new { id = item.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
+                        {
+                            <input type="submit" class="btn" value="+" />
+                        }
+                    </div>
+                </td>
+                <td>
+                    @Html.DisplayFor(p => item.LinePrice)
+                </td>
+                <td>
+                    @using (Ajax.BeginForm("DeleteItem", new { id = item.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
+                    {
+                        <input type="submit" class="btn" value="Удалить" />
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+}

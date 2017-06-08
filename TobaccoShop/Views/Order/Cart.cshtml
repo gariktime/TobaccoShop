@@ -1,0 +1,12 @@
+﻿@model TobaccoShop.Models.CartViewModel
+
+@{
+    ViewBag.Title = "Корзина покупок";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <div id="Cart">
+        @{ Html.RenderPartial("_CartTable", Model);}
+    </div>
+</div>
