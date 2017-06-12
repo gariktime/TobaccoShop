@@ -276,6 +276,7 @@
     <Content Include="Views\Shared\_ProfileMenu.cshtml" />
     <Content Include="Views\Order\Cart.cshtml" />
     <Content Include="Views\Order\_CartTable.cshtml" />
+    <Content Include="Views\Order\MakeOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

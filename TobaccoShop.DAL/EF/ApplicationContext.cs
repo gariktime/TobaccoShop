@@ -51,7 +51,7 @@ namespace TobaccoShop.DAL.EF
     }
     #endregion
 
-    class MyContextInitializer : DropCreateDatabaseAlways<ApplicationContext>
+    class MyContextInitializer : DropCreateDatabaseIfModelChanges<ApplicationContext>
     {
         protected override void Seed(ApplicationContext db)
         {
@@ -78,13 +78,13 @@ namespace TobaccoShop.DAL.EF
             infos.Add(info2);
             db.OrderedProductInfo.Add(info1);
             db.OrderedProductInfo.Add(info2);
-            Order or1 = new Order { OrderId = Guid.NewGuid(), OrderDate = DateTime.Now, Products = infos };
+            Order or1 = new Order { OrderId = Guid.NewGuid(), OrderDate = DateTime.Now, Products = infos, Status = OrderStatus.Completed };
             db.Orders.Add(or1);
 
             List<OrderedProduct> infos2 = new List<OrderedProduct>();
             OrderedProduct info3 = new OrderedProduct { Quantity = 26, Product = p1 };
             infos2.Add(info3);
-            Order or2 = new Order { OrderDate = DateTime.Now, Products = infos2 };
+            Order or2 = new Order { OrderId = Guid.NewGuid(), OrderDate = DateTime.Now, Products = infos2, Status = OrderStatus.OnDelivery };
             db.Orders.Add(or2);
 
             db.SaveChanges();

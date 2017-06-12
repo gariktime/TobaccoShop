@@ -60,4 +60,10 @@ else
             </tr>
         }
     </table>
+
+    using (Html.BeginForm("MakeOrder", "Order", FormMethod.Post))
+    {
+        @Html.DisplayFor(p => Model.TotalPrice)
+        <input type="submit" class="btn" value="Оформить заказ" />
+    }
 }

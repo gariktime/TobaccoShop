@@ -1,0 +1,44 @@
+﻿@model TobaccoShop.Models.OrderViewModel
+
+@{
+    ViewBag.Title = "Оформление заказа";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-md-8">
+    @using (Html.BeginForm("ConfirmOrder", "Order", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="form-group">
+            <span class="label">@Html.DisplayFor(p => Model.OrderPrice)</span>
+            <span class="glyphicon-ruble"></span>
+        </div>
+        <div class="form-group">
+            @Html.DisplayNameFor(p => Model.Street)
+            @Html.TextBoxFor(p => Model.Street, new { @class = "form-control input-lg" })
+        </div>
+        <div class="form-group">
+            @Html.DisplayNameFor(p => Model.House)
+            @Html.TextBoxFor(p => Model.House, new { @class = "form-control input-lg" })
+        </div>
+        <div class="form-group">
+            @Html.DisplayNameFor(p => Model.Apartment)
+            @Html.TextBoxFor(p => Model.Apartment, new { @class = "form-control input-lg" })
+        </div>
+        <div class="form-group">
+            @Html.DisplayNameFor(p => Model.Appeal)
+            @Html.TextBoxFor(p => Model.Appeal, new { @class = "form-control input-lg" })
+        </div>
+        <div class="form-group">
+            @Html.DisplayNameFor(p => Model.PhoneNumber)
+            @Html.TextBoxFor(p => Model.PhoneNumber, new { @class = "form-control input-lg" })
+        </div>
+        <div class="form-group">
+            @Html.DisplayNameFor(p => Model.Note)
+            @Html.TextAreaFor(p => Model.Note, new { @class = "form-control input-lg" })
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-default" value="Оформить заказ" />
+        </div>
+    }
+</div>

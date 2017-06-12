@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TobaccoShop.DAL.Entities;
 
 namespace TobaccoShop.BLL.DTO
 {
@@ -8,6 +9,8 @@ namespace TobaccoShop.BLL.DTO
         public Guid OrderId { get; set; }
 
         public double OrderPrice { get; set; }
+
+        public string Appeal { get; set; }
 
         public string Street { get; set; }
 
@@ -20,6 +23,10 @@ namespace TobaccoShop.BLL.DTO
         public string Note { get; set; }
 
         public DateTime OrderDate { get; set; }
+
+        public OrderStatus Status { get; set; }
+
+        public string UserId { get; set; }
 
         public UserDTO User { get; set; }
 

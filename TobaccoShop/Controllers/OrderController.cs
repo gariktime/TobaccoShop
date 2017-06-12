@@ -91,7 +91,7 @@ namespace TobaccoShop.Controllers
 
         #endregion
 
-        #region Работа с заказами
+        #region Оформление нового заказа
 
         public ActionResult MakeOrder()
         {
@@ -119,21 +119,28 @@ namespace TobaccoShop.Controllers
             string currUserId = User.Identity.GetUserId();
             if (currUserId == null)
                 return RedirectToAction("Login", "Connect");
-            UserDTO currentUser = await UserService.GetCurrentUser(currUserId);
+            //UserDTO currentUser = await UserService.GetCurrentUser(currUserId);
             OrderDTO orderDTO = new OrderDTO()
             {
                 OrderPrice = ovm.OrderPrice,
-                User = currentUser,
+                UserId = currUserId,
                 Products = products,
                 OrderDate = DateTime.Now,
                 Street = ovm.Street,
                 House = ovm.House,
                 Apartment = ovm.Apartment,
                 PhoneNumber = ovm.Apartment,
-                Note = ovm.Note
+                Note = ovm.Note,
+                Appeal = ovm.Appeal
             };
             var result = await orderService.AddOrder(orderDTO);
-            return RedirectToAction("Index", "Home");
+            if (result.Succeeded == true)
+            {
+                Session["Cart"] = null;
+                return RedirectToAction("Index", "Home");
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         #endregion

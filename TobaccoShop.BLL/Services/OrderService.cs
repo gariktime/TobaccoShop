@@ -28,9 +28,24 @@ namespace TobaccoShop.BLL.Services
             {
                 try
                 {
-                    ClientProfile clientProfile = await db.ClientManager.FindByIdAsync(orderDTO.User.Id);
-                    Mapper.Initialize(cfg => cfg.CreateMap<List<OrderedProductDTO>, List<OrderedProduct>>());
-                    List<OrderedProduct> orderedProducts = Mapper.Map<List<OrderedProductDTO>, List<OrderedProduct>>(orderDTO.Products);
+                    ClientProfile clientProfile = await db.ClientManager.FindByIdAsync(orderDTO.UserId);
+
+                    //Mapper.Initialize(cfg => cfg.CreateMap<List<OrderedProductDTO>, List<OrderedProduct>>()
+                    //    .ForMember("Id", opt => opt.MapFrom(mfrom => mfrom.Select(s => Mapper.Map(s, Guid.NewGuid())))));
+                    //Mapper.Initialize(cfg => cfg.CreateMap<List<OrderedProductDTO>, List<OrderedProduct>>());
+                    //List <OrderedProduct> orderedProducts = Mapper.Map<List<OrderedProductDTO>, List<OrderedProduct>>(orderDTO.Products);
+
+                    List<OrderedProduct> orderedProducts = new List<OrderedProduct>();
+                    foreach (var item in orderDTO.Products)
+                    {
+                        OrderedProduct p = new OrderedProduct()
+                        {
+                            Id = item.Id,
+                            ProductId = item.ProductId,
+                            Quantity = item.Quantity
+                        };
+                        orderedProducts.Add(p);
+                    }
 
                     Order order = new Order()
                     {
@@ -43,7 +58,8 @@ namespace TobaccoShop.BLL.Services
                         House = orderDTO.House.Trim(),
                         Apartment = orderDTO.Apartment.Trim(),
                         Note = (orderDTO.Note == null || orderDTO.Note.Trim() == "") ? null : orderDTO.Note,
-                        PhoneNumber = orderDTO.PhoneNumber
+                        PhoneNumber = orderDTO.PhoneNumber,
+                        Status = OrderStatus.Active
                     };
 
                     db.Orders.Add(order);
@@ -58,5 +74,23 @@ namespace TobaccoShop.BLL.Services
                 }
             }
         }
+
+        #region Методы множеств
+
+        public async Task<List<OrderDTO>> GetOrdersAsync()
+        {
+            var orders = await db.Orders.GetAllAsync();
+            Mapper.Initialize(cfg => cfg.CreateMap<List<Order>, List<OrderDTO>>());
+            return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
+        }
+
+        public async Task<List<OrderDTO>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo)
+        {
+            var orders = await db.Orders.GetAllAsync(p => p.OrderDate >= dateFrom && p.OrderDate <= dateTo);
+            Mapper.Initialize(cfg => cfg.CreateMap<List<Order>, List<OrderDTO>>());
+            return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
+        }
+
+        #endregion
     }
 }
