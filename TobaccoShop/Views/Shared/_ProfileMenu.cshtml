@@ -1,5 +1,33 @@
-﻿
+﻿@using Microsoft.AspNet.Identity;
+@using Microsoft.AspNet.Identity.Owin;
+@using System.Web;
+@using TobaccoShop.BLL.Interfaces;
+
 
 @{ 
+    string currUserId = User.Identity.GetUserId();
+    string userName = HttpContext.Current.Request.Cookies["username"]?.Value;
+    if (currUserId != null && userName == null)
+    {
+        IUserService UserService = HttpContext.Current.GetOwinContext().GetUserManager<IUserService>();
+        userName = UserService.GetCurrentUserName(currUserId);
+        HttpContext.Current.Response.Cookies["username"].Value = userName;
+        HttpContext.Current.Response.Cookies["username"].Expires = DateTime.Now.AddDays(365);
+    }
+}
 
+
+@if (userName == null)
+{
+    <a href="/Connect/Login/" role="button">Вход</a>
+}
+else
+{
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+       aria-haspopup="true" aria-expanded="false">@userName<span class="caret"></span></a>
+    <ul class="dropdown-menu">
+        <li><a href="/Profile/MyProfile">Мой профиль</a></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="/Connect/Logout/">Выйти</a></li>
+    </ul>
 }

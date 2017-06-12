@@ -13,6 +13,8 @@ namespace TobaccoShop.BLL.Interfaces
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
         Task SetInitialData(UserDTO adminDto, List<string> roles);
         Task Init();
+
         Task<UserDTO> GetCurrentUser(string id);
+        string GetCurrentUserName(string id);
     }
 }

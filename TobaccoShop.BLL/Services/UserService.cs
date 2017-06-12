@@ -117,6 +117,12 @@ namespace TobaccoShop.BLL.Services
             return userDTO;
         }
 
+        public string GetCurrentUserName(string id)
+        {
+            var user = db.ClientManager.FindById(id);
+            return user.UserName;
+        }
+
         public void Dispose()
         {
             db.Dispose();

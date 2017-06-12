@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity.Owin;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -60,7 +61,7 @@ namespace TobaccoShop.Controllers
 
         public ActionResult Logout()
         {
-            AuthenticationManager.SignOut();
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
