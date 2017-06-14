@@ -16,7 +16,7 @@ namespace TobaccoShop.BLL.Util
                 .ForMember(dest => dest.Comments, opt => opt.Ignore());
 
             CreateMap<ClientProfile, UserDTO>()
-                .ForMember(dest => dest.Orders, opt => opt.Ignore())
+                .ForMember(dest => dest.Orders, opt => opt.MapFrom(src => src.Orders))
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
 
             CreateMap<OrderedProduct, OrderedProductDTO>()
@@ -32,7 +32,8 @@ namespace TobaccoShop.BLL.Util
 
             CreateMap<Order, OrderDTO>()
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
-                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
+                .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.User.Email));
         }
     }
 }
