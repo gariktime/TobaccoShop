@@ -129,7 +129,7 @@ namespace TobaccoShop.Controllers
                 Street = ovm.Street,
                 House = ovm.House,
                 Apartment = ovm.Apartment,
-                PhoneNumber = ovm.Apartment,
+                PhoneNumber = ovm.PhoneNumber,
                 Note = ovm.Note,
                 Appeal = ovm.Appeal
             };

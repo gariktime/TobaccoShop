@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Interfaces;
+using TobaccoShop.BLL.Util;
 using TobaccoShop.DAL.Entities.Identity;
 using TobaccoShop.DAL.Interfaces;
 
@@ -38,7 +40,7 @@ namespace TobaccoShop.BLL.Services
                 //добавляем пользователю роль
                 await db.UserManager.AddToRoleAsync(user.Id, userDto.Role);
                 //создаём профиль пользователя
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, UserName = userDto.UserName };
+                ClientProfile clientProfile = new ClientProfile { Id = user.Id, UserName = userDto.UserName, Email = userDto.Email, Role = userDto.Role };
                 db.ClientManager.Create(clientProfile);
                 await db.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно завершена", "");
@@ -61,7 +63,7 @@ namespace TobaccoShop.BLL.Services
             ApplicationUser user = await db.UserManager.FindByEmailAsync(userDto.Email);
             if (user != null)
             {
-                user = await db.UserManager.FindAsync(user.Email, userDto.Password);
+                user = await db.UserManager.FindAsync(user.UserName, userDto.Password);
             }
             else //находим по UserName
             {
@@ -109,12 +111,22 @@ namespace TobaccoShop.BLL.Services
         public async Task<UserDTO> GetCurrentUser(string id)
         {
             ClientProfile user = await db.ClientManager.FindByIdAsync(id);
-            UserDTO userDTO = new UserDTO()
+
+            Mapper.Initialize(cfg =>
             {
-                Id = user.Id,
-                UserName = user.UserName
-            };
-            return userDTO;
+                cfg.CreateMap<ClientProfile, UserDTO>();
+                cfg.AddProfile<AutomapperProfile>();
+            });
+
+            //UserDTO userDTO = new UserDTO()
+            //{
+            //    Id = user.Id,
+            //    UserName = user.UserName,
+            //    Email = user.Email,
+            //    Role = user.Role
+            //};
+
+            return Mapper.Map<ClientProfile, UserDTO>(user); ;
         }
 
         public string GetCurrentUserName(string id)

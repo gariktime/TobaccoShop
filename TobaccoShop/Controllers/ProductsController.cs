@@ -19,22 +19,25 @@ namespace TobaccoShop.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddToCart(Guid id, int price, string mark, string model)
+        public async Task<ActionResult> AddToCart(Guid id)
         {
             List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
+
+            ProductDTO product = await productService.FindByIdAsync(id);
+
+            var cart_product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = product.ProductId, Product = product, Quantity = 1, Price = product.Price, MarkModel = product.Mark + " " + product.Model };
+
             if (products == null) //если товары ещё не добавлялись то создаём корзину и добавляем выбранный продукт
             {
                 products = new List<OrderedProductDTO>();
-                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id,  Quantity = 1, Price = price, MarkModel = mark + " " + model };
-                products.Add(product);
+                products.Add(cart_product);
                 Session["Cart"] = products;
             }
             else //добавляем товар в корзину
             {
-                var product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = id,  Quantity = 1, Price = price, MarkModel = mark + " " + model };
                 //если выбранного товара ещё нет в корзине
                 if (!products.Exists(p => p.ProductId == product.ProductId))
-                    products.Add(product);
+                    products.Add(cart_product);
             }
             return PartialView("_CartMenu");
         }

@@ -37,32 +37,32 @@ namespace TobaccoShop.DAL.Repositories
 
         public Order FindById(Guid id)
         {
-            return db.Orders.Find(id);
+            return db.Orders.Include(p => p.User).Include(p => p.Products).FirstOrDefault(p => p.OrderId == id);
         }
 
         public async Task<Order> FindByIdAsync(Guid id)
         {
-            return await db.Orders.FindAsync(id);
+            return await db.Orders.Include(p => p.User).Include(p => p.Products).FirstOrDefaultAsync(p => p.OrderId == id);
         }
 
         public List<Order> GetAll()
         {
-            return db.Orders.ToList();
+            return db.Orders.Include(p => p.User).Include(p => p.Products).ToList();
         }
 
         public List<Order> GetAll(Func<Order, bool> predicate)
         {
-            return db.Orders.Where(predicate).ToList();
+            return db.Orders.Include(p => p.User).Include(p => p.Products).Where(predicate).ToList();
         }
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await db.Orders.ToListAsync();
+            return await db.Orders.Include(p => p.User).Include(p => p.Products).ToListAsync();
         }
 
         public async Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate)
         {
-            return await db.Orders.Where(predicate).ToListAsync();
+            return await db.Orders.Include(p => p.User).Include(p => p.Products).Where(predicate).ToListAsync();
         }
     }
 }

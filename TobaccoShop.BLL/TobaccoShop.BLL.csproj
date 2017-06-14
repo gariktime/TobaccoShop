@@ -80,6 +80,7 @@
     <Compile Include="Services\ProductService.cs" />
     <Compile Include="Services\ServiceCreator.cs" />
     <Compile Include="Services\UserService.cs" />
+    <Compile Include="Util\AutomapperProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TobaccoShop.DAL\TobaccoShop.DAL.csproj">

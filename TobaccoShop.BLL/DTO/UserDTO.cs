@@ -1,4 +1,6 @@
-﻿namespace TobaccoShop.BLL.DTO
+﻿using System.Collections.Generic;
+
+namespace TobaccoShop.BLL.DTO
 {
     public class UserDTO
     {
@@ -7,5 +9,12 @@
         public string Password { get; set; }
         public string UserName { get; set; }
         public string Role { get; set; }
+
+        public List<OrderDTO> Orders { get; set; }
+
+        public UserDTO()
+        {
+            Orders = new List<OrderDTO>();
+        }
     }
 }

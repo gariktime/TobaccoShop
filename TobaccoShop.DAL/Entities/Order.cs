@@ -33,9 +33,13 @@ namespace TobaccoShop.DAL.Entities
 
         public ICollection<OrderedProduct> Products { get; set; }
 
+        [Timestamp]
+        public byte[] RowVersion { get; set; }
+
         public Order()
         {
             Products = new List<OrderedProduct>();
+            RowVersion = new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 };
         }
     }
 

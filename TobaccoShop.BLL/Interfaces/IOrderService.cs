@@ -13,5 +13,7 @@ namespace TobaccoShop.BLL.Interfaces
 
         Task<List<OrderDTO>> GetOrdersAsync();
         Task<List<OrderDTO>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
+        Task<List<OrderDTO>> GetActiveOrdersAsync();
+        Task<List<OrderDTO>> GetActiveOrdersAsync(DateTime dateFrom, DateTime dateTo);
     }
 }

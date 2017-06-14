@@ -5,7 +5,9 @@ using System.IO;
 
 namespace TobaccoShop.DAL.Entities.Products
 {
-    public abstract class Product
+    //Этот класс очень хотел быть абстрактным,
+    //но AutoMapper оказался против
+    public class Product
     {
         public Guid ProductId { get; set; }
 

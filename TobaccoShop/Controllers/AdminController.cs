@@ -12,16 +12,19 @@ using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Services;
 using TobaccoShop.Models.ProductModels;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity;
 
 namespace TobaccoShop.Controllers
 {
     public class AdminController : Controller
     {
         private IProductService productService;
+        private IOrderService orderService;
 
-        public AdminController(IProductService prService)
+        public AdminController(IProductService prService, IOrderService oService)
         {
             productService = prService;
+            orderService = oService;
         }
 
         #region Добавление/редактирование/удаление товаров
@@ -143,6 +146,13 @@ namespace TobaccoShop.Controllers
         }
 
         #endregion
+
+        public async Task<ActionResult> Orders()
+        {
+            List<OrderDTO> orders = await orderService.GetOrdersAsync();
+
+            return View(orders);
+        }
 
     }
 }
