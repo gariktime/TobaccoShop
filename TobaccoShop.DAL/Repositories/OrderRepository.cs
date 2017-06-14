@@ -37,32 +37,32 @@ namespace TobaccoShop.DAL.Repositories
 
         public Order FindById(Guid id)
         {
-            return db.Orders.Include(p => p.User).Include(p => p.Products).FirstOrDefault(p => p.OrderId == id);
+            return db.Orders.Include(p => p.User).Include("Products.Product").FirstOrDefault(p => p.OrderId == id);
         }
 
         public async Task<Order> FindByIdAsync(Guid id)
         {
-            return await db.Orders.Include(p => p.User).Include(p => p.Products).FirstOrDefaultAsync(p => p.OrderId == id);
+            return await db.Orders.Include(p => p.User).Include("Products.Product").FirstOrDefaultAsync(p => p.OrderId == id);
         }
 
         public List<Order> GetAll()
         {
-            return db.Orders.Include(p => p.User).Include(p => p.Products).ToList();
+            return db.Orders.Include(p => p.User).Include("Products.Product").ToList();
         }
 
         public List<Order> GetAll(Func<Order, bool> predicate)
         {
-            return db.Orders.Include(p => p.User).Include(p => p.Products).Where(predicate).ToList();
+            return db.Orders.Include(p => p.User).Include("Products.Product").Where(predicate).ToList();
         }
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await db.Orders.Include(p => p.User).Include(p => p.Products).ToListAsync();
+            return await db.Orders.Include(p => p.User).Include("Products.Product").ToListAsync();
         }
 
         public async Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate)
         {
-            return await db.Orders.Include(p => p.User).Include(p => p.Products).Where(predicate).ToListAsync();
+            return await db.Orders.Include(p => p.User).Include("Products.Product").Where(predicate).ToListAsync();
         }
     }
 }

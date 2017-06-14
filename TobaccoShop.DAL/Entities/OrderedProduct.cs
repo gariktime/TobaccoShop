@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using TobaccoShop.DAL.Entities.Products;
 
 namespace TobaccoShop.DAL.Entities
@@ -12,7 +13,7 @@ namespace TobaccoShop.DAL.Entities
 
         public int Quantity { get; set; }
 
-        public Guid? OrderId { get; set; }
+        public Guid OrderId { get; set; }
         public Order Order { get; set; }
 
         public OrderedProduct()

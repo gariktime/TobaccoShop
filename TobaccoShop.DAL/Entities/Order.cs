@@ -31,7 +31,7 @@ namespace TobaccoShop.DAL.Entities
         public string UserId { get; set; }
         public ClientProfile User { get; set; }
 
-        public ICollection<OrderedProduct> Products { get; set; }
+        public List<OrderedProduct> Products { get; set; }
 
         [Timestamp]
         public byte[] RowVersion { get; set; }
