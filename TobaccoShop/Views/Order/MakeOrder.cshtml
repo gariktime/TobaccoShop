@@ -10,31 +10,31 @@
     {
         @Html.AntiForgeryToken()
         <div class="form-group">
-            <span class="label">@Html.DisplayFor(p => Model.OrderPrice)</span>
+            <span name="OrderPrice">Заказ на сумму: @Html.DisplayFor(p => Model.OrderPrice)</span>
             <span class="glyphicon-ruble"></span>
         </div>
         <div class="form-group">
-            @Html.DisplayNameFor(p => Model.Street)
+            @Html.LabelFor(p => Model.Street)
             @Html.TextBoxFor(p => Model.Street, new { @class = "form-control input-lg" })
         </div>
         <div class="form-group">
-            @Html.DisplayNameFor(p => Model.House)
+            @Html.LabelFor(p => Model.House)
             @Html.TextBoxFor(p => Model.House, new { @class = "form-control input-lg" })
         </div>
         <div class="form-group">
-            @Html.DisplayNameFor(p => Model.Apartment)
+            @Html.LabelFor(p => Model.Apartment)
             @Html.TextBoxFor(p => Model.Apartment, new { @class = "form-control input-lg" })
         </div>
         <div class="form-group">
-            @Html.DisplayNameFor(p => Model.Appeal)
+            @Html.LabelFor(p => Model.Appeal)
             @Html.TextBoxFor(p => Model.Appeal, new { @class = "form-control input-lg" })
         </div>
         <div class="form-group">
-            @Html.DisplayNameFor(p => Model.PhoneNumber)
+            @Html.LabelFor(p => Model.PhoneNumber)
             @Html.TextBoxFor(p => Model.PhoneNumber, new { @class = "form-control input-lg" })
         </div>
         <div class="form-group">
-            @Html.DisplayNameFor(p => Model.Note)
+            @Html.LabelFor(p => Model.Note)
             @Html.TextAreaFor(p => Model.Note, new { @class = "form-control input-lg" })
         </div>
         <div class="form-group">

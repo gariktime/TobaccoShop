@@ -119,10 +119,9 @@ namespace TobaccoShop.Controllers
             string currUserId = User.Identity.GetUserId();
             if (currUserId == null)
                 return RedirectToAction("Login", "Connect");
-            //UserDTO currentUser = await UserService.GetCurrentUser(currUserId);
             OrderDTO orderDTO = new OrderDTO()
             {
-                OrderPrice = ovm.OrderPrice,
+                OrderPrice = products.Sum(p => p.LinePrice),
                 UserId = currUserId,
                 Products = products,
                 OrderDate = DateTime.Now,

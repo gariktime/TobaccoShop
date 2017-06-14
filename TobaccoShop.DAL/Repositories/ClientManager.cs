@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Data.Entity;
+using System.Linq;
+using System.Threading.Tasks;
 using TobaccoShop.DAL.EF;
 using TobaccoShop.DAL.Entities.Identity;
 using TobaccoShop.DAL.Interfaces;
@@ -21,12 +23,12 @@ namespace TobaccoShop.DAL.Repositories
 
         public ClientProfile FindById(string id)
         {
-            return Database.ClientProfiles.Find(id);
+            return Database.ClientProfiles.Include(p => p.Orders).FirstOrDefault(p => p.Id == id);
         }
 
         public async Task<ClientProfile> FindByIdAsync(string id)
         {
-            return await Database.ClientProfiles.FindAsync(id);
+            return await Database.ClientProfiles.Include(p => p.Orders).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public void Dispose()
