@@ -278,6 +278,7 @@
     <Content Include="Views\Order\_CartTable.cshtml" />
     <Content Include="Views\Order\MakeOrder.cshtml" />
     <Content Include="Views\Admin\Orders.cshtml" />
+    <Content Include="Views\Admin\_OrderList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

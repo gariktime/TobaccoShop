@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using TobaccoShop.BLL.DTO;
+using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Services;
 using TobaccoShop.Models.ProductModels;
-using System.Data.Entity;
-using Microsoft.AspNet.Identity;
 
 namespace TobaccoShop.Controllers
 {
@@ -118,7 +117,7 @@ namespace TobaccoShop.Controllers
                 //создание DTO из ViewModel
                 Mapper.Initialize(cfg => cfg.CreateMap<HookahViewModel, HookahDTO>());
                 HookahDTO hookahDto = Mapper.Map<HookahViewModel, HookahDTO>(hvm);
-               
+
                 if (hvm.ProductId == Guid.Empty) //добавление нового продукта
                 {
                     await productService.AddHookah(hookahDto);
@@ -147,12 +146,77 @@ namespace TobaccoShop.Controllers
 
         #endregion
 
+        #region Работа с заказами
+
         public async Task<ActionResult> Orders()
         {
-            List<OrderDTO> orders = await orderService.GetOrdersAsync();
-
+            List<OrderDTO> orders = await orderService.GetActiveOrdersAsync();
+            Session["OrderStatus"] = "Active";
             return View(orders);
         }
+
+        public async Task<ActionResult> ActiveOrders()
+        {
+            List<OrderDTO> orders = await orderService.GetActiveOrdersAsync();
+            Session["OrderStatus"] = "Active";
+            return PartialView("_OrderList", orders);
+        }
+
+        public async Task<ActionResult> OnDeliveryOrders()
+        {
+            List<OrderDTO> orders = await orderService.GetOnDeliveryOrdersAsync();
+            Session["OrderStatus"] = "OnDelivery";
+            return PartialView("_OrderList", orders);
+        }
+
+        public async Task<ActionResult> CompletedOrders()
+        {
+            List<OrderDTO> orders = await orderService.GetCompletedOrdersAsync();
+            Session["OrderStatus"] = "Completed";
+            return PartialView("_OrderList", orders);
+        }
+
+        public async Task<ActionResult> ChangeStatus(Guid id, string newStatus)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                OperationDetails result = null;
+                switch (newStatus)
+                {
+                    case "Active":
+                        result = await orderService.MakeOrderActive(id);
+                        break;
+                    case "OnDelivery":
+                        result = await orderService.MakeOrderOnDelivery(id);
+                        break;
+                    case "Completed":
+                        result = await orderService.MakeOrderCompleted(id);
+                        break;
+                    default:
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+                List<OrderDTO> orders = null;
+                switch (Session["OrderStatus"])
+                {
+                    case "Active":
+                        orders = await orderService.GetActiveOrdersAsync();
+                        return PartialView("_OrderList", orders);
+                    case "OnDelivery":
+                        orders = await orderService.GetOnDeliveryOrdersAsync();
+                        return PartialView("_OrderList", orders);
+                    case "Completed":
+                        orders = await orderService.GetCompletedOrdersAsync();
+                        return PartialView("_OrderList", orders);
+                    default:
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        #endregion
 
     }
 }

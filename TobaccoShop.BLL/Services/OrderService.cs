@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -64,6 +65,70 @@ namespace TobaccoShop.BLL.Services
             }
         }
 
+        #region Изменение статуса заказа
+
+        public async Task<OperationDetails> MakeOrderActive(Guid id)
+        {
+            try
+            {
+                var order = await db.Orders.FindByIdAsync(id);
+                order.Status = OrderStatus.Active;
+                db.Orders.Update(order);
+                await db.SaveAsync();
+                return new OperationDetails(true, "Статус заказа успешно изменён", "");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return new OperationDetails(false, "Данный заказ ранее был изменён", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "Ошибка при изменении статуса заказа", "");
+            }
+        }
+
+        public async Task<OperationDetails> MakeOrderOnDelivery(Guid id)
+        {
+            try
+            {
+                var order = await db.Orders.FindByIdAsync(id);
+                order.Status = OrderStatus.OnDelivery;
+                db.Orders.Update(order);
+                await db.SaveAsync();
+                return new OperationDetails(true, "Статус заказа успешно изменён", "");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return new OperationDetails(false, "Данный заказ ранее был изменён", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "Ошибка при изменении статуса заказа", "");
+            }
+        }
+
+        public async Task<OperationDetails> MakeOrderCompleted(Guid id)
+        {
+            try
+            {
+                var order = await db.Orders.FindByIdAsync(id);
+                order.Status = OrderStatus.Completed;
+                db.Orders.Update(order);
+                await db.SaveAsync();
+                return new OperationDetails(true, "Статус заказа успешно изменён", "");
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return new OperationDetails(false, "Данный заказ ранее был изменён", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "Ошибка при изменении статуса заказа", "");
+            }
+        }
+
+        #endregion
+
         #region Методы множеств
 
         public async Task<List<OrderDTO>> GetOrdersAsync()
@@ -90,6 +155,20 @@ namespace TobaccoShop.BLL.Services
         public async Task<List<OrderDTO>> GetActiveOrdersAsync(DateTime dateFrom, DateTime dateTo)
         {
             List<Order> orders = await db.Orders.GetAllAsync(p => p.Status == OrderStatus.Active && p.OrderDate >= dateFrom && p.OrderDate <= dateTo);
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
+        }
+
+        public async Task<List<OrderDTO>> GetOnDeliveryOrdersAsync()
+        {
+            List<Order> orders = await db.Orders.GetAllAsync(p => p.Status == OrderStatus.OnDelivery);
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
+        }
+
+        public async Task<List<OrderDTO>> GetCompletedOrdersAsync()
+        {
+            List<Order> orders = await db.Orders.GetAllAsync(p => p.Status == OrderStatus.Completed);
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
         }

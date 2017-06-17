@@ -1,14 +1,33 @@
-﻿
+﻿@model IEnumerable<TobaccoShop.BLL.DTO.OrderDTO>
+
 @{
-    ViewBag.Title = "Orders";
+    ViewBag.Title = "Заказы";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div>
+<div id="orderstatus">
     <ul class="nav nav-pills">
-        <li role="presentation" class="active"><a href="#">Home</a></li>
-        <li role="presentation"><a href="#">Profile</a></li>
-        <li role="presentation"><a href="#">Messages</a></li>
+        <li role="presentation" class="active">
+            @using (Ajax.BeginForm("ActiveOrders", "Admin", new AjaxOptions { UpdateTargetId = "OrderList" }))
+            {
+                <input type="submit" value="Активные" />
+            }
+        </li>
+        <li role="presentation">
+            @using (Ajax.BeginForm("OnDeliveryOrders", "Admin", new AjaxOptions { UpdateTargetId = "OrderList" }))
+            {
+                <input type="submit" value="В доставке" />
+            }
+        </li>
+        <li role="presentation">
+            @using (Ajax.BeginForm("CompletedOrders", "Admin", new AjaxOptions { UpdateTargetId = "OrderList" }))
+            {
+                <input type="submit" value="Выполненные" />
+            }
+        </li>
     </ul>
 </div>
 
+<div id="OrderList">
+    @{ Html.RenderPartial("_OrderList", Model); }
+</div>

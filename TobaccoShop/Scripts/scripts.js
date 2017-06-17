@@ -47,4 +47,9 @@ $(document).ready(function () {
             $("#MaxHeight").val(data.to);
         }
     });
+
+    $("#orderstatus ul li a").click(function () {
+        $("#orderstatus ul li a").removeClass("active");
+        $(this).toggleClass("active");
+    });
 });
