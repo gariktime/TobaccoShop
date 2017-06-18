@@ -12,6 +12,9 @@ else
                 @Html.Label("Пользователь")
             </th>
             <th>
+                @Html.Label("Дата заказа")
+            </th>
+            <th>
                 @Html.Label("Товары")
             </th>
             <th>
@@ -33,6 +36,9 @@ else
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
                 <td>
                     @foreach (var p in item.Products)
@@ -57,22 +63,20 @@ else
                     @Html.DisplayFor(modelItem => item.Note)
                 </td>
                 <td>
-                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "Active" }, new AjaxOptions { UpdateTargetId = "OrderList" }))
+                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "Active" }, new AjaxOptions { UpdateTargetId = "orderList" }))
                     {
-                        <input type="submit" class="btn btn-primary" value="В активные"/>
+                        <input type="submit" class="btn btn-primary" value="В активные" />
                     }
-                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "OnDelivery" }, new AjaxOptions { UpdateTargetId = "OrderList" }))
+                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "OnDelivery" }, new AjaxOptions { UpdateTargetId = "orderList" }))
                     {
                         <input type="submit" class="btn btn-primary" value="На доставку" />
                     }
-                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "Completed" }, new AjaxOptions { UpdateTargetId = "OrderList" }))
+                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "Completed" }, new AjaxOptions { UpdateTargetId = "orderList" }))
                     {
                         <input type="submit" class="btn btn-primary" value="В выполненные" />
                     }
                 </td>
             </tr>
         }
-
     </table>
 }
-

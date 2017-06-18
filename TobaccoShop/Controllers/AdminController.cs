@@ -157,23 +157,38 @@ namespace TobaccoShop.Controllers
 
         public async Task<ActionResult> ActiveOrders()
         {
-            List<OrderDTO> orders = await orderService.GetActiveOrdersAsync();
-            Session["OrderStatus"] = "Active";
-            return PartialView("_OrderList", orders);
+            if (Request.IsAjaxRequest())
+            {
+                List<OrderDTO> orders = await orderService.GetActiveOrdersAsync();
+                Session["OrderStatus"] = "Active";
+                return PartialView("_OrderList", orders);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         public async Task<ActionResult> OnDeliveryOrders()
         {
-            List<OrderDTO> orders = await orderService.GetOnDeliveryOrdersAsync();
-            Session["OrderStatus"] = "OnDelivery";
-            return PartialView("_OrderList", orders);
+            if (Request.IsAjaxRequest())
+            {
+                List<OrderDTO> orders = await orderService.GetOnDeliveryOrdersAsync();
+                Session["OrderStatus"] = "OnDelivery";
+                return PartialView("_OrderList", orders);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         public async Task<ActionResult> CompletedOrders()
         {
-            List<OrderDTO> orders = await orderService.GetCompletedOrdersAsync();
-            Session["OrderStatus"] = "Completed";
-            return PartialView("_OrderList", orders);
+            if (Request.IsAjaxRequest())
+            {
+                List<OrderDTO> orders = await orderService.GetCompletedOrdersAsync();
+                Session["OrderStatus"] = "Completed";
+                return PartialView("_OrderList", orders);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         public async Task<ActionResult> ChangeStatus(Guid id, string newStatus)

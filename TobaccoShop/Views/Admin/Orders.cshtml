@@ -5,29 +5,20 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<div id="orderstatus">
-    <ul class="nav nav-pills">
+<div>
+    <ul class="nav nav-pills" role="tablist">
         <li role="presentation" class="active">
-            @using (Ajax.BeginForm("ActiveOrders", "Admin", new AjaxOptions { UpdateTargetId = "OrderList" }))
-            {
-                <input type="submit" value="Активные" />
-            }
+            @Ajax.ActionLink("Активные", "ActiveOrders", new AjaxOptions { UpdateTargetId = "orderList", OnSuccess = "changeOrderStatusSelection" })
         </li>
         <li role="presentation">
-            @using (Ajax.BeginForm("OnDeliveryOrders", "Admin", new AjaxOptions { UpdateTargetId = "OrderList" }))
-            {
-                <input type="submit" value="В доставке" />
-            }
+            @Ajax.ActionLink("В доставке", "OnDeliveryOrders", new AjaxOptions { UpdateTargetId = "orderList", OnSuccess = "changeOrderStatusSelection" })
         </li>
         <li role="presentation">
-            @using (Ajax.BeginForm("CompletedOrders", "Admin", new AjaxOptions { UpdateTargetId = "OrderList" }))
-            {
-                <input type="submit" value="Выполненные" />
-            }
+            @Ajax.ActionLink("Выполненные", "CompletedOrders", new AjaxOptions { UpdateTargetId = "orderList", OnSuccess = "changeOrderStatusSelection" })
         </li>
     </ul>
 </div>
 
-<div id="OrderList">
+<div id="orderList">
     @{ Html.RenderPartial("_OrderList", Model); }
 </div>

@@ -1,23 +1,14 @@
-﻿//function AddToCart(data) {
-//    var count = data[cart_count];
-//    $('#cartProductsCount').append('<p>' + count + '</p>');
-//}
+﻿function changeOrderStatusSelection() {
+    $(".active").removeClass("active");
+    $(this).parent().addClass("active");
+}
 
 $(document).ready(function () {
     var min_price = $("#MinPrice").val();
     var max_price = $("#MaxPrice").val();
     var min_height = $("MinHeight").val();
     var max_height = $("MaxHeight").val();
-
-    //$("#price_min #price_max").on("change keydown keypress keyup mousedown click mouseup", function () {
-    //    //$("#price_range").prop("from").val($("#price_min").val());
-    //    var slider = $("#price_range").data("ionRangeSlider");
-    //    slider.update({
-    //        from: $("#price_min").val(),
-    //        to: $("#price_max").val()
-    //    });
-    //});
-        
+      
     $("#price_range").ionRangeSlider({
         type: "double",
         min: min_price,
@@ -46,10 +37,5 @@ $(document).ready(function () {
             $("#MinHeight").val(data.from);
             $("#MaxHeight").val(data.to);
         }
-    });
-
-    $("#orderstatus ul li a").click(function () {
-        $("#orderstatus ul li a").removeClass("active");
-        $(this).toggleClass("active");
     });
 });
