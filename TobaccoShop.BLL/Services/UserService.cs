@@ -10,6 +10,7 @@ using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Util;
 using TobaccoShop.DAL.Entities.Identity;
 using TobaccoShop.DAL.Interfaces;
+using System;
 
 namespace TobaccoShop.BLL.Services
 {
@@ -40,7 +41,14 @@ namespace TobaccoShop.BLL.Services
                 //добавляем пользователю роль
                 await db.UserManager.AddToRoleAsync(user.Id, userDto.Role);
                 //создаём профиль пользователя
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, UserName = userDto.UserName, Email = userDto.Email, Role = userDto.Role };
+                ClientProfile clientProfile = new ClientProfile
+                {
+                    Id = user.Id,
+                    UserName = userDto.UserName,
+                    Email = userDto.Email,
+                    Role = userDto.Role,
+                    RegisterDate = DateTime.Now
+                };
                 db.ClientManager.Create(clientProfile);
                 await db.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно завершена", "");
@@ -103,12 +111,19 @@ namespace TobaccoShop.BLL.Services
             ApplicationUser admin = new ApplicationUser { Email = "asdqt@gmail.com", UserName = "Admin" };
             await db.UserManager.CreateAsync(admin, "123456");
             await db.UserManager.AddToRoleAsync(admin.Id, "Admin");
-            ClientProfile adminProfile = new ClientProfile { Id = admin.Id, UserName = admin.UserName };
+            ClientProfile adminProfile = new ClientProfile
+            {
+                Id = admin.Id,
+                UserName = admin.UserName,
+                Email = admin.Email,
+                RegisterDate = DateTime.Now,
+                Role = "Admin"
+            };
             db.ClientManager.Create(adminProfile);
             await db.SaveAsync();
         }
 
-        public async Task<UserDTO> GetCurrentUser(string id)
+        public async Task<UserDTO> FindUser(string id)
         {
             ClientProfile user = await db.ClientManager.FindByIdAsync(id);
 
@@ -133,6 +148,27 @@ namespace TobaccoShop.BLL.Services
         {
             var user = db.ClientManager.FindById(id);
             return user.UserName;
+        }
+
+        public async Task<List<UserDTO>> GetUsersAsync()
+        {
+            List<ClientProfile> users = await db.ClientManager.GetAllAsync();
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<ClientProfile>, List<UserDTO>>(users);
+        }
+
+        public async Task<List<UserDTO>> GetUsersByNameAsync(string userName)
+        {
+            List<ClientProfile> users = await db.ClientManager.GetAllAsync(p => p.UserName.Contains(userName));
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<ClientProfile>, List<UserDTO>>(users);
+        }
+
+        public async Task<List<UserDTO>> GetUsersByRoleAsync(string role)
+        {
+            List<ClientProfile> users = await db.ClientManager.GetAllAsync(p => p.Role == role);
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<ClientProfile>, List<UserDTO>>(users);
         }
 
         public void Dispose()

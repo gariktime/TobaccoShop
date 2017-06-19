@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using TobaccoShop.DAL.Entities.Identity;
 
@@ -45,10 +46,13 @@ namespace TobaccoShop.DAL.Entities
 
     public enum OrderStatus
     {
+        [Description("Активный")]
         Active = 0,
 
+        [Description("В доставке")]
         OnDelivery = 1,
 
+        [Description("Выполнен")]
         Completed = 2
     }
 }

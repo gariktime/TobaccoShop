@@ -1,5 +1,10 @@
 ﻿function changeOrderStatusSelection() {
-    $(".active").removeClass("active");
+    $("#orderStatus li.active").removeClass("active");
+    $(this).parent().addClass("active");
+}
+
+function changeUserRoleSelection() {
+    $("#userRole li.active").removeClass("active");
     $(this).parent().addClass("active");
 }
 

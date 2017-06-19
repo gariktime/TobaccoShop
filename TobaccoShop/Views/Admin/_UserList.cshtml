@@ -1,0 +1,51 @@
+﻿@model IEnumerable<TobaccoShop.BLL.DTO.UserDTO>
+
+
+@if (Model == null || Model.Count() == 0)
+{
+    <h3>Пользователи не найдены</h3>
+}
+else
+{
+    <h3>Найдено пользователей: @Model.Count()</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                @Html.Label("Имя пользователя")
+            </th>
+            <th>
+                @Html.Label("Email")
+            </th>
+            <th>
+                @Html.Label("Дата регистрации")
+            </th>
+            <th>
+                @Html.Label("Роль")
+            </th>
+            <th>
+                @Html.Label("Количество заказов")
+            </th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.UserName, "UserDetails", new { id = item.Id })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegisterDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Orders.Count)
+                </td>
+            </tr>
+        }
+</table>
+}

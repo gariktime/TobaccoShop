@@ -24,6 +24,9 @@ else
                 @Html.Label("Адрес")
             </th>
             <th>
+                @Html.Label("Статус")
+            </th>
+            <th>
                 @Html.Label("Данные о пользователе")
             </th>
             <th>
@@ -56,6 +59,9 @@ else
                     @Html.DisplayFor(modelItem => item.Street)
                     @Html.DisplayFor(modelItem => item.House)
                     @Html.DisplayFor(modelItem => item.Apartment)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Appeal)

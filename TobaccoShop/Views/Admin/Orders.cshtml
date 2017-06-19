@@ -6,7 +6,7 @@
 }
 
 <div>
-    <ul class="nav nav-pills" role="tablist">
+    <ul class="nav nav-pills" id="orderStatus">
         <li role="presentation" class="active">
             @Ajax.ActionLink("Активные", "ActiveOrders", new AjaxOptions { UpdateTargetId = "orderList", OnSuccess = "changeOrderStatusSelection" })
         </li>

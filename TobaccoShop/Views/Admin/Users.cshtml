@@ -1,0 +1,24 @@
+﻿@model IEnumerable<TobaccoShop.BLL.DTO.UserDTO>
+
+@{
+    ViewBag.Title = "Пользователи";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+    <ul class="nav nav-pills" id="userRole">
+        <li role="presentation" class="active">
+            @Ajax.ActionLink("Пользователи", "UsersByRole", new { role = "User" }, new AjaxOptions { UpdateTargetId = "userList", OnSuccess = "changeUserRoleSelection" })
+        </li>
+        <li role="presentation">
+            @Ajax.ActionLink("Модераторы", "UsersByRole", new { role = "Moderator" }, new AjaxOptions { UpdateTargetId = "userList", OnSuccess = "changeUserRoleSelection" })
+        </li>
+        <li role="presentation">
+            @Ajax.ActionLink("Администраторы", "UsersByRole", new { role = "Admin" }, new AjaxOptions { UpdateTargetId = "userList", OnSuccess = "changeUserRoleSelection" })
+        </li>
+    </ul>
+</div>
+
+<div id="userList">
+    @{ Html.RenderPartial("_UserList", Model); }
+</div>

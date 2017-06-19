@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,6 +18,11 @@ namespace TobaccoShop.Controllers
 {
     public class AdminController : Controller
     {
+        private IUserService userService
+        {
+            get { return HttpContext.GetOwinContext().GetUserManager<IUserService>(); }
+        }
+
         private IProductService productService;
         private IOrderService orderService;
 
@@ -233,5 +239,38 @@ namespace TobaccoShop.Controllers
 
         #endregion
 
+        #region Работа с пользователями
+
+        public async Task<ActionResult> Users()
+        {
+            List<UserDTO> users = await userService.GetUsersByRoleAsync("User");
+            return View(users);
+        }
+
+        public async Task<ActionResult> UsersByRole(string role)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                List<UserDTO> users = null;
+                switch (role)
+                {
+                    case "User":
+                        users = await userService.GetUsersByRoleAsync("User");
+                        return PartialView("_UserList", users);
+                    case "Moderator":
+                        users = await userService.GetUsersByRoleAsync("Moderator");
+                        return PartialView("_UserList", users);
+                    case "Admin":
+                        users = await userService.GetUsersByRoleAsync("Admin");
+                        return PartialView("_UserList", users);
+                    default:
+                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        #endregion
     }
 }

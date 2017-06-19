@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,8 @@ namespace TobaccoShop.DAL.Entities.Identity
         public string Email { get; set; }
 
         public string Role { get; set; }
+
+        public DateTime RegisterDate { get; set; }
 
         public ICollection<Order> Orders { get; set; }
 

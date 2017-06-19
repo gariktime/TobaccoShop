@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace TobaccoShop.BLL.DTO
 {
@@ -9,6 +10,7 @@ namespace TobaccoShop.BLL.DTO
         public string Password { get; set; }
         public string UserName { get; set; }
         public string Role { get; set; }
+        public DateTime RegisterDate { get; set; }
 
         public List<OrderDTO> Orders { get; set; }
 
