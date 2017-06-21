@@ -48,7 +48,7 @@ namespace TobaccoShop.Controllers
                 }
                 else
                 {
-                    AuthenticationManager.SignOut();
+                    AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
                     AuthenticationManager.SignIn(new AuthenticationProperties
                     {
                         IsPersistent = true

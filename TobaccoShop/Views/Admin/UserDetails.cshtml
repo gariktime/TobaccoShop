@@ -1,0 +1,33 @@
+﻿@model TobaccoShop.BLL.DTO.UserDTO
+
+@{
+    ViewBag.Title = "Сведения о пользователе";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div>
+
+    @Html.DisplayFor(p => Model.Role)
+
+    <div id="userRoles">
+        @using (Html.BeginForm("ChangeUserRole", "Admin", new { id = Model.Id, newRole = "User" }, FormMethod.Post))
+        {
+            <input type="submit" class="btn btn-default" value="Назначить пользователем" />
+        }
+        @using (Html.BeginForm("ChangeUserRole", "Admin", new { id = Model.Id, newRole = "Moderator" }, FormMethod.Post))
+        {
+            <input type="submit" class="btn btn-default" value="Назначить модератором" />
+        }
+        @using (Html.BeginForm("ChangeUserRole", "Admin", new { id = Model.Id, newRole = "Admin" }, FormMethod.Post))
+        {
+            <input type="submit" class="btn btn-default" value="Назначить администратором" />
+        }
+        @*@Html.ActionLink("Назначить пользователем", "ChangeUserRole", new { id = Model.Id, newRole = "User" }, new { @class = "btn btn-default" })
+        @Html.ActionLink("Назначить модератором", "ChangeUserRole", new { id = Model.Id, newRole = "Moderator" }, new { @class = "btn btn-default" })
+        @Html.ActionLink("Назначить администратором", "ChangeUserRole", new { id = Model.Id, newRole = "Admin" }, new { @class = "btn btn-default" })*@
+    </div>
+</div>
+
+<div id="userOrders">
+    @{ Html.RenderPartial("_OrderList", Model.Orders); }
+</div>

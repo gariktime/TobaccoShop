@@ -38,7 +38,7 @@ else
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserName)
+                    @Html.ActionLink(item.UserName, "UserDetails", new { id = item.UserId })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OrderDate)

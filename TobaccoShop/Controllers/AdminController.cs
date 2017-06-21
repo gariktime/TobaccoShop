@@ -271,6 +271,36 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        public async Task<ActionResult> UserSearch(string userName)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                List<UserDTO> users = await userService.GetUsersByNameAsync(userName);
+                return PartialView("_UserList", users);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        public async Task<ActionResult> UserDetails(string id)
+        {
+            UserDTO user = await userService.FindUserByIdAsync(id);
+            return View(user);
+        }
+
+        public async Task<ActionResult> ChangeUserRole(string id, string newRole)
+        {
+            UserDTO user = await userService.FindUserByIdAsync(id);
+            var result = await userService.ChangeUserRole(id, user.Role, newRole);
+            if (result.Succeeded == true)
+            {
+                user.Role = newRole;
+                return View("UserDetails", user);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
         #endregion
     }
 }

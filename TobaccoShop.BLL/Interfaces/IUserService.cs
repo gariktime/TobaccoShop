@@ -14,7 +14,9 @@ namespace TobaccoShop.BLL.Interfaces
         Task SetInitialData(UserDTO adminDto, List<string> roles);
         Task Init();
 
-        Task<UserDTO> FindUser(string id);
+        Task<OperationDetails> ChangeUserRole(string id, string oldRole, string newRole);
+
+        Task<UserDTO> FindUserByIdAsync(string id);
         string GetCurrentUserName(string id);
 
         Task<List<UserDTO>> GetUsersAsync();

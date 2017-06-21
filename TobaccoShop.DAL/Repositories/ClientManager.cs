@@ -12,41 +12,41 @@ namespace TobaccoShop.DAL.Repositories
 {
     public class ClientManager : IClientManager
     {
-        public ApplicationContext Database { get; set; }
+        public ApplicationContext db { get; set; }
 
-        public ClientManager(ApplicationContext db)
+        public ClientManager(ApplicationContext context)
         {
-            Database = db;
+            db = context;
         }
 
         public void Create(ClientProfile item)
         {
-            Database.ClientProfiles.Add(item);
+            db.ClientProfiles.Add(item);
         }
 
         public ClientProfile FindById(string id)
         {
-            return Database.ClientProfiles.Include(p => p.Orders).FirstOrDefault(p => p.Id == id);
+            return db.ClientProfiles.Include("Orders.Products.Product").FirstOrDefault(p => p.Id == id);
         }
 
         public async Task<ClientProfile> FindByIdAsync(string id)
         {
-            return await Database.ClientProfiles.Include(p => p.Orders).FirstOrDefaultAsync(p => p.Id == id);
+            return await db.ClientProfiles.Include("Orders.Products.Product").FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<List<ClientProfile>> GetAllAsync()
         {
-            return await Database.ClientProfiles.Include(p => p.Orders).ToListAsync();
+            return await db.ClientProfiles.Include("Orders.Products.Product").ToListAsync();
         }
 
         public async Task<List<ClientProfile>> GetAllAsync(Expression<Func<ClientProfile, bool>> predicate)
         {
-            return await Database.ClientProfiles.Include(p => p.Orders).Where(predicate).ToListAsync();
+            return await db.ClientProfiles.Include("Orders.Products.Product").Where(predicate).ToListAsync();
         }
 
         public void Dispose()
         {
-            Database.Dispose();
+            db.Dispose();
         }
     }
 }

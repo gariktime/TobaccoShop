@@ -16,7 +16,19 @@
         <li role="presentation">
             @Ajax.ActionLink("Администраторы", "UsersByRole", new { role = "Admin" }, new AjaxOptions { UpdateTargetId = "userList", OnSuccess = "changeUserRoleSelection" })
         </li>
+        <li role="presentation">
+            <a id="searchButton" href="#">Поиск</a>
+        </li>
     </ul>
+</div>
+
+<div id="searchField" class="search-field-hidden">
+    @using (Ajax.BeginForm("UserSearch", new AjaxOptions { UpdateTargetId = "userList" }))
+    {
+        @Html.Label("Имя пользователя: ")
+        <input name="userName" type="text" />
+        <input type="submit" class="btn btn-default" value="Найти" />
+    }
 </div>
 
 <div id="userList">

@@ -6,9 +6,18 @@
 function changeUserRoleSelection() {
     $("#userRole li.active").removeClass("active");
     $(this).parent().addClass("active");
+    $(".search-field").removeClass("search-field").toggleClass("search-field-hidden");
 }
 
-$(document).ready(function () {
+$(function () {
+    $("#searchButton").click(function () {
+        $("#userRole li.active").removeClass("active");
+        $(this).parent().addClass("active");
+        $("#searchField").removeClass("search-field-hidden").toggleClass("search-field");
+    });
+});
+
+$(function () {
     var min_price = $("#MinPrice").val();
     var max_price = $("#MaxPrice").val();
     var min_height = $("MinHeight").val();

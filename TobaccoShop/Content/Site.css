@@ -116,3 +116,11 @@ textarea {
     position: relative;
     display: flex;
 }
+
+.search-field{
+    margin-top: 25px;
+}
+
+.search-field-hidden {
+    display: none;
+}

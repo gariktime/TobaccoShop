@@ -123,25 +123,35 @@ namespace TobaccoShop.BLL.Services
             await db.SaveAsync();
         }
 
-        public async Task<UserDTO> FindUser(string id)
+        public async Task<OperationDetails> ChangeUserRole(string id, string oldRole, string newRole)
+        {
+            using (var transaction = db.Database.BeginTransaction())
+            {
+                try
+                {
+                    await db.UserManager.RemoveFromRoleAsync(id, oldRole);
+                    await db.UserManager.AddToRoleAsync(id, newRole);
+                    await db.SaveAsync();
+                    transaction.Commit();
+                    return new OperationDetails(true, "Роль пользователя обновлена", "");
+                }
+                catch
+                {
+                    transaction.Rollback();
+                    return new OperationDetails(false, "Ошибка при изменении роли пользователя", "");
+                }
+            }
+        }
+
+        public async Task<UserDTO> FindUserByIdAsync(string id)
         {
             ClientProfile user = await db.ClientManager.FindByIdAsync(id);
-
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<ClientProfile, UserDTO>();
                 cfg.AddProfile<AutomapperProfile>();
             });
-
-            //UserDTO userDTO = new UserDTO()
-            //{
-            //    Id = user.Id,
-            //    UserName = user.UserName,
-            //    Email = user.Email,
-            //    Role = user.Role
-            //};
-
-            return Mapper.Map<ClientProfile, UserDTO>(user); ;
+            return Mapper.Map<ClientProfile, UserDTO>(user);
         }
 
         public string GetCurrentUserName(string id)
