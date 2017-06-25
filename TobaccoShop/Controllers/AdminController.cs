@@ -288,17 +288,18 @@ namespace TobaccoShop.Controllers
             return View(user);
         }
 
-        public async Task<ActionResult> ChangeUserRole(string id, string newRole)
+        public async Task<string> ChangeUserRole(string id, string newRole)
         {
             UserDTO user = await userService.FindUserByIdAsync(id);
             var result = await userService.ChangeUserRole(id, user.Role, newRole);
             if (result.Succeeded == true)
             {
-                user.Role = newRole;
-                return View("UserDetails", user);
+                return newRole;
+                //user.Role = newRole;
+                //return View("UserDetails", user);
             }
             else
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return "";
         }
 
         #endregion

@@ -9,6 +9,14 @@ function changeUserRoleSelection() {
     $(".search-field").removeClass("search-field").toggleClass("search-field-hidden");
 }
 
+function hideUserRoleTooltip() {
+    $('[data-toggle="tooltip"]').tooltip('hide');
+}
+
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip();
+});
+
 $(function () {
     $("#searchButton").click(function () {
         $("#userRole li.active").removeClass("active");

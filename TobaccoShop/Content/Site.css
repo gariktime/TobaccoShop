@@ -124,3 +124,34 @@ textarea {
 .search-field-hidden {
     display: none;
 }
+
+.iteminfo{
+    position: relative;
+    display: inherit;
+    margin: 0;
+}
+
+.iteminfo-name{
+    display: inline-block;
+    width: 48%;
+    vertical-align: top;
+}
+
+.iteminfo-name-inner {
+    position: relative;
+    z-index: 2;
+}
+
+.iteminfo-value {
+    display: inline-block;
+    width: 51%;
+    vertical-align: bottom;
+    margin: 0 0 7px 0;
+}
+
+.iteminfo-value-inner {
+    position: relative;
+    display: block;
+    padding: 0 0 0 10px;
+    z-index: 2;
+}
