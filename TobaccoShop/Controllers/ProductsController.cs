@@ -72,5 +72,11 @@ namespace TobaccoShop.Controllers
             else
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            productService.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

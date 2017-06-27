@@ -144,5 +144,10 @@ namespace TobaccoShop.Controllers
 
         #endregion
 
+        protected override void Dispose(bool disposing)
+        {
+            orderService.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

@@ -174,5 +174,10 @@ namespace TobaccoShop.BLL.Services
         }
 
         #endregion
+
+        public void Dispose()
+        {
+            db.Dispose();
+        }
     }
 }

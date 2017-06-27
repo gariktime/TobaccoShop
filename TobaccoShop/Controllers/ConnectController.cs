@@ -14,7 +14,7 @@ namespace TobaccoShop.Controllers
 {
     public class ConnectController : Controller
     {
-        private IUserService UserService
+        private IUserService userService
         {
             get { return HttpContext.GetOwinContext().GetUserManager<IUserService>(); }
         }
@@ -41,7 +41,7 @@ namespace TobaccoShop.Controllers
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
-                ClaimsIdentity claim = await UserService.Authenticate(userDto);
+                ClaimsIdentity claim = await userService.Authenticate(userDto);
                 if (claim == null)
                 {
                     ModelState.AddModelError("", "Неверный логин или пароль");
@@ -83,7 +83,7 @@ namespace TobaccoShop.Controllers
                     Password = model.Password,
                     Role = "User"
                 };
-                OperationDetails operationDetails = await UserService.Create(userDto);
+                OperationDetails operationDetails = await userService.Create(userDto);
                 if (operationDetails.Succeeded)
                     return RedirectToAction("Index", "Home");
                 else
@@ -94,9 +94,15 @@ namespace TobaccoShop.Controllers
 
         public async Task<ActionResult> Init()
         {
-            await UserService.Init();
+            await userService.Init();
 
             return RedirectToAction("Index", "Home");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            userService.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
