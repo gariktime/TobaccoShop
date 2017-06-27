@@ -88,11 +88,11 @@ namespace TobaccoShop.BLL.Services
 
         #region Редактирование продуктов
 
-        public async Task<OperationDetails> EditHookah(Guid id, HookahDTO hookahDto)
+        public async Task<OperationDetails> EditHookah(HookahDTO hookahDto)
         {
             try
             {
-                Hookah hookah = await db.Hookahs.FindByIdAsync(id);
+                Hookah hookah = await db.Hookahs.FindByIdAsync(hookahDto.ProductId);
 
                 hookah.Mark = hookahDto.Mark.Trim();
                 hookah.Model = hookahDto.Model.Trim();

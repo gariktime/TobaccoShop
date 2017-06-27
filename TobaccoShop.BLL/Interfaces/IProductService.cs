@@ -14,7 +14,7 @@ namespace TobaccoShop.BLL.Interfaces
         Task<OperationDetails> AddHookahTobacco(HookahTobaccoDTO hookahTobaccoDto);
 
         //редактирование продуктов
-        Task<OperationDetails> EditHookah(Guid id, HookahDTO hookahDto);
+        Task<OperationDetails> EditHookah(HookahDTO hookahDto);
 
         //удаление продукта
         Task<OperationDetails> RemoveProduct(Guid id);

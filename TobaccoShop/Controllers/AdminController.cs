@@ -104,7 +104,7 @@ namespace TobaccoShop.Controllers
                 }
                 else //изменение существующего
                 {
-                    await productService.EditHookah(hvm.ProductId, hookahDto);
+                    await productService.EditHookah(hookahDto);
                     return RedirectToAction("Products");
                 }
             }
