@@ -71,42 +71,15 @@ namespace TobaccoShop.Controllers
                 HookahViewModel hvm = new HookahViewModel() { ProductId = hookah.ProductId, Mark = hookah.Mark, Model = hookah.Model, Country = hookah.Country, Description = hookah.Description, Price = hookah.Price, Height = hookah.Height, Image = hookah.Image };
                 //return PartialView("_AddHookah", hvm);
                 ViewData["PartialViewName"] = "_AddHookah";
-                ViewData["Model"] = hvm;
+                ViewData["ProductModel"] = hvm;
                 return View();
             }
             return RedirectToAction("Products");
         }
 
-        //удаление товара
-        public async Task<ActionResult> Remove(Guid id)
-        {
-            await productService.RemoveProduct(id);
-            return RedirectToAction("Products");
-        }
-
-        //список всех продуктов
-        public async Task<ActionResult> Products()
-        {
-            var products = await productService.GetProductsAsync();
-            return View(products);
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Products(string searchQuery)
-        {
-            if (Request.IsAjaxRequest())
-            {
-                List<ProductDTO> products = await productService.GetProductsAsync(p => p.Mark.Contains(searchQuery) ||
-                                                                                       p.Model.Contains(searchQuery));
-                return PartialView("_ProductList", products);
-            }
-            else
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddHookah([Bind(Exclude = "ProductId, Image")] HookahViewModel hvm, HttpPostedFileBase uploadImage)
+        public async Task<ActionResult> AddHookah(HookahViewModel hvm, HttpPostedFileBase uploadImage)
         {
             if (ModelState.IsValid)
             {
@@ -145,6 +118,33 @@ namespace TobaccoShop.Controllers
                 HookahTobaccoDTO tobacco = new HookahTobaccoDTO();
                 await productService.AddHookahTobacco(tobacco);
                 return RedirectToAction("AddProduct");
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
+        //удаление товара
+        public async Task<ActionResult> Remove(Guid id)
+        {
+            await productService.RemoveProduct(id);
+            return RedirectToAction("Products");
+        }
+
+        //список всех продуктов
+        public async Task<ActionResult> Products()
+        {
+            var products = await productService.GetProductsAsync();
+            return View(products);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Products(string searchQuery)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                List<ProductDTO> products = await productService.GetProductsAsync(p => p.Mark.Contains(searchQuery) ||
+                                                                                       p.Model.Contains(searchQuery));
+                return PartialView("_ProductList", products);
             }
             else
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
