@@ -143,6 +143,17 @@ namespace TobaccoShop.BLL.Services
             }
         }
 
+        public UserDTO FindUserById(string id)
+        {
+            ClientProfile user = db.ClientManager.FindById(id);
+            Mapper.Initialize(cfg =>
+            {
+                cfg.CreateMap<ClientProfile, UserDTO>();
+                cfg.AddProfile<AutomapperProfile>();
+            });
+            return Mapper.Map<ClientProfile, UserDTO>(user);
+        }
+
         public async Task<UserDTO> FindUserByIdAsync(string id)
         {
             ClientProfile user = await db.ClientManager.FindByIdAsync(id);

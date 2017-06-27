@@ -303,5 +303,14 @@ namespace TobaccoShop.Controllers
         }
 
         #endregion
+
+        #region Статистика
+
+        public ActionResult Statistics()
+        {
+            return View();
+        }
+
+        #endregion
     }
 }

@@ -16,6 +16,7 @@ namespace TobaccoShop.BLL.Interfaces
 
         Task<OperationDetails> ChangeUserRole(string id, string oldRole, string newRole);
 
+        UserDTO FindUserById(string id);
         Task<UserDTO> FindUserByIdAsync(string id);
         string GetCurrentUserName(string id);
 

@@ -12,7 +12,18 @@
 
 <body>
     <div class="container-fluid">
-        <div class="row" style="margin-top: 25px">
+        <div class="row">
+            @{ Html.RenderPartial("_NavMain"); }
+        </div>
+
+        <div id="adminMenu" class="col-md-2" style="margin-top: 25px">
+            <div class="btn-group-vertical">
+                <a class="btn btn-default" href="/Admin/Products">Товары</a>
+                <a class="btn btn-default" href="/Admin/Orders">Заказы</a>
+                <a class="btn btn-default" href="/Admin/Users">Пользователи</a>
+            </div>
+        </div>
+        <div class="col-md-10" style="margin-top: 25px">
             @RenderBody()
         </div>
     </div>
