@@ -16,6 +16,6 @@ namespace TobaccoShop.BLL.DTO
 
         public int Price { get; set; }
 
-        public byte[] Image { get; set; }
+        public string Image { get; set; }
     }
 }

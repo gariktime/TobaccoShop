@@ -16,7 +16,7 @@ namespace TobaccoShop.DAL.Entities.Products
 
         }
 
-        public Hookah(Guid Id, string mark, string model, int price, string description, string country, double height, byte[] image)
+        public Hookah(Guid Id, string mark, string model, int price, string description, string country, double height, string image)
             : base(Id, mark, model, price, description, country, image)
         {
             Height = height;

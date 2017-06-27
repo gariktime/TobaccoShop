@@ -68,9 +68,9 @@ namespace TobaccoShop.Controllers
             if (productType == ProductType.Hookah)
             {
                 var hookah = (HookahDTO)product;
-                HookahViewModel hvm = new HookahViewModel() { ProductId = hookah.ProductId, Mark = hookah.Mark, Model = hookah.Model, Country = hookah.Country, Description = hookah.Description, Price = hookah.Price, Height = hookah.Height, Image = hookah.Image };
+                HookahViewModel hvm = new HookahViewModel() { ProductId = hookah.ProductId, Mark = hookah.Mark, Model = hookah.Model, Country = hookah.Country, Description = hookah.Description, Price = hookah.Price, Height = hookah.Height };
                 //return PartialView("_AddHookah", hvm);
-                ViewData["PartialViewName"] = "_AddHookah";
+                ViewData["PartialViewName"] = "_AddEditHookah";
                 ViewData["ProductModel"] = hvm;
                 return View();
             }
@@ -79,23 +79,27 @@ namespace TobaccoShop.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddHookah(HookahViewModel hvm, HttpPostedFileBase uploadImage)
+        public async Task<ActionResult> AddEditHookah(HookahViewModel hvm, HttpPostedFileBase uploadImage)
         {
+            //добавление изображения к товару
+            string imagePath = null;
+            if (uploadImage != null)
+            {
+                if (!uploadImage.ContentType.StartsWith("image"))
+                    ModelState.AddModelError("", "Недопустимый тип файла");
+                else
+                {
+                    imagePath = "/Files/ProductImages/" + Path.GetFileName(uploadImage.FileName);
+                    uploadImage.SaveAs(Server.MapPath("~" + imagePath));
+                }
+            }
+
             if (ModelState.IsValid)
             {
-                byte[] imageData = null;
-                //если добавлено изображение к продукту
-                if (uploadImage != null)
-                {
-                    using (var binaryReader = new BinaryReader(uploadImage.InputStream))
-                    {
-                        imageData = binaryReader.ReadBytes(uploadImage.ContentLength);
-                    }
-                }
-
                 //создание DTO из ViewModel
                 Mapper.Initialize(cfg => cfg.CreateMap<HookahViewModel, HookahDTO>());
                 HookahDTO hookahDto = Mapper.Map<HookahViewModel, HookahDTO>(hvm);
+                hookahDto.Image = imagePath;
 
                 if (hvm.ProductId == Guid.Empty) //добавление нового продукта
                 {
@@ -108,7 +112,9 @@ namespace TobaccoShop.Controllers
                     return RedirectToAction("Products");
                 }
             }
-            return PartialView("_AddHookah", hvm);
+            ViewData["PartialViewName"] = "_AddEditHookah";
+            ViewData["ProductModel"] = hvm;
+            return View("Edit");
         }
 
         public async Task<ActionResult> AddHookahTobacco(HookahTobaccoViewModel htvm)

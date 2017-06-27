@@ -45,11 +45,12 @@ namespace TobaccoShop.BLL.Services
                     ProductId = Guid.NewGuid(),
                     Mark = hookahDto.Mark.Trim(),
                     Model = hookahDto.Model.Trim(),
-                    Description = (hookahDto.Description == null) ? null : hookahDto.Description.Trim() ,
-                    Country = (hookahDto.Country == null) ? null : hookahDto.Country.Trim(),
+                    Description = (hookahDto.Description == null || hookahDto.Description.Trim() == "") ? "Отсутствует" : hookahDto.Description.Trim(),
+                    Country = (hookahDto.Country == null || hookahDto.Country.Trim() == "") ? "Нет данных" : hookahDto.Country.Trim(),
                     Height = hookahDto.Height,
                     Price = hookahDto.Price,
-                    Image = hookahDto.Image
+                    //если файл не передан, то устанавливаем изображение по умолчанию
+                    Image = (hookahDto.Image == null) ? "/Files/ProductImages/defaultImage.jpg" : hookahDto.Image
                 };
                 db.Hookahs.Add(hookah);
                 await db.SaveAsync();
@@ -96,10 +97,11 @@ namespace TobaccoShop.BLL.Services
 
                 hookah.Mark = hookahDto.Mark.Trim();
                 hookah.Model = hookahDto.Model.Trim();
-                hookah.Description = (hookahDto.Description == null) ? null : hookahDto.Description.Trim();
-                hookah.Country = (hookahDto.Country == null) ? null : hookahDto.Country.Trim();
+                hookah.Description = (hookahDto.Description == null || hookahDto.Description.Trim() == "") ? "Отсутствует" : hookahDto.Description.Trim();
+                hookah.Country = (hookahDto.Country == null || hookahDto.Country.Trim() == "") ? "Нет данных" : hookahDto.Country.Trim();
                 hookah.Height = hookahDto.Height;
                 hookah.Price = hookahDto.Price;
+                //если новое изображение не передано, то оставляем старое
                 hookah.Image = (hookahDto.Image == null) ? hookah.Image : hookahDto.Image;
 
                 db.Hookahs.Update(hookah);

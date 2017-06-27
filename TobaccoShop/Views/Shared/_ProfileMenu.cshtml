@@ -12,7 +12,7 @@
         <li><a href="/Profile/MyProfile">Мой профиль</a></li>
         @{
             IUserService UserService = HttpContext.Current.GetOwinContext().GetUserManager<IUserService>();
-            string userRole = UserService.FindUserById(User.Identity.GetUserId()).Role;
+            string userRole = UserService.FindUserById(User.Identity.GetUserId())?.Role;
             if (userRole == "Moderator" || userRole == "Admin")
             {
                 <li role="separator" class="divider"></li>
