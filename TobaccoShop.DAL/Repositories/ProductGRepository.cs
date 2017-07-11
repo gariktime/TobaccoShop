@@ -33,8 +33,8 @@ namespace TobaccoShop.DAL.Repositories
 
         public void Delete(TEntity item)
         {
-            _dbSet.Remove(item);
-            _context.Entry(item).State = EntityState.Deleted;
+            if (_dbSet.Contains(item))
+                _dbSet.Remove(item);
         }
 
         public TEntity FindById(Guid id)
@@ -53,22 +53,22 @@ namespace TobaccoShop.DAL.Repositories
 
         public List<TEntity> GetAll()
         {
-            return _dbSet.ToList();
+            return _dbSet.AsNoTracking().ToList();
         }
 
         public List<TEntity> GetAll(Func<TEntity, bool> predicate)
         {
-            return _dbSet.Where(predicate).ToList();
+            return _dbSet.AsNoTracking().Where(predicate).ToList();
         }
 
         public async Task<List<TEntity>> GetAllAsync()
         {
-            return await _dbSet.ToListAsync();
+            return await _dbSet.AsNoTracking().ToListAsync();
         }
 
         public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
         {
-            return await _dbSet.Where(predicate).ToListAsync();
+            return await _dbSet.Where(predicate).AsNoTracking().ToListAsync();
         }
 
         #endregion
@@ -106,6 +106,5 @@ namespace TobaccoShop.DAL.Repositories
         }
 
         #endregion
-
     }
 }

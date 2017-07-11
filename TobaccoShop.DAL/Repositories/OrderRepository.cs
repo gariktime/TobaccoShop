@@ -31,8 +31,8 @@ namespace TobaccoShop.DAL.Repositories
 
         public void Delete(Order order)
         {
-            db.Orders.Remove(order);
-            db.Entry(order).State = EntityState.Deleted;
+            if (db.Orders.Contains(order))
+                db.Orders.Remove(order);
         }
 
         public Order FindById(Guid id)

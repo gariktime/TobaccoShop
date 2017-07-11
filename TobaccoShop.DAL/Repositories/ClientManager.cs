@@ -36,12 +36,12 @@ namespace TobaccoShop.DAL.Repositories
 
         public async Task<List<ClientProfile>> GetAllAsync()
         {
-            return await db.ClientProfiles.Include("Orders.Products.Product").ToListAsync();
+            return await db.ClientProfiles.Include("Orders.Products.Product").AsNoTracking().ToListAsync();
         }
 
         public async Task<List<ClientProfile>> GetAllAsync(Expression<Func<ClientProfile, bool>> predicate)
         {
-            return await db.ClientProfiles.Include("Orders.Products.Product").Where(predicate).ToListAsync();
+            return await db.ClientProfiles.Include("Orders.Products.Product").Where(predicate).AsNoTracking().ToListAsync();
         }
 
         public void Dispose()
