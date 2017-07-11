@@ -213,7 +213,7 @@ namespace TobaccoShop.BLL.Services
 
         #region Вспомогательные методы #Кудажeбезкостылей
 
-        public async Task<(ProductDTO, ProductType)> GetProductParams(Guid id)
+        public async Task<(ProductDTO, ProductType)> GetProductParamsAsync(Guid id)
         {
             var product = await db.Products.FindByIdAsync(id);
             if (product is Hookah)

@@ -63,7 +63,7 @@ namespace TobaccoShop.Controllers
         //редактирование товара
         public async Task<ActionResult> Edit(Guid id)
         {
-            var (product, productType) = await productService.GetProductParams(id);
+            var (product, productType) = await productService.GetProductParamsAsync(id);
 
             if (productType == ProductType.Hookah)
             {

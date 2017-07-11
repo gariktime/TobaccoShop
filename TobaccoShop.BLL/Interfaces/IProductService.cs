@@ -33,7 +33,7 @@ namespace TobaccoShop.BLL.Interfaces
         Task<(int, int, double, double, List<string>, List<string>)> GetHookahProperties();
 
         //вспомогательные методы
-        Task<(ProductDTO, ProductType)> GetProductParams(Guid id);
+        Task<(ProductDTO, ProductType)> GetProductParamsAsync(Guid id);
 
         void Dispose();
     }

@@ -3,12 +3,14 @@
 @foreach (var item in Model)
 {
     <div class="col-md-2">
-        <div>
-            <img style='width:150px; height:150px' src="@item.Image" />
-        </div>
-        <p>@Html.DisplayFor(modelItem => item.Mark) @Html.DisplayFor(modelItem => item.Model)</p>
-
-        <p>@Html.DisplayFor(modelItem => item.Price) руб.</p>
+        <a href="/products/item/@item.ProductId">
+            <div>
+                <img style='width:150px; height:150px' src="@item.Image" />
+            </div>
+        </a>
+        <a href="/products/item/@item.ProductId">@item.Mark @item.Model</a>
+        
+        <p>@Html.DisplayFor(modelItem => item.Price) <span class="glyphicon-rub"></span> </p>
 
         @using (Ajax.BeginForm("AddToCart", "Products", new { id = item.ProductId }, new AjaxOptions { UpdateTargetId = "CartMenu" }))
         {

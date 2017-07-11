@@ -1,0 +1,64 @@
+﻿@model TobaccoShop.BLL.DTO.ProductDTO
+@using TobaccoShop.BLL.DTO
+
+@{
+    ViewBag.Title = Model.Mark + " " + Model.Model;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="itemtitle">
+    <h3>@Model.Mark @Model.Model</h3>
+</div>
+
+<div>
+    <div class="col-md-3">
+        <img src="@Model.Image" />
+    </div>
+
+    <div class="col-md-6">
+        @if (Model is HookahDTO)
+        {
+            <dl class="iteminfo">
+                <dt class="iteminfo-name">
+                    <span class="iteminfo-name-inner">
+                        @Html.Label("Высота, см")
+                    </span>
+                </dt>
+                <dd class="iteminfo-value">
+                    <span class="iteminfo-value-inner">
+                        @Html.DisplayFor(p => (Model as HookahDTO).Height)
+                    </span>
+                </dd>
+            </dl>
+        }
+
+        <dl class="iteminfo">
+            <dt class="iteminfo-name">
+                <span class="iteminfo-name-inner">
+                    @Html.Label("Страна")
+                </span>
+            </dt>
+            <dd class="iteminfo-value">
+                <span class="iteminfo-value-inner">
+                    @Html.DisplayFor(p => Model.Country)
+                </span>
+            </dd>
+        </dl>
+        <dl class="iteminfo">
+            <dt class="iteminfo-name">
+                <span class="iteminfo-name-inner">
+                    @Html.Label("Описание")
+                </span>
+            </dt>
+            <dd class="iteminfo-value">
+                <span class="iteminfo-value-inner">
+                    @Html.DisplayFor(p => Model.Description)
+                </span>
+            </dd>
+        </dl>
+    </div>
+
+    <div class="col-md-3">
+        <input class="btn btn-default" type="submit" value="Купить" /> 
+    </div>
+</div>

@@ -125,6 +125,10 @@ textarea {
     display: none;
 }
 
+.itemtitle{
+    margin: 0 0 25px 50px;
+}
+
 .iteminfo{
     position: relative;
     display: inherit;

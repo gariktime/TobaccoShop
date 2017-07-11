@@ -42,17 +42,23 @@ namespace TobaccoShop.Controllers
             return PartialView("_CartMenu");
         }
 
+        public async Task<ActionResult> Item(Guid id)
+        {
+            var (product, productType) = await productService.GetProductParamsAsync(id);
+            return View(product);
+        }
+
         public async Task<ActionResult> Hookahs()
         {
             ViewData["Products"] = await productService.GetHookahsAsync();
             HookahListViewModel hlvm = new HookahListViewModel();
-            var hookahProps = await productService.GetHookahProperties();
-            hlvm.MinPrice = hookahProps.Item1;
-            hlvm.MaxPrice = hookahProps.Item2;
-            hlvm.MinHeight = hookahProps.Item3;
-            hlvm.MaxHeight = hookahProps.Item4;
-            hlvm.Marks = hookahProps.Item5;
-            hlvm.Countries = hookahProps.Item6;
+            var (minPrice, maxPrice, minHeight, maxHeight, marks, countries) = await productService.GetHookahProperties();
+            hlvm.MinPrice = minPrice;
+            hlvm.MaxPrice = maxPrice;
+            hlvm.MinHeight = minHeight;
+            hlvm.MaxHeight = maxHeight;
+            hlvm.Marks = marks;
+            hlvm.Countries = countries;
             return View(hlvm);
         }
 

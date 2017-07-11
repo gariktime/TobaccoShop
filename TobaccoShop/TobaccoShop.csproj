@@ -285,6 +285,7 @@
     <Content Include="Views\Admin\UserDetails.cshtml" />
     <Content Include="Views\Shared\_NavMain.cshtml" />
     <Content Include="Views\Admin\Statistics.cshtml" />
+    <Content Include="Views\Products\Item.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
