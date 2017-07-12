@@ -10,7 +10,11 @@ namespace TobaccoShop.BLL.Util
     {
         public AutomapperProfile()
         {
-            CreateMap<Product, ProductDTO>();
+            CreateMap<Comment, CommentDTO>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName));
+
+            CreateMap<Product, ProductDTO>()
+                .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments));
 
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.Comments, opt => opt.Ignore());

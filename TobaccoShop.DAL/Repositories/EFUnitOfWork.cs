@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using TobaccoShop.DAL.EF;
+using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Identity;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Identity;
@@ -23,7 +24,10 @@ namespace TobaccoShop.DAL.Repositories
         private ProductGRepository<Hookah> hookahRepository;
 
         //репозиторий заказов
-        private OrderRepository orderRepository;
+        private IRepository<Order> orderRepository;
+
+        //репозиторий комментариев к товарам
+        private ICommentRepository commentRepository;
 
         public EFUnitOfWork(string connectionString)
         {
@@ -84,13 +88,23 @@ namespace TobaccoShop.DAL.Repositories
 
         #endregion
 
-        public OrderRepository Orders
+        public IRepository<Order> Orders
         {
             get
             {
                 if (orderRepository == null)
                     orderRepository = new OrderRepository(db);
                 return orderRepository;
+            }
+        }
+
+        public ICommentRepository Comments
+        {
+            get
+            {
+                if (commentRepository == null)
+                    commentRepository = new CommentRepository(db);
+                return commentRepository;
             }
         }
 

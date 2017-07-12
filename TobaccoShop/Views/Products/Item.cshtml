@@ -1,5 +1,6 @@
 ﻿@model TobaccoShop.BLL.DTO.ProductDTO
 @using TobaccoShop.BLL.DTO
+@using TobaccoShop.Models
 
 @{
     ViewBag.Title = Model.Mark + " " + Model.Model;
@@ -61,4 +62,12 @@
     <div class="col-md-3">
         <input class="btn btn-default" type="submit" value="Купить" /> 
     </div>
+</div>
+
+@*<div>
+    @{ Html.RenderPartial("_AddComment", new CommentViewModel() { ProductId = Model.ProductId }); }
+</div>*@
+
+<div id="comments">
+
 </div>

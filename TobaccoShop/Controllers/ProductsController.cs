@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Interfaces;
+using TobaccoShop.Models;
 using TobaccoShop.Models.ProductListModels;
 
 namespace TobaccoShop.Controllers
@@ -19,11 +21,11 @@ namespace TobaccoShop.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddToCart(Guid id)
+        public async Task<ActionResult> AddToCart(Guid productId)
         {
             List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
 
-            ProductDTO product = await productService.FindByIdAsync(id);
+            ProductDTO product = await productService.FindByIdAsync(productId);
 
             var cart_product = new OrderedProductDTO() { ProductId = product.ProductId, Quantity = 1, Price = product.Price, MarkModel = product.Mark + " " + product.Model };
 
@@ -42,10 +44,33 @@ namespace TobaccoShop.Controllers
             return PartialView("_CartMenu");
         }
 
-        public async Task<ActionResult> Item(Guid id)
+        public async Task<ActionResult> Item(Guid productId)
         {
-            var (product, productType) = await productService.GetProductParamsAsync(id);
+            var (product, productType) = await productService.GetProductParamsAsync(productId);
             return View(product);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AddComment(CommentViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string currUserId = User.Identity.GetUserId();
+                CommentDTO commentDto = new CommentDTO()
+                {
+                    ProductId = model.ProductId,
+                    Text = model.Text,
+                    UserId = currUserId
+                };
+
+                var result = await productService.AddComment(commentDto);
+                if (result.Succeeded == true)
+                    return RedirectToAction("Item", "Products", new { productId = model.ProductId });
+                else
+                    return PartialView("_AddComment", model);
+            }
+            else
+                return PartialView("_AddComment", model);
         }
 
         public async Task<ActionResult> Hookahs()

@@ -1,0 +1,14 @@
+﻿@model TobaccoShop.Models.CommentViewModel
+
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("AddComment", "Products", FormMethod.Post))
+    {
+        @Html.TextAreaFor(p => Model.Text)
+        <input class="btn btn-default" type="submit" value="Добавить" />
+    }
+}
+else
+{
+    <p><a href="/connect/login/">Войдите</a> , чтобы оставить комментарий</p>
+}

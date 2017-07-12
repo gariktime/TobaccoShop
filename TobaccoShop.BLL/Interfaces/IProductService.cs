@@ -35,6 +35,9 @@ namespace TobaccoShop.BLL.Interfaces
         //вспомогательные методы
         Task<(ProductDTO, ProductType)> GetProductParamsAsync(Guid id);
 
+        //комментарий к продукту
+        Task<OperationDetails> AddComment(CommentDTO commentDto);
+
         void Dispose();
     }
 }

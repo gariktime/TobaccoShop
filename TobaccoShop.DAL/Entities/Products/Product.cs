@@ -26,6 +26,7 @@ namespace TobaccoShop.DAL.Entities.Products
         [StringLength(25, MinimumLength = 2)]
         public string Country { get; set; }
 
+        [StringLength(75)]
         public string Image { get; set; }
 
         [Timestamp]

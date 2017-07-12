@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace TobaccoShop.BLL.DTO
 {
@@ -17,5 +18,7 @@ namespace TobaccoShop.BLL.DTO
         public int Price { get; set; }
 
         public string Image { get; set; }
+
+        public List<CommentDTO> Comments { get; set; }
     }
 }

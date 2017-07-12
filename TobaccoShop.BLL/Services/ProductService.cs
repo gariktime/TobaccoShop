@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Interfaces;
+using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
 
@@ -224,6 +225,39 @@ namespace TobaccoShop.BLL.Services
             }
             else
                 return (null, ProductType.HookahTobacco);
+        }
+
+        #endregion
+
+        #region Добавление комментария к продукту
+
+        public async Task<OperationDetails> AddComment(CommentDTO commentDto)
+        {
+            try
+            {
+                //находим товар, к которому добавляем комментарий
+                Product product = await db.Products.FindByIdAsync(commentDto.ProductId);
+                if (product == null)
+                    return new OperationDetails(true, "Товар с указанными Id не найден.", "");
+                //создаём Comment из CommentDTO
+                Comment comment = new Comment()
+                {
+                    CommentId = Guid.NewGuid(),
+                    CommentDate = DateTime.Now,
+                    ProductId = commentDto.ProductId,
+                    UserId = commentDto.UserId,
+                    Text = commentDto.Text
+                };
+                //добавляем комментарий в БД
+                db.Comments.Add(comment);
+                await db.SaveAsync();
+
+                return new OperationDetails(true, "Комментарий успешно добавлен.", "");
+            }
+            catch
+            {
+                return new OperationDetails(false, "Ошибка при добавлении комментария.", "");
+            }
         }
 
         #endregion
