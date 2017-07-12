@@ -37,12 +37,12 @@ else
                 </td>
                 <td>
                     <div class="quantity-items">
-                        @using (Ajax.BeginForm("DecreaseItem", "Order", new { id = item.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
+                        @using (Ajax.BeginForm("DecreaseItem", "Order", new { productId = item.ProductId }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
                         {
                             <input type="submit" class="btn" value="-" />
                         }
                         @Html.DisplayFor(p => item.Quantity, new { @style = "display: flex" })
-                        @using (Ajax.BeginForm("IncreaseItem", "Order", new { id = item.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
+                        @using (Ajax.BeginForm("IncreaseItem", "Order", new { productId = item.ProductId }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
                         {
                             <input type="submit" class="btn" value="+" />
                         }
@@ -52,7 +52,7 @@ else
                     @Html.DisplayFor(p => item.LinePrice)
                 </td>
                 <td>
-                    @using (Ajax.BeginForm("DeleteItem", new { id = item.Id }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
+                    @using (Ajax.BeginForm("DeleteItem", new { productId = item.ProductId }, new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "Cart" }))
                     {
                         <input type="submit" class="btn" value="Удалить" />
                     }

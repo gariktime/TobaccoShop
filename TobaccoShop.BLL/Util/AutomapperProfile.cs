@@ -27,8 +27,7 @@ namespace TobaccoShop.BLL.Util
 
             CreateMap<OrderedProductDTO, OrderedProduct>()
                 .ForMember(dest => dest.Product, opt => opt.Ignore())
-                .ForMember(dest => dest.Order, opt => opt.Ignore())
-                .ForMember(dest => dest.OrderId, opt => opt.Ignore());
+                .ForMember(dest => dest.Order, opt => opt.Ignore());
 
             CreateMap<Order, OrderDTO>()
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))

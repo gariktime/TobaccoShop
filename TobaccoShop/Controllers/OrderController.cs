@@ -40,12 +40,12 @@ namespace TobaccoShop.Controllers
 
         //увеличение количества выбранного товара в корзине
         [HttpPost]
-        public ActionResult IncreaseItem(Guid id)
+        public ActionResult IncreaseItem(Guid productId)
         {
             if (Request.IsAjaxRequest())
             {
                 var products = (List<OrderedProductDTO>)Session["Cart"];
-                var product = products?.FirstOrDefault(p => p.Id == id);
+                var product = products?.FirstOrDefault(p => p.ProductId == productId);
                 if (product != null)
                     product.Quantity += 1;
                 CartViewModel cvm = new CartViewModel() { Products = products, TotalPrice = products.Sum(p => p.LinePrice) };
@@ -57,12 +57,12 @@ namespace TobaccoShop.Controllers
 
         //уменьшение количества выбранного товара в корзине
         [HttpPost]
-        public ActionResult DecreaseItem(Guid id)
+        public ActionResult DecreaseItem(Guid productId)
         {
             if (Request.IsAjaxRequest())
             {
                 var products = (List<OrderedProductDTO>)Session["Cart"];
-                var product = products?.FirstOrDefault(p => p.Id == id);
+                var product = products?.FirstOrDefault(p => p.ProductId == productId);
                 if (product != null)
                     product.Quantity = (product.Quantity == 1) ? 1 : product.Quantity - 1;
                 CartViewModel cvm = new CartViewModel() { Products = products, TotalPrice = products.Sum(p => p.LinePrice) };
@@ -74,12 +74,12 @@ namespace TobaccoShop.Controllers
 
         //удаление выбранного товара из корзины
         [HttpPost]
-        public ActionResult DeleteItem(Guid id)
+        public ActionResult DeleteItem(Guid productId)
         {
             if (Request.IsAjaxRequest())
             {
                 var products = (List<OrderedProductDTO>)Session["Cart"];
-                var product = products?.FirstOrDefault(p => p.Id == id);
+                var product = products?.FirstOrDefault(p => p.ProductId == productId);
                 if (product != null)
                     products.Remove(product);
                 CartViewModel cvm = new CartViewModel() { Products = products, TotalPrice = products.Sum(p => p.LinePrice) };

@@ -18,7 +18,7 @@ namespace TobaccoShop.DAL.Entities
 
         public OrderedProduct()
         {
-
+            Id = Guid.NewGuid();
         }
     }
 }

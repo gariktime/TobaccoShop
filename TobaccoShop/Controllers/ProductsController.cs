@@ -25,7 +25,7 @@ namespace TobaccoShop.Controllers
 
             ProductDTO product = await productService.FindByIdAsync(id);
 
-            var cart_product = new OrderedProductDTO() { Id = Guid.NewGuid(), ProductId = product.ProductId, Quantity = 1, Price = product.Price, MarkModel = product.Mark + " " + product.Model };
+            var cart_product = new OrderedProductDTO() { ProductId = product.ProductId, Quantity = 1, Price = product.Price, MarkModel = product.Mark + " " + product.Model };
 
             if (products == null) //если товары ещё не добавлялись то создаём корзину и добавляем выбранный продукт
             {
