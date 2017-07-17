@@ -29,6 +29,7 @@ namespace TobaccoShop.Controllers
 
         #region Работа с корзиной
 
+        [AllowAnonymous]
         public ActionResult Cart()
         {
             CartViewModel cvm = new CartViewModel();
@@ -39,6 +40,7 @@ namespace TobaccoShop.Controllers
         }
 
         //увеличение количества выбранного товара в корзине
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult IncreaseItem(Guid productId)
         {
@@ -56,6 +58,7 @@ namespace TobaccoShop.Controllers
         }
 
         //уменьшение количества выбранного товара в корзине
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult DecreaseItem(Guid productId)
         {
@@ -73,6 +76,7 @@ namespace TobaccoShop.Controllers
         }
 
         //удаление выбранного товара из корзины
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult DeleteItem(Guid productId)
         {
@@ -93,14 +97,12 @@ namespace TobaccoShop.Controllers
 
         #region Оформление нового заказа
 
+        [Authorize]
         public ActionResult MakeOrder()
         {
             List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
             if (products == null || products.Count == 0)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            string currUserId = User.Identity.GetUserId();
-            if (currUserId == null)
-                return RedirectToAction("Login", "Connect");
             double orderPrice = products.Sum(p => p.LinePrice);
             OrderViewModel ovm = new OrderViewModel()
             {
@@ -109,6 +111,7 @@ namespace TobaccoShop.Controllers
             return View(ovm);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ConfirmOrder(OrderViewModel ovm)
@@ -117,14 +120,11 @@ namespace TobaccoShop.Controllers
             if (products == null || products.Count == 0)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             string currUserId = User.Identity.GetUserId();
-            if (currUserId == null)
-                return RedirectToAction("Login", "Connect");
             OrderDTO orderDTO = new OrderDTO()
             {
                 OrderPrice = products.Sum(p => p.LinePrice),
                 UserId = currUserId,
                 Products = products,
-                OrderDate = DateTime.Now,
                 Street = ovm.Street,
                 House = ovm.House,
                 Apartment = ovm.Apartment,

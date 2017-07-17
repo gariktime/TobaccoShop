@@ -20,6 +20,7 @@ namespace TobaccoShop.Controllers
             productService = prService;
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> AddToCart(Guid productId)
         {
@@ -46,6 +47,7 @@ namespace TobaccoShop.Controllers
             return PartialView("_CartMenu");
         }
 
+        [AllowAnonymous]
         public async Task<ActionResult> Item(Guid? id)
         {
             if (id != null)
@@ -60,6 +62,7 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult> AddComment(CommentViewModel model)
         {
@@ -83,6 +86,7 @@ namespace TobaccoShop.Controllers
                 return PartialView("_AddComment", model);
         }
 
+        [AllowAnonymous]
         public async Task<ActionResult> Hookahs()
         {
             ViewData["Products"] = await productService.GetHookahsAsync();
@@ -97,6 +101,7 @@ namespace TobaccoShop.Controllers
             return View(hlvm);
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> HookahFilter(HookahListViewModel hlvm)
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace TobaccoShop.Controllers
         #region Добавление/редактирование/удаление товаров
 
         //добавление нового товара
+        [Authorize(Roles = "Moderator, Admin")]
         public ActionResult AddProduct()
         {
             var st = from ProductType pt in Enum.GetValues(typeof(ProductType))
@@ -44,6 +46,7 @@ namespace TobaccoShop.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Moderator, Admin")]
         [HttpPost]
         public ActionResult AddProduct(ProductType productType)
         {
@@ -61,6 +64,7 @@ namespace TobaccoShop.Controllers
         }
 
         //редактирование товара
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> Edit(Guid id)
         {
             var (product, productType) = await productService.GetProductParamsAsync(id);
@@ -77,6 +81,7 @@ namespace TobaccoShop.Controllers
             return RedirectToAction("Products");
         }
 
+        [Authorize(Roles = "Moderator, Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddEditHookah(HookahViewModel hvm, HttpPostedFileBase uploadImage)
@@ -117,6 +122,9 @@ namespace TobaccoShop.Controllers
             return View("Edit");
         }
 
+        [Authorize(Roles = "Moderator, Admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddHookahTobacco(HookahTobaccoViewModel htvm)
         {
             if (ModelState.IsValid)
@@ -130,6 +138,7 @@ namespace TobaccoShop.Controllers
         }
 
         //удаление товара
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> Remove(Guid id)
         {
             await productService.RemoveProduct(id);
@@ -137,6 +146,7 @@ namespace TobaccoShop.Controllers
         }
 
         //список всех продуктов
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> Products()
         {
             var products = await productService.GetProductsAsync();
@@ -144,6 +154,7 @@ namespace TobaccoShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> Products(string searchQuery)
         {
             if (Request.IsAjaxRequest())
@@ -159,6 +170,7 @@ namespace TobaccoShop.Controllers
 
         #region Работа с заказами
 
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> Orders()
         {
             List<OrderDTO> orders = await orderService.GetActiveOrdersAsync();
@@ -166,6 +178,7 @@ namespace TobaccoShop.Controllers
             return View(orders);
         }
 
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> ActiveOrders()
         {
             if (Request.IsAjaxRequest())
@@ -178,6 +191,7 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> OnDeliveryOrders()
         {
             if (Request.IsAjaxRequest())
@@ -190,6 +204,7 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> CompletedOrders()
         {
             if (Request.IsAjaxRequest())
@@ -202,6 +217,7 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> ChangeStatus(Guid id, string newStatus)
         {
             if (Request.IsAjaxRequest())
@@ -246,12 +262,14 @@ namespace TobaccoShop.Controllers
 
         #region Работа с пользователями
 
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Users()
         {
             List<UserDTO> users = await userService.GetUsersByRoleAsync("User");
             return View(users);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UsersByRole(string role)
         {
             if (Request.IsAjaxRequest())
@@ -276,6 +294,7 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UserSearch(string userName)
         {
             if (Request.IsAjaxRequest())
@@ -287,15 +306,20 @@ namespace TobaccoShop.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> UserDetails(string id)
         {
             UserDTO user = await userService.FindUserByIdAsync(id);
             return View(user);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<string> ChangeUserRole(string id, string newRole)
         {
+            string currUserId = User.Identity.GetUserId();
             UserDTO user = await userService.FindUserByIdAsync(id);
+            if (id == currUserId)
+                return user.Role + " Невозможно изменить роль своей учетной записи.";
             var result = await userService.ChangeUserRole(id, user.Role, newRole);
             if (result.Succeeded == true)
             {
@@ -311,6 +335,7 @@ namespace TobaccoShop.Controllers
 
         #region Статистика
 
+        [Authorize(Roles = "Admin")]
         public ActionResult Statistics()
         {
             return View();

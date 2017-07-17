@@ -29,11 +29,13 @@ namespace TobaccoShop.Controllers
 
         }
 
+        [AllowAnonymous]
         public ActionResult Login()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginModel model)
@@ -59,17 +61,20 @@ namespace TobaccoShop.Controllers
             return View(model);
         }
 
+        
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Index", "Home");
         }
 
+        [AllowAnonymous]
         public ActionResult Register()
         {
             return View();
         }
 
+        [AllowAnonymous]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)

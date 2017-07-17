@@ -43,7 +43,7 @@ namespace TobaccoShop.BLL.Services
                         Products = orderedProducts,
                         User = clientProfile,
                         Appeal = orderDTO.Appeal.Trim(),
-                        OrderDate = orderDTO.OrderDate,
+                        OrderDate = DateTime.Now,
                         Street = orderDTO.Street.Trim(),
                         House = orderDTO.House.Trim(),
                         Apartment = orderDTO.Apartment.Trim(),
