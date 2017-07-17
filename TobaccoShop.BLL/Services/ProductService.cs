@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Interfaces;
+using TobaccoShop.BLL.Util;
 using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
@@ -21,18 +22,6 @@ namespace TobaccoShop.BLL.Services
         public ProductService(IUnitOfWork uow)
         {
             db = uow;
-        }
-
-        public ProductDTO FindById(Guid id)
-        {
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<Product, ProductDTO>(db.Products.FindById(id));
-        }
-
-        public async Task<ProductDTO> FindByIdAsync(Guid id)
-        {
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<Product, ProductDTO>(await db.Products.FindByIdAsync(id));
         }
 
         #region Создание новых продуктов
@@ -94,7 +83,7 @@ namespace TobaccoShop.BLL.Services
         {
             try
             {
-                Hookah hookah = await db.Hookahs.FindByIdAsync(hookahDto.ProductId);
+                Hookah hookah = await db.Products.FindByIdAsync(hookahDto.ProductId) as Hookah;
 
                 hookah.Mark = hookahDto.Mark.Trim();
                 hookah.Model = hookahDto.Model.Trim();
@@ -127,8 +116,7 @@ namespace TobaccoShop.BLL.Services
         {
             try
             {
-                Product product = await db.Products.FindByIdAsync(id);
-                db.Products.Delete(product);
+                db.Products.Delete(id);
                 await db.SaveAsync();
                 return new OperationDetails(true, "Товар успешно удален", "");
             }
@@ -138,30 +126,30 @@ namespace TobaccoShop.BLL.Services
             }
         }
 
-        #region Функции множеств
+        #region Методы множеств
 
-        public List<ProductDTO> GetProducts()
+        public ProductDTO FindById(Guid id)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(db.Products.GetAll());
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<Product, ProductDTO>(db.Products.FindById(id));
         }
 
-        public List<ProductDTO> GetProducts(Func<ProductDTO, bool> predicate)
+        public async Task<ProductDTO> FindByIdAsync(Guid id)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(db.Products.GetAll()).Where(predicate).ToList();
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<Product, ProductDTO>(await db.Products.FindByIdAsync(id));
         }
 
         public async Task<List<ProductDTO>> GetProductsAsync()
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(await db.Products.GetAllAsync());
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<Product>, List<ProductDTO>>(await db.Products.GetAllAsync());
         }
 
-        public async Task<List<ProductDTO>> GetProductsAsync(Func<ProductDTO, bool> predicate)
+        public async Task<List<ProductDTO>> GetProductsAsync(string searchQuery)
         {
-            Mapper.Initialize(cfg => cfg.CreateMap<Product, ProductDTO>());
-            return Mapper.Map<IEnumerable<Product>, List<ProductDTO>>(await db.Products.GetAllAsync()).Where(predicate).ToList();
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<Product>, List<ProductDTO>>(await db.Products.GetAllAsync(p => p.Mark.Contains(searchQuery) || p.Model.Contains(searchQuery)));
         }
 
         public async Task<List<HookahDTO>> GetHookahsAsync()
@@ -214,13 +202,14 @@ namespace TobaccoShop.BLL.Services
 
         #region Вспомогательные методы #Кудажeбезкостылей
 
-        public async Task<(ProductDTO, ProductType)> GetProductParamsAsync(Guid id)
+        public async Task<(ProductDTO, ProductType)> GetProductParamsAsync(Guid productId)
         {
-            var product = await db.Products.FindByIdAsync(id);
+            var product = await db.Products.FindByIdAsync(productId);
             if (product is Hookah)
             {
-                Mapper.Initialize(cfg => cfg.CreateMap<Hookah, HookahDTO>());
-                var hookah = Mapper.Map<Hookah, HookahDTO>(product as Hookah);
+                //Mapper.Initialize(cfg => cfg.CreateMap<Hookah, HookahDTO>());
+                Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+                HookahDTO hookah = Mapper.Map<Hookah, HookahDTO>(product as Hookah);
                 return (hookah, ProductType.Hookah);
             }
             else
@@ -238,7 +227,7 @@ namespace TobaccoShop.BLL.Services
                 //находим товар, к которому добавляем комментарий
                 Product product = await db.Products.FindByIdAsync(commentDto.ProductId);
                 if (product == null)
-                    return new OperationDetails(true, "Товар с указанными Id не найден.", "");
+                    return new OperationDetails(false, "Товар с указанными Id не найден.", "");
                 //создаём Comment из CommentDTO
                 Comment comment = new Comment()
                 {

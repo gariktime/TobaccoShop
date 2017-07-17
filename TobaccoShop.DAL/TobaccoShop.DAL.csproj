@@ -71,6 +71,7 @@
     <Compile Include="Interfaces\IClientManager.cs" />
     <Compile Include="Interfaces\ICommentRepository.cs" />
     <Compile Include="Interfaces\IGenericRepository.cs" />
+    <Compile Include="Interfaces\IProductRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

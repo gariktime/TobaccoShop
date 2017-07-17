@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Identity;
-using TobaccoShop.DAL.Repositories;
 
 namespace TobaccoShop.DAL.Interfaces
 {
@@ -15,8 +14,10 @@ namespace TobaccoShop.DAL.Interfaces
         IClientManager ClientManager { get; }
         ApplicationRoleManager RoleManager { get; }
 
-        IGenericRepository<Product> Products { get; }
+        IProductRepository Products { get; }
+
         IGenericRepository<Hookah> Hookahs { get; }
+        IGenericRepository<HookahTobacco> HookahTobacco { get; }
 
         IRepository<Order> Orders { get; }
         ICommentRepository Comments { get; }

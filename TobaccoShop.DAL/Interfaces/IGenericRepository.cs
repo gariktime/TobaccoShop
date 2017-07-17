@@ -9,10 +9,7 @@ namespace TobaccoShop.DAL.Interfaces
     {
         void Add(TEntity item);
         void Update(TEntity item);
-        void Delete(TEntity item);
 
-        TEntity FindById(Guid id);
-        Task<TEntity> FindByIdAsync(Guid id);
         List<TEntity> GetAll();
         List<TEntity> GetAll(Func<TEntity, bool> predicate);
         Task<List<TEntity>> GetAllAsync();

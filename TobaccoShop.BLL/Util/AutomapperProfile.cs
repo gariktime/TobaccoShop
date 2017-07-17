@@ -16,6 +16,9 @@ namespace TobaccoShop.BLL.Util
             CreateMap<Product, ProductDTO>()
                 .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments));
 
+            CreateMap<Hookah, HookahDTO>()
+                .ForMember(dest => dest.Comments, opt => opt.MapFrom(src => src.Comments));
+
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.Comments, opt => opt.Ignore());
 

@@ -59,15 +59,35 @@
         </dl>
     </div>
 
-    <div class="col-md-3">
-        <input class="btn btn-default" type="submit" value="Купить" /> 
+    @using (Ajax.BeginForm("AddToCart", "Products", new { productId = Model.ProductId }, new AjaxOptions { UpdateTargetId = "CartMenu" }))
+    {
+        <input class="btn btn-default" type="submit" value="Купить" />
+    }
+
+    <div class="col-md-12" id="addComment">
+        @{ Html.RenderPartial("_AddComment", new CommentViewModel() { ProductId = Model.ProductId }); }
     </div>
-</div>
 
-@*<div>
-    @{ Html.RenderPartial("_AddComment", new CommentViewModel() { ProductId = Model.ProductId }); }
-</div>*@
-
-<div id="comments">
-
+    <div class="col-md-12" id="comments">
+        @if (Model.Comments.Count == 0)
+        {
+            <p>Комментарии отсутствуют.</p>
+        }
+        else
+        {
+            <h4>Комментарии (@Model.Comments.Count)</h4>
+            foreach (var comment in Model.Comments)
+            {
+                string date = String.Format("{0:f}", comment.CommentDate);
+                <div>
+                    <div>
+                        <p>@comment.UserName @String.Format("{0:f}", comment.CommentDate)</p>
+                    </div>
+                    <div>
+                        <p>@comment.Text</p>
+                    </div>
+                </div>
+            }
+        }
+    </div>
 </div>

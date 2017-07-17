@@ -2,113 +2,58 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using TobaccoShop.DAL.EF;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.DAL.Repositories
 {
-    public class ProductRepository
+    public class ProductRepository : IProductRepository
     {
-        private EF.ApplicationContext db;
+        private ApplicationContext db;
 
-        public ProductRepository(EF.ApplicationContext context)
+        public ProductRepository(ApplicationContext context)
         {
-            this.db = context;
+            db = context;
         }
 
-        public IEnumerable<Product> GetAll()
+        public void Delete(Guid productId)
         {
-            return db.Products;
+            Product p = db.Products.Find(productId);
+            if (p != null)
+                db.Products.Remove(p);
         }
 
-        public Product Get(int id)
+        public Product FindById(Guid productId)
         {
-            return db.Products.Find(id);
+            return db.Products.Include("Comments.User").FirstOrDefault(p => p.ProductId == productId);
         }
 
-        public void Create(Product product)
+        public async Task<Product> FindByIdAsync(Guid productId)
         {
-            if (product is Hookah)
-                db.Hookahs.Add(product as Hookah);
-            else if (product is HookahTobacco)
-                db.HookahTobacco.Add(product as HookahTobacco);
-            //db.Products.Add(product);
+            return await db.Products.Include("Comments.User").FirstOrDefaultAsync(p => p.ProductId == productId);
         }
 
-        public void Update(Product product)
+        public List<Product> GetAll()
         {
-            db.Entry(product).State = EntityState.Modified;
+            return db.Products.ToList();
         }
 
-        public IEnumerable<Product> Find(Func<Product, Boolean> predicate)
+        public List<Product> GetAll(Func<Product, bool> predicate)
         {
             return db.Products.Where(predicate).ToList();
         }
 
-        public void Delete(int id)
+        public async Task<List<Product>> GetAllAsync()
         {
-            Product product = db.Products.Find(id);
-            if (product != null)
-                db.Products.Remove(product);
+            return await db.Products.ToListAsync();
         }
 
-        #region Функции множеств
-
-        public List<string> GetMarks(string type)
+        public async Task<List<Product>> GetAllAsync(Expression<Func<Product, bool>> predicate)
         {
-            switch (type)
-            {
-                case "Hookah":
-                    return db.Products.OfType<Hookah>().Select(c => c.Mark).ToList();
-                case "HookahTobacco":
-                    return db.Products.OfType<HookahTobacco>().Select(c => c.Mark).ToList();
-                default:
-                    return null;
-            }
+            return await db.Products.Where(predicate).ToListAsync();
         }
-
-        public async Task<List<string>> GetMarksAsync(string type)
-        {
-            switch (type)
-            {
-                case "Hookah":
-                    return await db.Products.OfType<Hookah>().Select(c => c.Mark).ToListAsync();
-                case "HookahTobacco":
-                    return await db.Products.OfType<HookahTobacco>().Select(c => c.Mark).ToListAsync();
-                default:
-                    return null;
-            }
-        }
-
-        public IQueryable<Hookah> GetHookahs()
-        {
-            return db.Products.OfType<Hookah>().AsQueryable();
-        }
-
-        #endregion
-
-
-        #region Агрегатные функции
-        public int GetMinPrice()
-        {
-            return db.Products.Select(p => p.Price).Min();
-        }
-
-        public async Task<int> GetMinPriceAsync()
-        {
-            return await db.Products.Select(p => p.Price).MinAsync();
-        }
-
-        public int GetMaxPrice()
-        {
-            return db.Products.Select(p => p.Price).Max();
-        }
-
-        public async Task<int> GetMaxPriceAsync()
-        {
-            return await db.Products.Select(p => p.Price).MaxAsync();
-        }
-        #endregion
     }
 }

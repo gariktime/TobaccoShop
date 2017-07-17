@@ -22,10 +22,8 @@ namespace TobaccoShop.BLL.Interfaces
         //методы множеств
         ProductDTO FindById(Guid id);
         Task<ProductDTO> FindByIdAsync(Guid id);
-        List<ProductDTO> GetProducts();
-        List<ProductDTO> GetProducts(Func<ProductDTO, bool> predicate);
         Task<List<ProductDTO>> GetProductsAsync();
-        Task<List<ProductDTO>> GetProductsAsync(Func<ProductDTO, bool> predicate);
+        Task<List<ProductDTO>> GetProductsAsync(string searchQuery);
         Task<List<HookahDTO>> GetHookahsAsync();
         Task<List<HookahDTO>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries);
 
@@ -33,7 +31,7 @@ namespace TobaccoShop.BLL.Interfaces
         Task<(int, int, double, double, List<string>, List<string>)> GetHookahProperties();
 
         //вспомогательные методы
-        Task<(ProductDTO, ProductType)> GetProductParamsAsync(Guid id);
+        Task<(ProductDTO, ProductType)> GetProductParamsAsync(Guid productId);
 
         //комментарий к продукту
         Task<OperationDetails> AddComment(CommentDTO commentDto);

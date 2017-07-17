@@ -148,8 +148,7 @@ namespace TobaccoShop.Controllers
         {
             if (Request.IsAjaxRequest())
             {
-                List<ProductDTO> products = await productService.GetProductsAsync(p => p.Mark.Contains(searchQuery) ||
-                                                                                       p.Model.Contains(searchQuery));
+                List<ProductDTO> products = await productService.GetProductsAsync(searchQuery);
                 return PartialView("_ProductList", products);
             }
             else

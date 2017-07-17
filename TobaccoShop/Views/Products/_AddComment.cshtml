@@ -4,8 +4,11 @@
 {
     using (Html.BeginForm("AddComment", "Products", FormMethod.Post))
     {
-        @Html.TextAreaFor(p => Model.Text)
-        <input class="btn btn-default" type="submit" value="Добавить" />
+        <div class="form-group">
+            @Html.HiddenFor(p => Model.ProductId)
+            @Html.TextAreaFor(p => Model.Text, new { @class = "form-control", @style="min-width: 60%", rows = 3 })
+            <input class="btn btn-default" type="submit" value="Добавить комментарий" />
+        </div>
     }
 }
 else

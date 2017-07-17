@@ -19,9 +19,12 @@ namespace TobaccoShop.DAL.Repositories
         private ApplicationRoleManager roleManager;
         private IClientManager clientManager;
 
+        //общий репозиторий продуктов
+        private IProductRepository productRepository;
+
         //репозитории продуктов
-        private ProductGRepository<Product> productRepository;
-        private ProductGRepository<Hookah> hookahRepository;
+        private IGenericRepository<Hookah> hookahRepository;
+        private IGenericRepository<HookahTobacco> hookahTobaccoRepository;
 
         //репозиторий заказов
         private IRepository<Order> orderRepository;
@@ -66,12 +69,12 @@ namespace TobaccoShop.DAL.Repositories
 
         #region Репозитории продуктов
 
-        public IGenericRepository<Product> Products
+        public IProductRepository Products
         {
             get
             {
                 if (productRepository == null)
-                    productRepository = new ProductGRepository<Product>(db);
+                    productRepository = new ProductRepository(db);
                 return productRepository;
             }
         }
@@ -83,6 +86,16 @@ namespace TobaccoShop.DAL.Repositories
                 if (hookahRepository == null)
                     hookahRepository = new ProductGRepository<Hookah>(db);
                 return hookahRepository;
+            }
+        }
+
+        public IGenericRepository<HookahTobacco> HookahTobacco
+        {
+            get
+            {
+                if (hookahTobaccoRepository == null)
+                    hookahTobaccoRepository = new ProductGRepository<HookahTobacco>(db);
+                return hookahTobaccoRepository;
             }
         }
 

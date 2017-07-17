@@ -24,30 +24,40 @@ namespace TobaccoShop.Controllers
         public async Task<ActionResult> AddToCart(Guid productId)
         {
             List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
-
             ProductDTO product = await productService.FindByIdAsync(productId);
 
-            var cart_product = new OrderedProductDTO() { ProductId = product.ProductId, Quantity = 1, Price = product.Price, MarkModel = product.Mark + " " + product.Model };
+            if (product != null)
+            {
+                OrderedProductDTO cart_product = new OrderedProductDTO() { ProductId = product.ProductId, Quantity = 1, Price = product.Price, MarkModel = product.Mark + " " + product.Model };
 
-            if (products == null) //если товары ещё не добавлялись то создаём корзину и добавляем выбранный продукт
-            {
-                products = new List<OrderedProductDTO>();
-                products.Add(cart_product);
-                Session["Cart"] = products;
-            }
-            else //добавляем товар в корзину
-            {
-                //если выбранного товара ещё нет в корзине
-                if (!products.Exists(p => p.ProductId == product.ProductId))
+                if (products == null) //если товары ещё не добавлялись то создаём корзину и добавляем выбранный продукт
+                {
+                    products = new List<OrderedProductDTO>();
                     products.Add(cart_product);
+                    Session["Cart"] = products;
+                }
+                else //добавляем товар в корзину
+                {
+                    //если выбранного товара ещё нет в корзине
+                    if (!products.Exists(p => p.ProductId == product.ProductId))
+                        products.Add(cart_product);
+                }
             }
             return PartialView("_CartMenu");
         }
 
-        public async Task<ActionResult> Item(Guid productId)
+        public async Task<ActionResult> Item(Guid? id)
         {
-            var (product, productType) = await productService.GetProductParamsAsync(productId);
-            return View(product);
+            if (id != null)
+            {
+                var (product, productType) = await productService.GetProductParamsAsync((Guid)id);
+                if (product != null)
+                    return View(product);
+                else
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         [HttpPost]
@@ -65,7 +75,7 @@ namespace TobaccoShop.Controllers
 
                 var result = await productService.AddComment(commentDto);
                 if (result.Succeeded == true)
-                    return RedirectToAction("Item", "Products", new { productId = model.ProductId });
+                    return RedirectToAction("Item", "Products", new { id = model.ProductId });
                 else
                     return PartialView("_AddComment", model);
             }

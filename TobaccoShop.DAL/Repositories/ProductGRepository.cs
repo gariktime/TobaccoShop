@@ -31,22 +31,6 @@ namespace TobaccoShop.DAL.Repositories
             _context.Entry(item).State = EntityState.Modified;
         }
 
-        public void Delete(TEntity item)
-        {
-            if (_dbSet.Contains(item))
-                _dbSet.Remove(item);
-        }
-
-        public TEntity FindById(Guid id)
-        {
-            return _dbSet.Find(id);
-        }
-
-        public async Task<TEntity> FindByIdAsync(Guid id)
-        {
-            return await _dbSet.FindAsync(id);
-        }
-
         #endregion
 
         #region Функции множеств
