@@ -171,10 +171,25 @@ namespace TobaccoShop.Controllers
         #region Работа с заказами
 
         [Authorize(Roles = "Moderator, Admin")]
+        public async Task<ActionResult> OrderDetails(Guid? orderId)
+        {
+            if (orderId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            else
+            {
+                OrderDTO order = await orderService.FindByIdAsync((Guid)orderId);
+                if (order != null)
+                    return View(order);
+                else
+                    return Content("Заказ с указанным ID не найден.");
+            }
+        }
+
+        [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> Orders()
         {
             List<OrderDTO> orders = await orderService.GetActiveOrdersAsync();
-            Session["OrderStatus"] = "Active";
+            //Session["OrderStatus"] = "Active";
             return View(orders);
         }
 
@@ -184,7 +199,7 @@ namespace TobaccoShop.Controllers
             if (Request.IsAjaxRequest())
             {
                 List<OrderDTO> orders = await orderService.GetActiveOrdersAsync();
-                Session["OrderStatus"] = "Active";
+                //Session["OrderStatus"] = "Active";
                 return PartialView("_OrderList", orders);
             }
             else
@@ -197,7 +212,7 @@ namespace TobaccoShop.Controllers
             if (Request.IsAjaxRequest())
             {
                 List<OrderDTO> orders = await orderService.GetOnDeliveryOrdersAsync();
-                Session["OrderStatus"] = "OnDelivery";
+                //Session["OrderStatus"] = "OnDelivery";
                 return PartialView("_OrderList", orders);
             }
             else
@@ -210,7 +225,7 @@ namespace TobaccoShop.Controllers
             if (Request.IsAjaxRequest())
             {
                 List<OrderDTO> orders = await orderService.GetCompletedOrdersAsync();
-                Session["OrderStatus"] = "Completed";
+                //Session["OrderStatus"] = "Completed";
                 return PartialView("_OrderList", orders);
             }
             else
@@ -218,44 +233,42 @@ namespace TobaccoShop.Controllers
         }
 
         [Authorize(Roles = "Moderator, Admin")]
-        public async Task<ActionResult> ChangeStatus(Guid id, string newStatus)
+        [HttpPost]
+        public async Task<ActionResult> ChangeOrderStatus(Guid orderId, string newStatus)
         {
-            if (Request.IsAjaxRequest())
-            {
-                OperationDetails result = null;
-                switch (newStatus)
-                {
-                    case "Active":
-                        result = await orderService.MakeOrderActive(id);
-                        break;
-                    case "OnDelivery":
-                        result = await orderService.MakeOrderOnDelivery(id);
-                        break;
-                    case "Completed":
-                        result = await orderService.MakeOrderCompleted(id);
-                        break;
-                    default:
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
+            OperationDetails result = await orderService.ChangeOrderStatus(orderId, newStatus);
 
-                List<OrderDTO> orders = null;
-                switch (Session["OrderStatus"])
-                {
-                    case "Active":
-                        orders = await orderService.GetActiveOrdersAsync();
-                        return PartialView("_OrderList", orders);
-                    case "OnDelivery":
-                        orders = await orderService.GetOnDeliveryOrdersAsync();
-                        return PartialView("_OrderList", orders);
-                    case "Completed":
-                        orders = await orderService.GetCompletedOrdersAsync();
-                        return PartialView("_OrderList", orders);
-                    default:
-                        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-                }
-            }
+            if (result.Succeeded == true)
+                return RedirectToAction("OrderDetails", new { orderId = orderId });
             else
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return Content(result.Message);
+
+            //List<OrderDTO> orders = null;
+            //switch (Session["OrderStatus"])
+            //{
+            //    case "Active":
+            //        orders = await orderService.GetActiveOrdersAsync();
+            //        return PartialView("_OrderList", orders);
+            //    case "OnDelivery":
+            //        orders = await orderService.GetOnDeliveryOrdersAsync();
+            //        return PartialView("_OrderList", orders);
+            //    case "Completed":
+            //        orders = await orderService.GetCompletedOrdersAsync();
+            //        return PartialView("_OrderList", orders);
+            //    default:
+            //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+
+        }
+
+        [Authorize(Roles = "Moderator, Admin")]
+        public async Task<ActionResult> DeleteOrder(Guid orderId)
+        {
+            OperationDetails result = await orderService.DeleteOrder(orderId);
+            if (result.Succeeded == true)
+                return RedirectToAction("Orders");
+            else
+                return Content(result.Message);
         }
 
         #endregion
@@ -307,10 +320,13 @@ namespace TobaccoShop.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<ActionResult> UserDetails(string id)
+        public async Task<ActionResult> UserDetails(string userId)
         {
-            UserDTO user = await userService.FindUserByIdAsync(id);
-            return View(user);
+            UserDTO user = await userService.FindUserByIdAsync(userId);
+            if (user != null)
+                return View(user);
+            else
+                return Content("Пользователь с указанным ID не найден.");
         }
 
         [Authorize(Roles = "Admin")]
@@ -350,3 +366,4 @@ namespace TobaccoShop.Controllers
         }
     }
 }
+

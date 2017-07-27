@@ -10,7 +10,7 @@ using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.DAL.Repositories
 {
-    public class OrderRepository : IRepository<Order>
+    public class OrderRepository : IOrderRepository
     {
         private ApplicationContext db;
 
@@ -29,20 +29,33 @@ namespace TobaccoShop.DAL.Repositories
             db.Entry(order).State = EntityState.Modified;
         }
 
-        public void Delete(Order order)
+        public void Delete(Guid orderId)
         {
-            if (db.Orders.Contains(order))
+            Order order = db.Orders.Find(orderId);
+            if (order != null)
                 db.Orders.Remove(order);
+            else
+                throw new ArgumentException("Заказ с указанным Id не найден.");
         }
 
-        public Order FindById(Guid id)
+        public Order FindById(Guid orderId)
         {
-            return db.Orders.Include(p => p.User).Include("Products.Product").FirstOrDefault(p => p.OrderId == id);
+            return db.Orders.Include(p => p.User).Include("Products.Product").FirstOrDefault(p => p.OrderId == orderId);
         }
 
-        public async Task<Order> FindByIdAsync(Guid id)
+        public async Task<Order> FindByIdAsync(Guid orderId)
         {
-            return await db.Orders.Include(p => p.User).Include("Products.Product").FirstOrDefaultAsync(p => p.OrderId == id);
+            return await db.Orders.Include(p => p.User).Include("Products.Product").FirstOrDefaultAsync(p => p.OrderId == orderId);
+        }
+
+        public Order FindByNumber(int orderNumber)
+        {
+            return db.Orders.FirstOrDefault(p => p.Number == orderNumber);
+        }
+
+        public async Task<Order> FindByNumberAsync(int orderNumber)
+        {
+            return await db.Orders.FirstOrDefaultAsync(p => p.Number == orderNumber);
         }
 
         public List<Order> GetAll()

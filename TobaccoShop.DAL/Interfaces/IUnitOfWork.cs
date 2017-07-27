@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Identity;
 
@@ -19,7 +18,7 @@ namespace TobaccoShop.DAL.Interfaces
         IGenericRepository<Hookah> Hookahs { get; }
         IGenericRepository<HookahTobacco> HookahTobacco { get; }
 
-        IRepository<Order> Orders { get; }
+        IOrderRepository Orders { get; }
         ICommentRepository Comments { get; }
 
         void Save();

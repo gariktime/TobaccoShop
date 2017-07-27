@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using TobaccoShop.DAL.Entities.Identity;
 
 namespace TobaccoShop.DAL.Entities
@@ -10,6 +11,9 @@ namespace TobaccoShop.DAL.Entities
     {
         [Key]
         public Guid OrderId { get; set; }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Number { get; set; }
 
         public double OrderPrice { get; set; }
 

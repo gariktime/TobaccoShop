@@ -1,0 +1,214 @@
+﻿@model TobaccoShop.BLL.DTO.OrderDTO
+
+@{
+    ViewBag.Title = "Сведения о заказе";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Заказ № @Model.Number</h2>
+
+<div class="col-md-6">
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Заказчик")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.ActionLink(Model.UserName.ToString(), "UserDetails", new { userId = Model.UserId })
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Дата заказа")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.OrderDate)
+            </span>
+        </dd>
+    </dl>
+
+    <p>Данные заказчика</p>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Обращение")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.Appeal)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Email")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.UserEmail)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Номер телефона")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.PhoneNumber)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Улица")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.Street)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Дом")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.House)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Квартира")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.Apartment)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Комментарий")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.Note)
+            </span>
+        </dd>
+    </dl>
+
+    <p>Заказываемые товары</p>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Сумма заказа")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.OrderPrice) <span class="glyphicon-ruble"></span>
+            </span>
+        </dd>
+    </dl>
+
+    <table class="table table-bordered">
+        <tr>
+            <th>
+                Наименование товара
+            </th>
+            <th>
+                Количество, шт.
+            </th>
+            <th>
+                Стоимость, шт.
+            </th>
+            <th>
+                Общая стоимость
+            </th>
+        </tr>
+
+        @foreach (var item in Model.Products)
+        {
+            <tr>
+                <td>
+                    <a href="/products/item/@item.ProductId">@item.MarkModel</a>
+                </td>
+                <td>
+                    @Html.DisplayFor(p => item.Quantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(p => item.Price) <span class="glyphicon-ruble"></span>
+                </td>
+                <td>
+                    @Html.DisplayFor(p => item.LinePrice) <span class="glyphicon-ruble"></span>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <p>Измененение статуса заказа</p>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Статус заказа")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => p.Status)
+            </span>
+        </dd>
+    </dl>
+
+    <div>
+        @using (Html.BeginForm("ChangeOrderStatus", "Admin", new { orderId = Model.OrderId, newStatus = "Active" }))
+        {
+            <input type="submit" class="btn btn-primary" value="В активные" />
+        }
+        @using (Html.BeginForm("ChangeOrderStatus", "Admin", new { orderId = Model.OrderId, newStatus = "OnDelivery" }))
+        {
+            <input type="submit" class="btn btn-primary" value="На доставку" />
+        }
+        @using (Html.BeginForm("ChangeOrderStatus", "Admin", new { orderId = Model.OrderId, newStatus = "Completed" }))
+        {
+            <input type="submit" class="btn btn-primary" value="В выполненные" />
+        }
+        @using (Html.BeginForm("DeleteOrder", "Admin", new { orderId = Model.OrderId }))
+        {
+            <input type="submit" class="btn btn-primary" value="Удалить заказ" />
+        }
+    </div>
+</div>

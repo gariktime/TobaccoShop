@@ -2,7 +2,6 @@
 using System;
 using System.Threading.Tasks;
 using TobaccoShop.DAL.EF;
-using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Identity;
 using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Identity;
@@ -27,7 +26,7 @@ namespace TobaccoShop.DAL.Repositories
         private IGenericRepository<HookahTobacco> hookahTobaccoRepository;
 
         //репозиторий заказов
-        private IRepository<Order> orderRepository;
+        private IOrderRepository orderRepository;
 
         //репозиторий комментариев к товарам
         private ICommentRepository commentRepository;
@@ -101,7 +100,7 @@ namespace TobaccoShop.DAL.Repositories
 
         #endregion
 
-        public IRepository<Order> Orders
+        public IOrderRepository Orders
         {
             get
             {

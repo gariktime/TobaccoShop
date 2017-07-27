@@ -39,7 +39,24 @@ namespace TobaccoShop.BLL.Util
             CreateMap<Order, OrderDTO>()
                 .ForMember(dest => dest.Products, opt => opt.MapFrom(src => src.Products))
                 .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
-                .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.User.Email));
+                .ForMember(dest => dest.UserEmail, opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => GetEnumDescription(src.Status)));
+        }
+
+        private string GetEnumDescription(System.Enum value)
+        {
+            System.Reflection.FieldInfo fi = value.GetType().GetField(value.ToString());
+
+            System.ComponentModel.DescriptionAttribute[] attributes =
+                (System.ComponentModel.DescriptionAttribute[])fi.GetCustomAttributes(
+                typeof(System.ComponentModel.DescriptionAttribute),
+                false);
+
+            if (attributes != null &&
+                attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
         }
     }
 }

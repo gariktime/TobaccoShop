@@ -9,28 +9,16 @@ else
     <table class="table table-bordered">
         <tr>
             <th>
+                @Html.Label("Номер заказа")
+            </th>
+            <th>
                 @Html.Label("Пользователь")
             </th>
             <th>
                 @Html.Label("Дата заказа")
             </th>
             <th>
-                @Html.Label("Товары")
-            </th>
-            <th>
                 @Html.Label("Стоимость")
-            </th>
-            <th>
-                @Html.Label("Адрес")
-            </th>
-            <th>
-                @Html.Label("Статус")
-            </th>
-            <th>
-                @Html.Label("Данные о пользователе")
-            </th>
-            <th>
-
             </th>
         </tr>
 
@@ -38,49 +26,16 @@ else
         {
             <tr>
                 <td>
-                    @Html.ActionLink(item.UserName, "UserDetails", new { id = item.UserId })
+                    @Html.ActionLink(item.Number.ToString(), "OrderDetails", new { orderId = item.OrderId })
+                </td>
+                <td>
+                    @Html.ActionLink(item.UserName, "UserDetails", new { userId = item.UserId })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.OrderDate)
                 </td>
                 <td>
-                    @foreach (var p in item.Products)
-                    {
-                        <dl>
-                            <dt>@Html.ActionLink(p.MarkModel, "Details", "Products", new { id = p.ProductId })</dt>
-                            <dd>@Html.DisplayFor(c => p.Quantity)</dd>
-                        </dl>
-                    }
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.OrderPrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Street)
-                    @Html.DisplayFor(modelItem => item.House)
-                    @Html.DisplayFor(modelItem => item.Apartment)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Appeal)
-                    @Html.DisplayFor(modelItem => item.PhoneNumber)
-                    @Html.DisplayFor(modelItem => item.Note)
-                </td>
-                <td>
-                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "Active" }, new AjaxOptions { UpdateTargetId = "orderList" }))
-                    {
-                        <input type="submit" class="btn btn-primary" value="В активные" />
-                    }
-                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "OnDelivery" }, new AjaxOptions { UpdateTargetId = "orderList" }))
-                    {
-                        <input type="submit" class="btn btn-primary" value="На доставку" />
-                    }
-                    @using (Ajax.BeginForm("ChangeStatus", "Admin", new { id = item.OrderId, newStatus = "Completed" }, new AjaxOptions { UpdateTargetId = "orderList" }))
-                    {
-                        <input type="submit" class="btn btn-primary" value="В выполненные" />
-                    }
                 </td>
             </tr>
         }
