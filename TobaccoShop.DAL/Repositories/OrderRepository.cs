@@ -50,32 +50,32 @@ namespace TobaccoShop.DAL.Repositories
 
         public Order FindByNumber(int orderNumber)
         {
-            return db.Orders.FirstOrDefault(p => p.Number == orderNumber);
+            return db.Orders.Include(p => p.User).FirstOrDefault(p => p.Number == orderNumber);
         }
 
         public async Task<Order> FindByNumberAsync(int orderNumber)
         {
-            return await db.Orders.FirstOrDefaultAsync(p => p.Number == orderNumber);
+            return await db.Orders.Include(p => p.User).FirstOrDefaultAsync(p => p.Number == orderNumber);
         }
 
         public List<Order> GetAll()
         {
-            return db.Orders.Include(p => p.User).Include("Products.Product").ToList();
+            return db.Orders.Include(p => p.User).ToList();
         }
 
         public List<Order> GetAll(Func<Order, bool> predicate)
         {
-            return db.Orders.Include(p => p.User).Include("Products.Product").Where(predicate).ToList();
+            return db.Orders.Include(p => p.User).Where(predicate).ToList();
         }
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await db.Orders.Include(p => p.User).Include("Products.Product").ToListAsync();
+            return await db.Orders.Include(p => p.User).ToListAsync();
         }
 
         public async Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate)
         {
-            return await db.Orders.Include(p => p.User).Include("Products.Product").Where(predicate).ToListAsync();
+            return await db.Orders.Include(p => p.User).Where(predicate).ToListAsync();
         }
     }
 }

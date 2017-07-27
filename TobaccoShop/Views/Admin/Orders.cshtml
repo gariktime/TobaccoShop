@@ -16,9 +16,21 @@
         <li role="presentation">
             @Ajax.ActionLink("Выполненные", "CompletedOrders", new AjaxOptions { UpdateTargetId = "orderList", OnSuccess = "changeOrderStatusSelection" })
         </li>
+        <li role="presentation">
+            <a id="searchButton" href="#">Поиск</a>
+        </li>
     </ul>
 </div>
 
-<div id="orderList">
+<div id="searchField" class="search-field-hidden">
+    @using (Ajax.BeginForm("FindOrder", new AjaxOptions { UpdateTargetId = "orderList" }))
+    {
+        @Html.Label("Номер заказа: ")
+        <input name="orderNumber" type="text" />
+        <input type="submit" class="btn btn-default" value="Найти" />
+    }
+</div>
+
+<div id="orderList" style="margin-top:15px">
     @{ Html.RenderPartial("_OrderList", Model); }
 </div>

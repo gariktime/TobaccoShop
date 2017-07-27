@@ -1,6 +1,7 @@
 ﻿function changeOrderStatusSelection() {
     $("#orderStatus li.active").removeClass("active");
     $(this).parent().addClass("active");
+    $(".search-field").removeClass("search-field").toggleClass("search-field-hidden");
 }
 
 function changeUserRoleSelection() {
@@ -20,8 +21,9 @@ $(function () {
 $(function () {
     $("#searchButton").click(function () {
         $("#userRole li.active").removeClass("active");
+        $("#orderStatus li.active").removeClass("active");
         $(this).parent().addClass("active");
-        $("#searchField").removeClass("search-field-hidden").toggleClass("search-field");
+        $("#searchField").removeClass("search-field search-field-hidden").toggleClass("search-field");
     });
 });
 

@@ -17,7 +17,7 @@
         </dt>
         <dd class="iteminfo-value">
             <span class="iteminfo-value-inner">
-                @Html.ActionLink(Model.UserName.ToString(), "UserDetails", new { userId = Model.UserId })
+                @Html.ActionLink(Model.UserName, "UserDetails", new { userId = Model.UserId })
             </span>
         </dd>
     </dl>

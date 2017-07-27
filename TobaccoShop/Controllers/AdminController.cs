@@ -193,6 +193,33 @@ namespace TobaccoShop.Controllers
             return View(orders);
         }
 
+        //поиск заказа по номеру
+        [Authorize(Roles = "Moderator, Admin")]
+        [HttpPost]
+        public async Task<ActionResult> FindOrder(int? orderNumber)
+        {
+            if (Request.IsAjaxRequest())
+            {
+                if (orderNumber != null)
+                {
+                    OrderDTO order = await orderService.FindByNumberAsync((int)orderNumber);
+                    if (order != null)
+                    {
+                        List<OrderDTO> orders = new List<OrderDTO>() { order };
+                        return PartialView("_OrderList", orders);
+                    }
+                    else
+                        return PartialView("_OrderList", null);
+                }
+                else
+                {
+                    return PartialView("_OrderList", null);
+                }
+            }
+            else
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        }
+
         [Authorize(Roles = "Moderator, Admin")]
         public async Task<ActionResult> ActiveOrders()
         {
