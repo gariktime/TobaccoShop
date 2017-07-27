@@ -8,7 +8,8 @@
                 <img style='width:150px; height:150px' src="@item.Image" />
             </div>
         </a>
-        <a href="/products/item/@item.ProductId">@item.Mark @item.Model</a>
+        @*<a href="/products/item/@item.ProductId">@item.Mark @item.Model</a>*@
+        @Html.ActionLink(item.Mark + " " + item.Model, "Item", new { productId = item.ProductId })
 
         <p>@Html.DisplayFor(modelItem => item.Price) <span class="glyphicon-rub"></span> </p>
 

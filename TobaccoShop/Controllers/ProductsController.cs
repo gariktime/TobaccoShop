@@ -48,11 +48,11 @@ namespace TobaccoShop.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<ActionResult> Item(Guid? id)
+        public async Task<ActionResult> Item(Guid? productId)
         {
-            if (id != null)
+            if (productId != null)
             {
-                var (product, productType) = await productService.GetProductParamsAsync((Guid)id);
+                var (product, productType) = await productService.GetProductParamsAsync((Guid)productId);
                 if (product != null)
                     return View(product);
                 else

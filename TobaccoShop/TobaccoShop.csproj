@@ -296,10 +296,12 @@
     <Content Include="Views\Products\_AddComment.cshtml" />
     <Content Include="Views\Products\_ProductList.cshtml" />
     <Content Include="Views\Admin\OrderDetails.cshtml" />
+    <Content Include="Views\Shared\_ProfileLayout.cshtml" />
+    <Content Include="Views\Profile\MyProfile.cshtml" />
+    <Content Include="Views\Profile\Orders.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Profile\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

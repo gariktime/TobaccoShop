@@ -1,0 +1,66 @@
+﻿@model IEnumerable<TobaccoShop.BLL.DTO.OrderDTO>
+
+@{
+    ViewBag.Title = "Мои заказы";
+    Layout = "~/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<div>
+    @if (Model == null || Model.Count() == 0)
+    {
+        <h3>Заказов пока нет</h3>
+    }
+    else
+    {
+        <table class="table table-bordered">
+            <tr>
+                <th>
+                    @Html.Label("Номер заказа")
+                </th>
+                <th>
+                    @Html.Label("Дата заказа")
+                </th>
+                <th>
+                    @Html.Label("Товары")
+                </th>
+                <th>
+                    @Html.Label("Стоимость заказа")
+                </th>
+                <th>
+                    @Html.Label("Статус заказа")
+                </th>
+            </tr>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(p => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(p => item.OrderDate)
+                    </td>
+                    <td>
+                        @foreach (var product in item.Products)
+                        {
+                            <dl class="dl-horizontal">
+                                <dt>
+                                    @Html.ActionLink(product.MarkModel, "Item", "Products", new { productId = product.ProductId }, null)
+                                </dt>
+                                <dd>
+                                    x @Html.DisplayFor(p => product.Quantity)
+                                </dd>
+                            </dl>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(p => item.OrderPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(p => item.Status)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+</div>
+

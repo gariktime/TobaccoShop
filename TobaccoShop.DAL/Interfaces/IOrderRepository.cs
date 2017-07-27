@@ -21,5 +21,6 @@ namespace TobaccoShop.DAL.Interfaces
         List<Order> GetAll(Func<Order, bool> predicate);
         Task<List<Order>> GetAllAsync();
         Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate);
+        Task<List<Order>> GetUserOrdersAsync(string userId);
     }
 }

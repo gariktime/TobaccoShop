@@ -6,7 +6,7 @@ using TobaccoShop.DAL.Entities.Identity;
 
 namespace TobaccoShop.DAL.Interfaces
 {
-    public interface IClientManager : IDisposable
+    public interface IUserRepository : IDisposable
     {
         void Create(ClientProfile item);
 

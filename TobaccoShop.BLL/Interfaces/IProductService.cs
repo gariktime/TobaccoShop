@@ -7,7 +7,7 @@ using TobaccoShop.BLL.Services;
 
 namespace TobaccoShop.BLL.Interfaces
 {
-    public interface IProductService
+    public interface IProductService : IDisposable
     {
         //создание новых продуктов
         Task<OperationDetails> AddHookah(HookahDTO hookahDto);
@@ -35,7 +35,5 @@ namespace TobaccoShop.BLL.Interfaces
 
         //комментарий к продукту
         Task<OperationDetails> AddComment(CommentDTO commentDto);
-
-        void Dispose();
     }
 }

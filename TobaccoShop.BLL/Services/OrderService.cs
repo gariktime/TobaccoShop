@@ -178,6 +178,13 @@ namespace TobaccoShop.BLL.Services
             return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
         }
 
+        public async Task<List<OrderDTO>> GetUserOrdersAsync(string userId)
+        {
+            List<Order> orders = await db.Orders.GetUserOrdersAsync(userId);
+            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
+            return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
+        }
+
         #endregion
 
         public void Dispose()

@@ -1,0 +1,73 @@
+﻿@model TobaccoShop.BLL.DTO.UserDTO
+
+@{
+    ViewBag.Title = "Личный кабинет - " + Model.UserName + "@TobaccoShop";
+    Layout = "~/Views/Shared/_ProfileLayout.cshtml";
+}
+
+<div class="col-md-6">
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Имя пользователя")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => Model.UserName)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Email")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => Model.Email)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Дата регистрации")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => Model.RegisterDate)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Статус")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.DisplayFor(p => Model.Role)
+            </span>
+        </dd>
+    </dl>
+
+    <dl class="iteminfo">
+        <dt class="iteminfo-name">
+            <span class="iteminfo-name-inner">
+                @Html.Label("Заказы")
+            </span>
+        </dt>
+        <dd class="iteminfo-value">
+            <span class="iteminfo-value-inner">
+                @Html.ActionLink(Model.Orders.Count.ToString(), "Orders")
+            </span>
+        </dd>
+    </dl>
+</div>

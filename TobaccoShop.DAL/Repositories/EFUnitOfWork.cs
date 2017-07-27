@@ -16,7 +16,7 @@ namespace TobaccoShop.DAL.Repositories
         //классы Identity
         private ApplicationUserManager userManager;
         private ApplicationRoleManager roleManager;
-        private IClientManager clientManager;
+        private IUserRepository clientManager;
 
         //общий репозиторий продуктов
         private IProductRepository productRepository;
@@ -36,7 +36,7 @@ namespace TobaccoShop.DAL.Repositories
             db = new ApplicationContext(connectionString);
             userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(db));
-            clientManager = new ClientManager(db);
+            clientManager = new UserRepository(db);
         }
 
         public System.Data.Entity.Database Database
@@ -59,7 +59,7 @@ namespace TobaccoShop.DAL.Repositories
             get { return roleManager; }
         }
 
-        public IClientManager ClientManager
+        public IUserRepository ClientManager
         {
             get { return clientManager; }
         }

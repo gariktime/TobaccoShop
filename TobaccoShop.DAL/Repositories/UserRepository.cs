@@ -10,11 +10,11 @@ using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.DAL.Repositories
 {
-    public class ClientManager : IClientManager
+    public class UserRepository : IUserRepository
     {
-        public ApplicationContext db { get; set; }
+        private ApplicationContext db { get; set; }
 
-        public ClientManager(ApplicationContext context)
+        public UserRepository(ApplicationContext context)
         {
             db = context;
         }
@@ -26,22 +26,22 @@ namespace TobaccoShop.DAL.Repositories
 
         public ClientProfile FindById(string id)
         {
-            return db.ClientProfiles.Include("Orders.Products.Product").FirstOrDefault(p => p.Id == id);
+            return db.ClientProfiles.Include(p => p.Orders).FirstOrDefault(p => p.Id == id);
         }
 
         public async Task<ClientProfile> FindByIdAsync(string id)
         {
-            return await db.ClientProfiles.Include("Orders.Products.Product").FirstOrDefaultAsync(p => p.Id == id);
+            return await db.ClientProfiles.Include(p => p.Orders).FirstOrDefaultAsync(p => p.Id == id);
         }
 
         public async Task<List<ClientProfile>> GetAllAsync()
         {
-            return await db.ClientProfiles.Include("Orders.Products.Product").AsNoTracking().ToListAsync();
+            return await db.ClientProfiles.Include(p => p.Orders).AsNoTracking().ToListAsync();
         }
 
         public async Task<List<ClientProfile>> GetAllAsync(Expression<Func<ClientProfile, bool>> predicate)
         {
-            return await db.ClientProfiles.Include("Orders.Products.Product").Where(predicate).AsNoTracking().ToListAsync();
+            return await db.ClientProfiles.Include(p => p.Orders).Where(predicate).AsNoTracking().ToListAsync();
         }
 
         public void Dispose()

@@ -38,22 +38,22 @@ namespace TobaccoShop.DAL.Repositories
 
         public List<Product> GetAll()
         {
-            return db.Products.ToList();
+            return db.Products.AsNoTracking().ToList();
         }
 
         public List<Product> GetAll(Func<Product, bool> predicate)
         {
-            return db.Products.Where(predicate).ToList();
+            return db.Products.AsNoTracking().Where(predicate).ToList();
         }
 
         public async Task<List<Product>> GetAllAsync()
         {
-            return await db.Products.ToListAsync();
+            return await db.Products.AsNoTracking().ToListAsync();
         }
 
         public async Task<List<Product>> GetAllAsync(Expression<Func<Product, bool>> predicate)
         {
-            return await db.Products.Where(predicate).ToListAsync();
+            return await db.Products.AsNoTracking().Where(predicate).ToListAsync();
         }
     }
 }

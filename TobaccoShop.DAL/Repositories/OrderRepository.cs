@@ -60,22 +60,27 @@ namespace TobaccoShop.DAL.Repositories
 
         public List<Order> GetAll()
         {
-            return db.Orders.Include(p => p.User).ToList();
+            return db.Orders.AsNoTracking().Include(p => p.User).ToList();
         }
 
         public List<Order> GetAll(Func<Order, bool> predicate)
         {
-            return db.Orders.Include(p => p.User).Where(predicate).ToList();
+            return db.Orders.AsNoTracking().Include(p => p.User).Where(predicate).ToList();
         }
 
         public async Task<List<Order>> GetAllAsync()
         {
-            return await db.Orders.Include(p => p.User).ToListAsync();
+            return await db.Orders.AsNoTracking().Include(p => p.User).ToListAsync();
         }
 
         public async Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate)
         {
-            return await db.Orders.Include(p => p.User).Where(predicate).ToListAsync();
+            return await db.Orders.AsNoTracking().Include(p => p.User).Where(predicate).ToListAsync();
+        }
+
+        public async Task<List<Order>> GetUserOrdersAsync(string userId)
+        {
+            return await db.Orders.Include("Products.Product").AsNoTracking().ToListAsync();
         }
     }
 }
