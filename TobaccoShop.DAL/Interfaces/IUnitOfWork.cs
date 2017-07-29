@@ -10,8 +10,8 @@ namespace TobaccoShop.DAL.Interfaces
         System.Data.Entity.Database Database { get; }
 
         ApplicationUserManager UserManager { get; }
-        IUserRepository ClientManager { get; }
         ApplicationRoleManager RoleManager { get; }
+        IUserRepository Users { get; }
 
         IProductRepository Products { get; }
 

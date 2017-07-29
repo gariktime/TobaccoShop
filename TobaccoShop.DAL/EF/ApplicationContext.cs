@@ -38,7 +38,7 @@ namespace TobaccoShop.DAL.EF
         public DbSet<Order> Orders { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<OrderedProduct> OrderedProductInfo { get; set; }
-        public DbSet<ClientProfile> ClientProfiles { get; set; }
+        public DbSet<ShopUser> ShopUsers { get; set; }
     }
 
     #region Model Configuration Fluent API

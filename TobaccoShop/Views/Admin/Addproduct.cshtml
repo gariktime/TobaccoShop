@@ -1,24 +1,21 @@
 ﻿@{
-    ViewBag.Title = "Addproduct";
+    ViewBag.Title = "Добавление нового товара";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<label class="control-label">Добавление нового продукта</label>
+<label class="control-label">Добавление нового товара</label>
 
 <div>
-    @using (Ajax.BeginForm("AddProduct", new AjaxOptions { InsertionMode = InsertionMode.Replace, UpdateTargetId = "AddProductForm" }))
-    {
-        <div>
-            <label class="control-label">Выберите тип продукта: </label>
-        </div>
-        <div>
-            @Html.DropDownList("ProductType", ViewBag.Types as SelectList, new { @class = "form-control" })
-        </div>
-        <div>
-            <input type="submit" value="ОК" />
-        </div>
-    }
-</div>
-<div id="AddEditProductForm">
-    @{Html.RenderPartial("_AddEditHookah");}
+    <div class="col-md-2">
+        <a class="nounderline section-name" href="/admin/addedithookah" title="Кальян">
+            <img class="img-responsive img-center" src="~/Content/SectionImages/hookah.png" />
+            <p>Кальян</p>
+        </a>
+    </div>
+    <div class="col-md-2">
+        <a class="nounderline section-name" href="/admin/addedithookahtobacco" title="Табак для кальяна">
+            <img class="img-responsive img-center" src="~/Content/SectionImages/hookah_tobacco.png" />
+            <p>Табак для кальяна</p>
+        </a>
+    </div>
 </div>

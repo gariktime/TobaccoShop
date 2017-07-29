@@ -34,7 +34,7 @@ namespace TobaccoShop.DAL.Entities
         public OrderStatus Status { get; set; }
 
         public string UserId { get; set; }
-        public ClientProfile User { get; set; }
+        public ShopUser User { get; set; }
 
         public List<OrderedProduct> Products { get; set; }
 

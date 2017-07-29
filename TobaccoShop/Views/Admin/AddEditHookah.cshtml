@@ -1,14 +1,40 @@
 ﻿@model TobaccoShop.Models.ProductModels.HookahViewModel
 
+@{
+    string title = String.Empty;
+    if (Model.ProductId == Guid.Empty)
+    {
+        title = "Добавление нового товара: Кальян";
+    }
+    else
+    {
+        title = "Редактирование товара: Кальян";
+    }
 
-@using(Html.BeginForm("AddEditHookah", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    ViewBag.Title = title;
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@using (Html.BeginForm("AddEditHookah", "Admin", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-group">
-        @if (Model != null)
+        @if (Model.ProductId != Guid.Empty)
         {
             <div>
+                <h3>Редактирование товара: Кальян</h3>
+            </div>
+            <div>
                 @Html.HiddenFor(x => x.ProductId)
+            </div>
+            <div>
+                <img src="@Model.Image" />
+            </div>
+        }
+        else
+        {
+            <div>
+                <h3>Добавление нового товара: Кальян</h3>
             </div>
         }
         <div>
@@ -67,6 +93,7 @@
     <div class="form-group">
         <div>
             <label class="control-label">Изображение, максимальный размер 270x270</label>
+            <label class="label-warning">При добавлении товара, если изображение не задано, будет установлено изображение по умолчанию</label>
             <input type="file" name="uploadImage" />
         </div>
     </div>

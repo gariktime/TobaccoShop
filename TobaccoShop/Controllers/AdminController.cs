@@ -4,7 +4,6 @@ using Microsoft.AspNet.Identity.Owin;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
@@ -33,52 +32,39 @@ namespace TobaccoShop.Controllers
             orderService = oService;
         }
 
-        #region Добавление/редактирование/удаление товаров
+        #region Добавление/редактирование/удаление/список/поиск товаров
 
         //добавление нового товара
         [Authorize(Roles = "Moderator, Admin")]
         public ActionResult AddProduct()
         {
-            var st = from ProductType pt in Enum.GetValues(typeof(ProductType))
-                     select new { ID = (int)pt, Name = pt.ToString() };
-            SelectList types = new SelectList(st, "ID", "Name", ProductType.Hookah);
-            ViewBag.Types = types;
             return View();
-        }
-
-        [Authorize(Roles = "Moderator, Admin")]
-        [HttpPost]
-        public ActionResult AddProduct(ProductType productType)
-        {
-            if (Request.IsAjaxRequest())
-            {
-                if (productType == ProductType.Hookah)
-                    return PartialView("_AddHookah");
-                else if (productType == ProductType.HookahTobacco)
-                    return PartialView("_AddHookahTobacco");
-                else
-                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            else
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
         }
 
         //редактирование товара
         [Authorize(Roles = "Moderator, Admin")]
-        public async Task<ActionResult> Edit(Guid id)
+        public async Task<ActionResult> EditProduct(Guid? productId)
         {
-            var (product, productType) = await productService.GetProductParamsAsync(id);
+            if (productId == null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            var (product, productType) = await productService.GetProductParamsAsync((Guid)productId);
 
             if (productType == ProductType.Hookah)
             {
-                var hookah = (HookahDTO)product;
-                HookahViewModel hvm = new HookahViewModel() { ProductId = hookah.ProductId, Mark = hookah.Mark, Model = hookah.Model, Country = hookah.Country, Description = hookah.Description, Price = hookah.Price, Height = hookah.Height };
-                //return PartialView("_AddHookah", hvm);
-                ViewData["PartialViewName"] = "_AddEditHookah";
-                ViewData["ProductModel"] = hvm;
-                return View();
+                HookahDTO hookah = (HookahDTO)product;
+                HookahViewModel hvm = new HookahViewModel() { ProductId = hookah.ProductId, Mark = hookah.Mark, Model = hookah.Model, Country = hookah.Country, Description = hookah.Description, Price = hookah.Price, Height = hookah.Height, Image = hookah.Image };
+                return View("AddEditHookah", hvm);
             }
             return RedirectToAction("Products");
+        }
+
+        //Добавление нового / редактирование существующего Hookah
+        [Authorize(Roles = "Moderator, Admin")]
+        public ActionResult AddEditHookah()
+        {
+            HookahViewModel hvm = new HookahViewModel();
+            return View(hvm);
         }
 
         [Authorize(Roles = "Moderator, Admin")]
@@ -86,21 +72,21 @@ namespace TobaccoShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddEditHookah(HookahViewModel hvm, HttpPostedFileBase uploadImage)
         {
-            //добавление изображения к товару
-            string imagePath = null;
-            if (uploadImage != null)
-            {
-                if (!uploadImage.ContentType.StartsWith("image"))
-                    ModelState.AddModelError("", "Недопустимый тип файла");
-                else
-                {
-                    imagePath = "/Files/ProductImages/" + Path.GetFileName(uploadImage.FileName);
-                    uploadImage.SaveAs(Server.MapPath("~" + imagePath));
-                }
-            }
-
             if (ModelState.IsValid)
             {
+                //добавление изображения к товару
+                string imagePath = null;
+                if (uploadImage != null)
+                {
+                    if (!uploadImage.ContentType.StartsWith("image"))
+                        ModelState.AddModelError("", "Недопустимый тип файла");
+                    else
+                    {
+                        imagePath = "/Files/ProductImages/" + Path.GetFileName(uploadImage.FileName);
+                        uploadImage.SaveAs(Server.MapPath("~" + imagePath));
+                    }
+                }
+
                 //создание DTO из ViewModel
                 Mapper.Initialize(cfg => cfg.CreateMap<HookahViewModel, HookahDTO>());
                 HookahDTO hookahDto = Mapper.Map<HookahViewModel, HookahDTO>(hvm);
@@ -109,7 +95,7 @@ namespace TobaccoShop.Controllers
                 if (hvm.ProductId == Guid.Empty) //добавление нового продукта
                 {
                     await productService.AddHookah(hookahDto);
-                    return RedirectToAction("AddProduct");
+                    return RedirectToAction("AddEditHookah");
                 }
                 else //изменение существующего
                 {
@@ -117,9 +103,8 @@ namespace TobaccoShop.Controllers
                     return RedirectToAction("Products");
                 }
             }
-            ViewData["PartialViewName"] = "_AddEditHookah";
-            ViewData["ProductModel"] = hvm;
-            return View("Edit");
+            else
+                return View("AddEditHookah", hvm);
         }
 
         [Authorize(Roles = "Moderator, Admin")]
@@ -139,9 +124,9 @@ namespace TobaccoShop.Controllers
 
         //удаление товара
         [Authorize(Roles = "Moderator, Admin")]
-        public async Task<ActionResult> Remove(Guid id)
+        public async Task<ActionResult> Remove(Guid productId)
         {
-            await productService.RemoveProduct(id);
+            await productService.RemoveProduct(productId);
             return RedirectToAction("Products");
         }
 
@@ -393,4 +378,3 @@ namespace TobaccoShop.Controllers
         }
     }
 }
-

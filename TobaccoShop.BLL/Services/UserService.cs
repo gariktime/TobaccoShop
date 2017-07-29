@@ -41,7 +41,7 @@ namespace TobaccoShop.BLL.Services
                 //добавляем пользователю роль
                 await db.UserManager.AddToRoleAsync(user.Id, userDto.Role);
                 //создаём профиль пользователя
-                ClientProfile clientProfile = new ClientProfile
+                ShopUser shopUser = new ShopUser
                 {
                     Id = user.Id,
                     UserName = userDto.UserName,
@@ -49,7 +49,7 @@ namespace TobaccoShop.BLL.Services
                     Role = userDto.Role,
                     RegisterDate = DateTime.Now
                 };
-                db.ClientManager.Create(clientProfile);
+                db.Users.Create(shopUser);
                 await db.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно завершена", "");
             }
@@ -111,7 +111,7 @@ namespace TobaccoShop.BLL.Services
             ApplicationUser admin = new ApplicationUser { Email = "asdqt@gmail.com", UserName = "Admin" };
             await db.UserManager.CreateAsync(admin, "123456");
             await db.UserManager.AddToRoleAsync(admin.Id, "Admin");
-            ClientProfile adminProfile = new ClientProfile
+            ShopUser adminProfile = new ShopUser
             {
                 Id = admin.Id,
                 UserName = admin.UserName,
@@ -119,7 +119,7 @@ namespace TobaccoShop.BLL.Services
                 RegisterDate = DateTime.Now,
                 Role = "Admin"
             };
-            db.ClientManager.Create(adminProfile);
+            db.Users.Create(adminProfile);
             await db.SaveAsync();
         }
 
@@ -145,51 +145,37 @@ namespace TobaccoShop.BLL.Services
 
         public UserDTO FindUserById(string id)
         {
-            ClientProfile user = db.ClientManager.FindById(id);
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<ClientProfile, UserDTO>();
-                cfg.AddProfile<AutomapperProfile>();
-            });
-            return Mapper.Map<ClientProfile, UserDTO>(user);
+            ShopUser user = db.Users.FindById(id);
+            Mapper.Initialize(cfg => { cfg.AddProfile<AutomapperProfile>(); });
+            return Mapper.Map<ShopUser, UserDTO>(user);
         }
 
         public async Task<UserDTO> FindUserByIdAsync(string id)
         {
-            ClientProfile user = await db.ClientManager.FindByIdAsync(id);
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<ClientProfile, UserDTO>();
-                cfg.AddProfile<AutomapperProfile>();
-            });
-            return Mapper.Map<ClientProfile, UserDTO>(user);
-        }
-
-        public string GetCurrentUserName(string id)
-        {
-            var user = db.ClientManager.FindById(id);
-            return user.UserName;
+            ShopUser user = await db.Users.FindByIdAsync(id);
+            Mapper.Initialize(cfg => { cfg.AddProfile<AutomapperProfile>(); });
+            return Mapper.Map<ShopUser, UserDTO>(user);
         }
 
         public async Task<List<UserDTO>> GetUsersAsync()
         {
-            List<ClientProfile> users = await db.ClientManager.GetAllAsync();
+            List<ShopUser> users = await db.Users.GetAllAsync();
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
-            return Mapper.Map<List<ClientProfile>, List<UserDTO>>(users);
+            return Mapper.Map<List<ShopUser>, List<UserDTO>>(users);
         }
 
         public async Task<List<UserDTO>> GetUsersByNameAsync(string userName)
         {
-            List<ClientProfile> users = await db.ClientManager.GetAllAsync(p => p.UserName.Contains(userName));
+            List<ShopUser> users = await db.Users.GetAllAsync(p => p.UserName.Contains(userName));
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
-            return Mapper.Map<List<ClientProfile>, List<UserDTO>>(users);
+            return Mapper.Map<List<ShopUser>, List<UserDTO>>(users);
         }
 
         public async Task<List<UserDTO>> GetUsersByRoleAsync(string role)
         {
-            List<ClientProfile> users = await db.ClientManager.GetAllAsync(p => p.Role == role);
+            List<ShopUser> users = await db.Users.GetAllAsync(p => p.Role == role);
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
-            return Mapper.Map<List<ClientProfile>, List<UserDTO>>(users);
+            return Mapper.Map<List<ShopUser>, List<UserDTO>>(users);
         }
 
         public void Dispose()

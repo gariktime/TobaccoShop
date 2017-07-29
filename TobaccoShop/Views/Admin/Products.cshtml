@@ -5,13 +5,17 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-
 <div>
-    @using (Ajax.BeginForm("Products", "Admin", new AjaxOptions { UpdateTargetId = "productList", InsertionMode = InsertionMode.Replace }))
-    {
-        <input class="form-control" name="searchQuery" type="text" />
-        <input type="submit" value="Поиск" />
-    }
+    <div>
+        @using (Ajax.BeginForm("Products", "Admin", new AjaxOptions { UpdateTargetId = "productList", InsertionMode = InsertionMode.Replace }))
+        {
+            <input class="form-control" name="searchQuery" type="text" />
+            <input type="submit" value="Поиск" />
+        }
+    </div>
+    <div>
+        @Html.ActionLink("Добавить товар", "AddProduct", "Admin", null, new { @class = "btn btn-default"})
+    </div>
 </div>
 
 <div id="productList">

@@ -59,7 +59,7 @@ namespace TobaccoShop.DAL.Repositories
             get { return roleManager; }
         }
 
-        public IUserRepository ClientManager
+        public IUserRepository Users
         {
             get { return clientManager; }
         }

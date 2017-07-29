@@ -31,7 +31,7 @@ namespace TobaccoShop.BLL.Services
             {
                 try
                 {
-                    ClientProfile clientProfile = await db.ClientManager.FindByIdAsync(orderDTO.UserId);
+                    ShopUser shopUser = await db.Users.FindByIdAsync(orderDTO.UserId);
 
                     Mapper.Initialize(cfg => { cfg.AddProfile<AutomapperProfile>(); });
                     List<OrderedProduct> orderedProducts = Mapper.Map<List<OrderedProductDTO>, List<OrderedProduct>>(orderDTO.Products);
@@ -41,7 +41,7 @@ namespace TobaccoShop.BLL.Services
                         OrderId = Guid.NewGuid(),
                         OrderPrice = orderDTO.OrderPrice,
                         Products = orderedProducts,
-                        User = clientProfile,
+                        User = shopUser,
                         Appeal = orderDTO.Appeal.Trim(),
                         OrderDate = DateTime.Now,
                         Street = orderDTO.Street.Trim(),

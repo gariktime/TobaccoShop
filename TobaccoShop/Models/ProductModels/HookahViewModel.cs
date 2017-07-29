@@ -35,5 +35,8 @@ namespace TobaccoShop.Models.ProductModels
         [Display(Name = "Высота в сантиметрах")]
         [Range(10, 200, ErrorMessage = "Некорректная высота кальяна")]
         public double Height { get; set; }
+
+        [Display(Name = "Изображение")]
+        public string Image { get; set; }
     }
 }

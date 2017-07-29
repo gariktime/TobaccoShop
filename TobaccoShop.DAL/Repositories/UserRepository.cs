@@ -19,29 +19,29 @@ namespace TobaccoShop.DAL.Repositories
             db = context;
         }
 
-        public void Create(ClientProfile item)
+        public void Create(ShopUser item)
         {
-            db.ClientProfiles.Add(item);
+            db.ShopUsers.Add(item);
         }
 
-        public ClientProfile FindById(string id)
+        public ShopUser FindById(string id)
         {
-            return db.ClientProfiles.Include(p => p.Orders).FirstOrDefault(p => p.Id == id);
+            return db.ShopUsers.Include(p => p.Orders).FirstOrDefault(p => p.Id == id);
         }
 
-        public async Task<ClientProfile> FindByIdAsync(string id)
+        public async Task<ShopUser> FindByIdAsync(string id)
         {
-            return await db.ClientProfiles.Include(p => p.Orders).FirstOrDefaultAsync(p => p.Id == id);
+            return await db.ShopUsers.Include(p => p.Orders).FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<ClientProfile>> GetAllAsync()
+        public async Task<List<ShopUser>> GetAllAsync()
         {
-            return await db.ClientProfiles.Include(p => p.Orders).AsNoTracking().ToListAsync();
+            return await db.ShopUsers.Include(p => p.Orders).AsNoTracking().ToListAsync();
         }
 
-        public async Task<List<ClientProfile>> GetAllAsync(Expression<Func<ClientProfile, bool>> predicate)
+        public async Task<List<ShopUser>> GetAllAsync(Expression<Func<ShopUser, bool>> predicate)
         {
-            return await db.ClientProfiles.Include(p => p.Orders).Where(predicate).AsNoTracking().ToListAsync();
+            return await db.ShopUsers.Include(p => p.Orders).Where(predicate).AsNoTracking().ToListAsync();
         }
 
         public void Dispose()

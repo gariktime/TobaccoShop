@@ -62,7 +62,7 @@
     <Compile Include="Entities\Products\Hookah.cs" />
     <Compile Include="Entities\Products\HookahTobacco.cs" />
     <Compile Include="Entities\Identity\ApplicationUser.cs" />
-    <Compile Include="Entities\Identity\ClientProfile.cs" />
+    <Compile Include="Entities\Identity\ShopUser.cs" />
     <Compile Include="Entities\Order.cs" />
     <Compile Include="Entities\OrderedProduct.cs" />
     <Compile Include="Entities\Products\Product.cs" />

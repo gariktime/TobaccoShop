@@ -18,7 +18,6 @@ namespace TobaccoShop.BLL.Interfaces
 
         UserDTO FindUserById(string id);
         Task<UserDTO> FindUserByIdAsync(string id);
-        string GetCurrentUserName(string id);
 
         Task<List<UserDTO>> GetUsersAsync();
         Task<List<UserDTO>> GetUsersByNameAsync(string userName);

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TobaccoShop.DAL.Entities.Identity
 {
-    public class ClientProfile
+    public class ShopUser
     {
         [Key]
         [ForeignKey("ApplicationUser")]
@@ -23,7 +23,7 @@ namespace TobaccoShop.DAL.Entities.Identity
 
         public virtual ApplicationUser ApplicationUser { get; set; }
 
-        public ClientProfile()
+        public ShopUser()
         {
             Orders = new List<Order>();
         }

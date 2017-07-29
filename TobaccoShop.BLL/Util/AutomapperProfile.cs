@@ -22,7 +22,7 @@ namespace TobaccoShop.BLL.Util
             CreateMap<ProductDTO, Product>()
                 .ForMember(dest => dest.Comments, opt => opt.Ignore());
 
-            CreateMap<ClientProfile, UserDTO>()
+            CreateMap<ShopUser, UserDTO>()
                 .ForMember(dest => dest.Orders, opt => opt.MapFrom(src => src.Orders))
                 .ForMember(dest => dest.Password, opt => opt.Ignore());
 

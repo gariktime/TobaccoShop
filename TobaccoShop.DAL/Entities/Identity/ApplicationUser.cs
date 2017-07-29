@@ -4,6 +4,6 @@ namespace TobaccoShop.DAL.Entities.Identity
 {
     public class ApplicationUser : IdentityUser
     {
-        public virtual ClientProfile ClientProfile { get; set; }
+        public virtual ShopUser ClientProfile { get; set; }
     }
 }

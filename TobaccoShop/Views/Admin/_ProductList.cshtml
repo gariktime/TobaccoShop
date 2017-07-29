@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<TobaccoShop.BLL.DTO.ProductDTO>
 
-
-
 <table class="table">
     <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Image)
+        </th>
         <th>
             @Html.DisplayNameFor(model => model.Mark)
         </th>
@@ -23,6 +24,9 @@
     {
         <tr>
             <td>
+                <img src="@item.Image" style='width:150px; height:150px'/>
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Mark)
             </td>
             <td>
@@ -35,9 +39,9 @@
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
             <td>
-                @Html.ActionLink("Редактировать", "Edit", new { id = item.ProductId }) |
-                @Html.ActionLink("Сведения о продукте", "Details", new { id = item.ProductId }) |
-                @Html.ActionLink("Удалить", "Remove", new { id = item.ProductId })
+                @Html.ActionLink("Редактировать", "EditProduct", "Admin", new { productId = item.ProductId }, null) |
+                @Html.ActionLink("Сведения о продукте", "Item", "Products", new { productId = item.ProductId }, null) |
+                @Html.ActionLink("Удалить", "Remove", "Admin", new { productId = item.ProductId }, null)
             </td>
         </tr>
     }

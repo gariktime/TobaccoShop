@@ -18,7 +18,7 @@ namespace TobaccoShop.DAL.Entities
         public Product Product { get; set; }
 
         public string UserId { get; set; }
-        public ClientProfile User { get; set; }
+        public ShopUser User { get; set; }
 
         public Comment()
         {
