@@ -5,7 +5,7 @@ namespace TobaccoShop.Models
     public class RegisterModel
     {
         [Required]
-        [StringLength(15, ErrorMessage = "Длина имени пользователя должна быть от 5 до 15 символов", MinimumLength = 5)]
+        [StringLength(25, ErrorMessage = "Длина имени пользователя должна быть от 3 до 25 символов", MinimumLength = 3)]
         [Display(Name = "Имя пользователя")]
         public string UserName { get; set; }
 

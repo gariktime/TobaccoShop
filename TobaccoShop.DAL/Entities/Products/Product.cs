@@ -17,16 +17,16 @@ namespace TobaccoShop.DAL.Entities.Products
         public string Model { get; set; }
 
         [DataType(DataType.MultilineText)]
-        [StringLength(2000, MinimumLength = 5, ErrorMessage = "Описание товара должно быть от 5 до 2000 символов")]
+        [StringLength(2000)]
         public string Description { get; set; }
 
         [Range(1, 999999)]
         public int Price { get; set; }
 
-        [StringLength(25, MinimumLength = 2)]
+        [StringLength(50)]
         public string Country { get; set; }
 
-        [StringLength(75)]
+        [StringLength(125)]
         public string Image { get; set; }
 
         [Timestamp]

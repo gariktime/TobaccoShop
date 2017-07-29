@@ -11,10 +11,13 @@ namespace TobaccoShop.DAL.Entities.Identity
         [ForeignKey("ApplicationUser")]
         public string Id { get; set; }
 
+        [StringLength(25, MinimumLength = 3)]
         public string UserName { get; set; }
 
+        [StringLength(50, MinimumLength = 7)]
         public string Email { get; set; }
 
+        [StringLength(15, MinimumLength = 1)]
         public string Role { get; set; }
 
         public DateTime RegisterDate { get; set; }

@@ -19,11 +19,11 @@ namespace TobaccoShop.Models.ProductModels
 
         [Display(Name = "Описание товара")]
         [DataType(DataType.MultilineText)]
-        [StringLength(2000, MinimumLength = 5)]
+        [StringLength(2000)]
         public string Description { get; set; }
 
         [Display(Name = "Страна")]
-        [StringLength(25, MinimumLength = 2)]
+        [StringLength(50)]
         public string Country { get; set; }
 
         [Required(ErrorMessage = "Введите цену")]

@@ -17,16 +17,22 @@ namespace TobaccoShop.DAL.Entities
 
         public double OrderPrice { get; set; }
 
+        [StringLength(75, MinimumLength = 2)]
         public string Appeal { get; set; }
 
+        [StringLength(50, MinimumLength = 2)]
         public string Street { get; set; }
 
+        [StringLength(25, MinimumLength = 1)]
         public string House { get; set; }
 
+        [StringLength(25, MinimumLength = 1)]
         public string Apartment { get; set; }
 
+        [StringLength(20, MinimumLength = 6)]
         public string PhoneNumber { get; set; }
 
+        [StringLength(500)]
         public string Note { get; set; }
 
         public DateTime OrderDate { get; set; }

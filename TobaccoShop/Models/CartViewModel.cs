@@ -7,6 +7,7 @@ namespace TobaccoShop.Models
     {
         public List<OrderedProductDTO> Products { get; set; }
 
+        [System.ComponentModel.DataAnnotations.Display(Name = "Общая стоимость")]
         public double TotalPrice { get; set; }
     }
 }
