@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
@@ -11,7 +9,6 @@ using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Util;
 using TobaccoShop.DAL.Entities;
 using TobaccoShop.DAL.Entities.Identity;
-using TobaccoShop.DAL.Entities.Products;
 using TobaccoShop.DAL.Interfaces;
 
 namespace TobaccoShop.BLL.Services
@@ -25,17 +22,23 @@ namespace TobaccoShop.BLL.Services
             db = uow;
         }
 
+        //добавление заказа в БД
         public async Task<OperationDetails> AddOrder(OrderDTO orderDTO)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
+                    //пользователь, оформляющий заказ
                     ShopUser shopUser = await db.Users.FindByIdAsync(orderDTO.UserId);
+                    if (shopUser == null)
+                        return new OperationDetails(false, "Пользователь с указанным ID не найден", "");
 
+                    //информация о заказываемых товарах
                     Mapper.Initialize(cfg => { cfg.AddProfile<AutomapperProfile>(); });
                     List<OrderedProduct> orderedProducts = Mapper.Map<List<OrderedProductDTO>, List<OrderedProduct>>(orderDTO.Products);
 
+                    //создаём Order из OrderDTO
                     Order order = new Order()
                     {
                         OrderId = Guid.NewGuid(),
@@ -52,6 +55,7 @@ namespace TobaccoShop.BLL.Services
                         Status = OrderStatus.Active
                     };
 
+                    //добавляем заказ в БД
                     db.Orders.Add(order);
                     await db.SaveAsync();
                     transaction.Commit();
@@ -65,6 +69,7 @@ namespace TobaccoShop.BLL.Services
             }
         }
 
+        //удаление заказа
         public async Task<OperationDetails> DeleteOrder(Guid orderId)
         {
             try

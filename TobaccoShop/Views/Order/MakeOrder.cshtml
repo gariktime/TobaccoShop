@@ -6,7 +6,7 @@
 }
 
 <div class="col-md-8">
-    @using (Html.BeginForm("ConfirmOrder", "Order", FormMethod.Post))
+    @using (Html.BeginForm("MakeOrder", "Order", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         <div class="form-group">
@@ -39,6 +39,9 @@
         </div>
         <div class="form-group">
             <input type="submit" class="btn btn-default" value="Оформить заказ" />
+        </div>
+        <div>
+            @Html.ValidationSummary(true)
         </div>
     }
 </div>

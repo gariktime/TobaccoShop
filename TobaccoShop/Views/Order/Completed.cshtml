@@ -1,0 +1,11 @@
+﻿
+@{
+    ViewBag.Title = "Заказ успешно оформлен";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>
+    <p>Заказ успешно оформлен!</p>
+    <p>Благодарим Вас за покупку! Статус Вашего заказа вы можете посмотреть в <a href="/profile/orders">личном кабинете</a></p>
+    @Html.ActionLink("Вернуться на главную", "Index", "Home")
+</div>

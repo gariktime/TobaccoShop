@@ -29,6 +29,7 @@ namespace TobaccoShop.Controllers
 
         #region Работа с корзиной
 
+        //корзина покупок
         [AllowAnonymous]
         public ActionResult Cart()
         {
@@ -97,13 +98,15 @@ namespace TobaccoShop.Controllers
 
         #region Оформление нового заказа
 
+        //оформление заказа
         [Authorize]
         public ActionResult MakeOrder()
         {
+            //товары в корзине
             List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
             if (products == null || products.Count == 0)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            double orderPrice = products.Sum(p => p.LinePrice);
+            double orderPrice = products.Sum(p => p.LinePrice); //общая стоимость заказа
             OrderViewModel ovm = new OrderViewModel()
             {
                 OrderPrice = orderPrice
@@ -114,32 +117,50 @@ namespace TobaccoShop.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ConfirmOrder(OrderViewModel ovm)
+        public async Task<ActionResult> MakeOrder(OrderViewModel ovm)
         {
-            List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
-            if (products == null || products.Count == 0)
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            string currUserId = User.Identity.GetUserId();
-            OrderDTO orderDTO = new OrderDTO()
+            if (ModelState.IsValid)
             {
-                OrderPrice = products.Sum(p => p.LinePrice),
-                UserId = currUserId,
-                Products = products,
-                Street = ovm.Street,
-                House = ovm.House,
-                Apartment = ovm.Apartment,
-                PhoneNumber = ovm.PhoneNumber,
-                Note = ovm.Note,
-                Appeal = ovm.Appeal
-            };
-            var result = await orderService.AddOrder(orderDTO);
-            if (result.Succeeded == true)
-            {
-                Session["Cart"] = null;
-                return RedirectToAction("Index", "Home");
+                //товары в корзине
+                List<OrderedProductDTO> products = (List<OrderedProductDTO>)Session["Cart"];
+                if (products == null || products.Count == 0)
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                string currentUserId = User.Identity.GetUserId(); //ID текущего пользователя
+                //создаём OrderDTO из ViewModel
+                OrderDTO orderDTO = new OrderDTO()
+                {
+                    OrderPrice = products.Sum(p => p.LinePrice),
+                    UserId = currentUserId,
+                    Products = products,
+                    Street = ovm.Street,
+                    House = ovm.House,
+                    Apartment = ovm.Apartment,
+                    PhoneNumber = ovm.PhoneNumber,
+                    Note = ovm.Note,
+                    Appeal = ovm.Appeal
+                };
+                //добавляем заказ в БД
+                var result = await orderService.AddOrder(orderDTO);
+                if (result.Succeeded == true)
+                {
+                    Session["Cart"] = null;
+                    return RedirectToAction("Completed");
+                }
+                else
+                {
+                    ModelState.AddModelError("", result.Message);
+                    return View(ovm);
+                }
             }
             else
-                return RedirectToAction("Index", "Home");
+                return View(ovm);
+        }
+
+        //страница с информацией об успешном оформлении заказа
+        [Authorize]
+        public ActionResult Completed()
+        {
+            return View();
         }
 
         #endregion
