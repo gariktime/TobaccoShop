@@ -57,6 +57,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Forloop.HtmlHelpers, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Forloop.HtmlHelpers.1.2.0.0\lib\net45\Forloop.HtmlHelpers.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AI.Agent.Intercept, Version=2.4.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ApplicationInsights.Agent.Intercept.2.4.0\lib\net45\Microsoft.AI.Agent.Intercept.dll</HintPath>
     </Reference>
@@ -210,6 +213,7 @@
     <Compile Include="Models\ProductModels\HookahTobaccoViewModel.cs" />
     <Compile Include="Models\ProductModels\HookahViewModel.cs" />
     <Compile Include="Models\RegisterModel.cs" />
+    <Compile Include="Models\StatisticsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Util\NinjectDependencyResolver.cs" />
   </ItemGroup>
@@ -299,6 +303,9 @@
     <Content Include="Views\Profile\Orders.cshtml" />
     <Content Include="Views\Admin\AddEditHookah.cshtml" />
     <Content Include="Views\Order\Completed.cshtml" />
+    <Content Include="Views\Admin\_StatisticsOrderPrice.cshtml" />
+    <Content Include="Views\Admin\_StatisticsOrderCount.cshtml" />
+    <Content Include="Views\Admin\_StatisticsOrderProducts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

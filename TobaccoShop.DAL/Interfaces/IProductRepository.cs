@@ -13,9 +13,9 @@ namespace TobaccoShop.DAL.Interfaces
         Product FindById(Guid productId);
         Task<Product> FindByIdAsync(Guid productId);
 
-        List<Product> GetAll();
-        List<Product> GetAll(Func<Product, bool> predicate);
-        Task<List<Product>> GetAllAsync();
-        Task<List<Product>> GetAllAsync(Expression<Func<Product, bool>> predicate);
+        List<Product> GetProducts();
+        List<Product> GetProducts(Func<Product, bool> predicate);
+        Task<List<Product>> GetProductsAsync();
+        Task<List<Product>> GetProductsAsync(Expression<Func<Product, bool>> predicate);
     }
 }

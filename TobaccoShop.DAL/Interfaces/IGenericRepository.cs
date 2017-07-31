@@ -10,10 +10,10 @@ namespace TobaccoShop.DAL.Interfaces
         void Add(TEntity item);
         void Update(TEntity item);
 
-        List<TEntity> GetAll();
-        List<TEntity> GetAll(Func<TEntity, bool> predicate);
-        Task<List<TEntity>> GetAllAsync();
-        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity,bool>> predicate);
+        List<TEntity> GetProducts();
+        List<TEntity> GetProducts(Func<TEntity, bool> predicate);
+        Task<List<TEntity>> GetProductsAsync();
+        Task<List<TEntity>> GetProductsAsync(Expression<Func<TEntity,bool>> predicate);
 
         List<X> GetPropValues<X>(Func<TEntity, X> selector);
         Task<List<X>> GetPropValuesAsync<X>(Expression<Func<TEntity, X>> selector);

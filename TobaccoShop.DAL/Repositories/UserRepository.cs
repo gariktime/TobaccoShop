@@ -19,7 +19,7 @@ namespace TobaccoShop.DAL.Repositories
             db = context;
         }
 
-        public void Create(ShopUser item)
+        public void Add(ShopUser item)
         {
             db.ShopUsers.Add(item);
         }
@@ -34,12 +34,12 @@ namespace TobaccoShop.DAL.Repositories
             return await db.ShopUsers.Include(p => p.Orders).FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task<List<ShopUser>> GetAllAsync()
+        public async Task<List<ShopUser>> GetUsersAsync()
         {
             return await db.ShopUsers.Include(p => p.Orders).AsNoTracking().ToListAsync();
         }
 
-        public async Task<List<ShopUser>> GetAllAsync(Expression<Func<ShopUser, bool>> predicate)
+        public async Task<List<ShopUser>> GetUsersAsync(Expression<Func<ShopUser, bool>> predicate)
         {
             return await db.ShopUsers.Include(p => p.Orders).Where(predicate).AsNoTracking().ToListAsync();
         }

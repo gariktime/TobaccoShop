@@ -17,10 +17,19 @@ namespace TobaccoShop.DAL.Interfaces
         Order FindByNumber(int orderNumber);
         Task<Order> FindByNumberAsync(int orderNumber);
 
-        List<Order> GetAll();
-        List<Order> GetAll(Func<Order, bool> predicate);
-        Task<List<Order>> GetAllAsync();
-        Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate);
+        List<Order> GetOrders();
+        List<Order> GetOrders(Func<Order, bool> predicate);
+        Task<List<Order>> GetOrdersAsync();
+        Task<List<Order>> GetOrdersAsync(Expression<Func<Order, bool>> predicate);
         Task<List<Order>> GetUserOrdersAsync(string userId);
+
+        Task<int> GetOrdersCountAsync(Expression<Func<Order, bool>> predicate);
+
+        Task<double> GetOrderPriceMinAsync(Expression<Func<Order, bool>> predicate);
+        Task<double> GetOrderPriceMaxAsync(Expression<Func<Order, bool>> predicate);
+        Task<double> GetOrderPriceAverageAsync(Expression<Func<Order, bool>> predicate);
+
+        Task<double> GetOrderProductsCountAsync(Expression<Func<Order, bool>> predicate);
+        Task<double> GetOrderProductsCountDistinctAsync(Expression<Func<Order, bool>> predicate);
     }
 }

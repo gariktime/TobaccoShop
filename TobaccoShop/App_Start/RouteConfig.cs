@@ -16,7 +16,7 @@ namespace TobaccoShop
             routes.MapRoute(
                 name: "AdminRoute",
                 url: "Admin",
-                defaults: new { controller = "Admin", action = "Statistics", id = UrlParameter.Optional }
+                defaults: new { controller = "Admin", action = "Orders", id = UrlParameter.Optional }
             );
 
             routes.MapRoute(

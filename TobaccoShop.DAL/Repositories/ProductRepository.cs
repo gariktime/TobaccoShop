@@ -36,22 +36,22 @@ namespace TobaccoShop.DAL.Repositories
             return await db.Products.Include("Comments.User").FirstOrDefaultAsync(p => p.ProductId == productId);
         }
 
-        public List<Product> GetAll()
+        public List<Product> GetProducts()
         {
             return db.Products.AsNoTracking().ToList();
         }
 
-        public List<Product> GetAll(Func<Product, bool> predicate)
+        public List<Product> GetProducts(Func<Product, bool> predicate)
         {
             return db.Products.AsNoTracking().Where(predicate).ToList();
         }
 
-        public async Task<List<Product>> GetAllAsync()
+        public async Task<List<Product>> GetProductsAsync()
         {
             return await db.Products.AsNoTracking().ToListAsync();
         }
 
-        public async Task<List<Product>> GetAllAsync(Expression<Func<Product, bool>> predicate)
+        public async Task<List<Product>> GetProductsAsync(Expression<Func<Product, bool>> predicate)
         {
             return await db.Products.AsNoTracking().Where(predicate).ToListAsync();
         }

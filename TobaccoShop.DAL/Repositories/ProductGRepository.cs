@@ -35,22 +35,22 @@ namespace TobaccoShop.DAL.Repositories
 
         #region Функции множеств
 
-        public List<TEntity> GetAll()
+        public List<TEntity> GetProducts()
         {
             return _dbSet.AsNoTracking().ToList();
         }
 
-        public List<TEntity> GetAll(Func<TEntity, bool> predicate)
+        public List<TEntity> GetProducts(Func<TEntity, bool> predicate)
         {
             return _dbSet.AsNoTracking().Where(predicate).ToList();
         }
 
-        public async Task<List<TEntity>> GetAllAsync()
+        public async Task<List<TEntity>> GetProductsAsync()
         {
             return await _dbSet.AsNoTracking().ToListAsync();
         }
 
-        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>> predicate)
+        public async Task<List<TEntity>> GetProductsAsync(Expression<Func<TEntity, bool>> predicate)
         {
             return await _dbSet.Where(predicate).AsNoTracking().ToListAsync();
         }

@@ -15,13 +15,16 @@ namespace TobaccoShop.BLL.Interfaces
 
         Task<OrderDTO> FindByIdAsync(Guid orderId);
         Task<OrderDTO> FindByNumberAsync(int orderNumber);
-        
+
         Task<List<OrderDTO>> GetOrdersAsync();
-        Task<List<OrderDTO>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo);
         Task<List<OrderDTO>> GetActiveOrdersAsync();
-        Task<List<OrderDTO>> GetActiveOrdersAsync(DateTime dateFrom, DateTime dateTo);
         Task<List<OrderDTO>> GetOnDeliveryOrdersAsync();
         Task<List<OrderDTO>> GetCompletedOrdersAsync();
         Task<List<OrderDTO>> GetUserOrdersAsync(string userId);
+
+        Task<(int, int, int)> GetOrderStatusStatistics();
+        Task<List<(double, double, double)>> GetOrderPriceStatistics(int year);
+        Task<List<int>> GetOrderCountStatistics(int year);
+        Task<List<(double, double)>> GetOrderProductsStatistics(int year);
     }
 }

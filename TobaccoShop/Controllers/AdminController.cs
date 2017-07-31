@@ -12,6 +12,7 @@ using TobaccoShop.BLL.DTO;
 using TobaccoShop.BLL.Infrastructure;
 using TobaccoShop.BLL.Interfaces;
 using TobaccoShop.BLL.Services;
+using TobaccoShop.Models;
 using TobaccoShop.Models.ProductModels;
 
 namespace TobaccoShop.Controllers
@@ -364,9 +365,25 @@ namespace TobaccoShop.Controllers
         #region Статистика
 
         [Authorize(Roles = "Admin")]
-        public ActionResult Statistics()
+        public async Task<ActionResult> Statistics()
         {
-            return View();
+            //статистика заказов по статусу
+            var (activeOrders, onDeliveryOrders, completedOrders) = await orderService.GetOrderStatusStatistics();
+            //статистика количества заказов
+            List<int> ordersCountStatistics = await orderService.GetOrderCountStatistics(DateTime.Now.Year);
+            //статистика стоимости заказов
+            List<(double, double, double)> orderPriceStatistics = await orderService.GetOrderPriceStatistics(DateTime.Now.Year);
+            //статистика количества товаров в заказе
+            List<(double, double)> orderProductsStatistics = await orderService.GetOrderProductsStatistics(DateTime.Now.Year);
+
+            StatisticsViewModel svm = new StatisticsViewModel()
+            {
+                OrderStatusStatistics = new int[3] { activeOrders, onDeliveryOrders, completedOrders },
+                OrderCountStatistics = ordersCountStatistics,
+                OrderPriceStatistics = orderPriceStatistics,
+                OrderProductsStatistics = orderProductsStatistics
+            };
+            return View(svm);
         }
 
         #endregion

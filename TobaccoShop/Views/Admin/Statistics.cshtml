@@ -1,8 +1,24 @@
-﻿
+﻿@model TobaccoShop.Models.StatisticsViewModel
+
 @{
     ViewBag.Title = "Statistics";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    var prices = Model.OrderPriceStatistics;
 }
 
-<h2>Statistics</h2>
 
+<div id="orderStatusStatistics">
+
+</div>
+
+<div id="orderCountStatistics">
+    @{ Html.RenderPartial("_StatisticsOrderCount", Model.OrderCountStatistics); }
+</div>
+
+<div id="orderPriceStatistics">
+    @{ Html.RenderPartial("_StatisticsOrderPrice", Model.OrderPriceStatistics); }
+</div>
+
+<div id="orderProductsStatistics">
+    @{ Html.RenderPartial("_StatisticsOrderProducts", Model.OrderProductsStatistics); }
+</div>

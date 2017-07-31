@@ -49,7 +49,7 @@ namespace TobaccoShop.BLL.Services
                     Role = userDto.Role,
                     RegisterDate = DateTime.Now
                 };
-                db.Users.Create(shopUser);
+                db.Users.Add(shopUser);
                 await db.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно завершена", "");
             }
@@ -119,7 +119,7 @@ namespace TobaccoShop.BLL.Services
                 RegisterDate = DateTime.Now,
                 Role = "Admin"
             };
-            db.Users.Create(adminProfile);
+            db.Users.Add(adminProfile);
             await db.SaveAsync();
         }
 
@@ -159,21 +159,21 @@ namespace TobaccoShop.BLL.Services
 
         public async Task<List<UserDTO>> GetUsersAsync()
         {
-            List<ShopUser> users = await db.Users.GetAllAsync();
+            List<ShopUser> users = await db.Users.GetUsersAsync();
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<ShopUser>, List<UserDTO>>(users);
         }
 
         public async Task<List<UserDTO>> GetUsersByNameAsync(string userName)
         {
-            List<ShopUser> users = await db.Users.GetAllAsync(p => p.UserName.Contains(userName));
+            List<ShopUser> users = await db.Users.GetUsersAsync(p => p.UserName.Contains(userName));
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<ShopUser>, List<UserDTO>>(users);
         }
 
         public async Task<List<UserDTO>> GetUsersByRoleAsync(string role)
         {
-            List<ShopUser> users = await db.Users.GetAllAsync(p => p.Role == role);
+            List<ShopUser> users = await db.Users.GetUsersAsync(p => p.Role == role);
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<ShopUser>, List<UserDTO>>(users);
         }

@@ -143,42 +143,28 @@ namespace TobaccoShop.BLL.Services
 
         public async Task<List<OrderDTO>> GetOrdersAsync()
         {
-            List<Order> orders = await db.Orders.GetAllAsync();
-            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
-            return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
-        }
-
-        public async Task<List<OrderDTO>> GetOrdersAsync(DateTime dateFrom, DateTime dateTo)
-        {
-            List<Order> orders = await db.Orders.GetAllAsync(p => p.OrderDate >= dateFrom && p.OrderDate <= dateTo);
+            List<Order> orders = await db.Orders.GetOrdersAsync();
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
         }
 
         public async Task<List<OrderDTO>> GetActiveOrdersAsync()
         {
-            List<Order> orders = await db.Orders.GetAllAsync(p => p.Status == OrderStatus.Active);
-            Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
-            return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
-        }
-
-        public async Task<List<OrderDTO>> GetActiveOrdersAsync(DateTime dateFrom, DateTime dateTo)
-        {
-            List<Order> orders = await db.Orders.GetAllAsync(p => p.Status == OrderStatus.Active && p.OrderDate >= dateFrom && p.OrderDate <= dateTo);
+            List<Order> orders = await db.Orders.GetOrdersAsync(p => p.Status == OrderStatus.Active);
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
         }
 
         public async Task<List<OrderDTO>> GetOnDeliveryOrdersAsync()
         {
-            List<Order> orders = await db.Orders.GetAllAsync(p => p.Status == OrderStatus.OnDelivery);
+            List<Order> orders = await db.Orders.GetOrdersAsync(p => p.Status == OrderStatus.OnDelivery);
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
         }
 
         public async Task<List<OrderDTO>> GetCompletedOrdersAsync()
         {
-            List<Order> orders = await db.Orders.GetAllAsync(p => p.Status == OrderStatus.Completed);
+            List<Order> orders = await db.Orders.GetOrdersAsync(p => p.Status == OrderStatus.Completed);
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
         }
@@ -188,6 +174,58 @@ namespace TobaccoShop.BLL.Services
             List<Order> orders = await db.Orders.GetUserOrdersAsync(userId);
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
             return Mapper.Map<List<Order>, List<OrderDTO>>(orders);
+        }
+
+        #endregion
+
+        #region Статистика
+
+        //статистика зазазов по статусу
+        public async Task<(int, int, int)> GetOrderStatusStatistics()
+        {
+            int activeOrders = await db.Orders.GetOrdersCountAsync(p => p.Status == OrderStatus.Active);
+            int onDeliveryOrders = await db.Orders.GetOrdersCountAsync(p => p.Status == OrderStatus.OnDelivery);
+            int completedOrders = await db.Orders.GetOrdersCountAsync(p => p.Status == OrderStatus.Completed);
+            return (activeOrders, onDeliveryOrders, completedOrders);
+        }
+
+        //статистика стоимости заказов
+        public async Task<List<(double, double, double)>> GetOrderPriceStatistics(int year)
+        {
+            List<(double, double, double)> result = new List<(double, double, double)>();
+            for (int i = 1; i <= 12; i++)
+            {
+                double minPrice = await db.Orders.GetOrderPriceMinAsync(c => c.OrderDate.Month == i && c.OrderDate.Year == year);
+                double maxPrice = await db.Orders.GetOrderPriceMaxAsync(c => c.OrderDate.Month == i && c.OrderDate.Year == year);
+                double avgPrice = await db.Orders.GetOrderPriceAverageAsync(c => c.OrderDate.Month == i && c.OrderDate.Year == year);
+                result.Add((minPrice, maxPrice, avgPrice));
+            }
+            return result;
+        }
+
+        //статистика количества заказов
+        public async Task<List<int>> GetOrderCountStatistics(int year)
+        {
+            List<int> result = new List<int>();
+            for (int i = 1; i <= 12; i++)
+            {
+                int ordersCount = await db.Orders.GetOrdersCountAsync(p => p.OrderDate.Month == i && p.OrderDate.Year == year);
+                result.Add(ordersCount);
+            }
+            return result;
+        }
+
+        //статистика количества товаров в заказе
+        public async Task<List<(double, double)>> GetOrderProductsStatistics(int year)
+        {
+            List<(double, double)> result = new List<(double, double)>();
+            for (int i = 1; i <= 12; i++)
+            {
+                double productsCountDistinct = await db.Orders.GetOrderProductsCountDistinctAsync(p => p.OrderDate.Month == i && p.OrderDate.Year == year);
+                double productsCount = await db.Orders.GetOrderProductsCountAsync(p => p.OrderDate.Month == i && p.OrderDate.Year == year);
+                result.Add((productsCountDistinct, productsCount));
+            }
+            return result;
         }
 
         #endregion

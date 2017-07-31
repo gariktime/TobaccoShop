@@ -58,22 +58,22 @@ namespace TobaccoShop.DAL.Repositories
             return await db.Orders.Include(p => p.User).FirstOrDefaultAsync(p => p.Number == orderNumber);
         }
 
-        public List<Order> GetAll()
+        public List<Order> GetOrders()
         {
             return db.Orders.AsNoTracking().Include(p => p.User).ToList();
         }
 
-        public List<Order> GetAll(Func<Order, bool> predicate)
+        public List<Order> GetOrders(Func<Order, bool> predicate)
         {
             return db.Orders.AsNoTracking().Include(p => p.User).Where(predicate).ToList();
         }
 
-        public async Task<List<Order>> GetAllAsync()
+        public async Task<List<Order>> GetOrdersAsync()
         {
             return await db.Orders.AsNoTracking().Include(p => p.User).ToListAsync();
         }
 
-        public async Task<List<Order>> GetAllAsync(Expression<Func<Order, bool>> predicate)
+        public async Task<List<Order>> GetOrdersAsync(Expression<Func<Order, bool>> predicate)
         {
             return await db.Orders.AsNoTracking().Include(p => p.User).Where(predicate).ToListAsync();
         }
@@ -81,6 +81,38 @@ namespace TobaccoShop.DAL.Repositories
         public async Task<List<Order>> GetUserOrdersAsync(string userId)
         {
             return await db.Orders.Include("Products.Product").AsNoTracking().ToListAsync();
+        }
+
+        public async Task<int> GetOrdersCountAsync(Expression<Func<Order, bool>> predicate)
+        {
+            return await db.Orders.CountAsync(predicate);
+        }
+
+        public async Task<double> GetOrderPriceMinAsync(Expression<Func<Order, bool>> predicate)
+        {
+            return await db.Orders.Where(predicate).Select(p => p.OrderPrice).DefaultIfEmpty(0.0).MinAsync();
+        }
+
+        public async Task<double> GetOrderPriceMaxAsync(Expression<Func<Order, bool>> predicate)
+        {
+            return await db.Orders.Where(predicate).Select(p => p.OrderPrice).DefaultIfEmpty(0.0).MaxAsync();
+        }
+
+        public async Task<double> GetOrderPriceAverageAsync(Expression<Func<Order, bool>> predicate)
+        {
+            return await db.Orders.Where(predicate).Select(p => p.OrderPrice).DefaultIfEmpty(0.0).AverageAsync();
+        }
+
+        public async Task<double> GetOrderProductsCountAsync(Expression<Func<Order, bool>> predicate)
+        {
+            return await db.Orders.Include(p => p.Products).Where(predicate)
+                           .Select(p => p.Products.Sum(c => c.Quantity)).DefaultIfEmpty(0).AverageAsync();
+        }
+
+        public async Task<double> GetOrderProductsCountDistinctAsync(Expression<Func<Order, bool>> predicate)
+        {
+            return await db.Orders.Include(p => p.Products).Where(predicate)
+                           .Select(p => p.Products.Count).DefaultIfEmpty(0).AverageAsync();
         }
     }
 }

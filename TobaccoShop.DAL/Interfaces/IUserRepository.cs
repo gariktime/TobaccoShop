@@ -8,12 +8,12 @@ namespace TobaccoShop.DAL.Interfaces
 {
     public interface IUserRepository : IDisposable
     {
-        void Create(ShopUser item);
+        void Add(ShopUser item);
 
         ShopUser FindById(string id);
         Task<ShopUser> FindByIdAsync(string id);
 
-        Task<List<ShopUser>> GetAllAsync();
-        Task<List<ShopUser>> GetAllAsync(Expression<Func<ShopUser, bool>> predicate);
+        Task<List<ShopUser>> GetUsersAsync();
+        Task<List<ShopUser>> GetUsersAsync(Expression<Func<ShopUser, bool>> predicate);
     }
 }

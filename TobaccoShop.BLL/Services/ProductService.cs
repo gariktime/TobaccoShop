@@ -143,19 +143,19 @@ namespace TobaccoShop.BLL.Services
         public async Task<List<ProductDTO>> GetProductsAsync()
         {
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
-            return Mapper.Map<List<Product>, List<ProductDTO>>(await db.Products.GetAllAsync());
+            return Mapper.Map<List<Product>, List<ProductDTO>>(await db.Products.GetProductsAsync());
         }
 
         public async Task<List<ProductDTO>> GetProductsAsync(string searchQuery)
         {
             Mapper.Initialize(cfg => cfg.AddProfile<AutomapperProfile>());
-            return Mapper.Map<List<Product>, List<ProductDTO>>(await db.Products.GetAllAsync(p => p.Mark.Contains(searchQuery) || p.Model.Contains(searchQuery)));
+            return Mapper.Map<List<Product>, List<ProductDTO>>(await db.Products.GetProductsAsync(p => p.Mark.Contains(searchQuery) || p.Model.Contains(searchQuery)));
         }
 
         public async Task<List<HookahDTO>> GetHookahsAsync()
         {
             Mapper.Initialize(cfg => cfg.CreateMap<Hookah, HookahDTO>());
-            return Mapper.Map<IEnumerable<Hookah>, List<HookahDTO>>(await db.Hookahs.GetAllAsync());
+            return Mapper.Map<IEnumerable<Hookah>, List<HookahDTO>>(await db.Hookahs.GetProductsAsync());
         }
 
         public async Task<List<HookahDTO>> GetHookahsAsync(int minPrice, int maxPrice, double minHeight, double maxHeight, string[] marks, string[] countries)
@@ -171,7 +171,7 @@ namespace TobaccoShop.BLL.Services
                 countries = _countries.ToArray();
             }
 
-            var hookahs = await db.Hookahs.GetAllAsync(p => p.Price >= minPrice &&
+            var hookahs = await db.Hookahs.GetProductsAsync(p => p.Price >= minPrice &&
                                                             p.Price <= maxPrice &&
                                                             p.Height >= minHeight &&
                                                             p.Height <= maxHeight &&

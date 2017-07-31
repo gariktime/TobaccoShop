@@ -61,9 +61,6 @@ else
         }
     </table>
 
-    using (Html.BeginForm("MakeOrder", "Order", FormMethod.Post))
-    {
-        @Html.DisplayFor(p => Model.TotalPrice)
-        <input type="submit" class="btn" value="Оформить заказ" />
-    }
+    @Html.DisplayFor(p => Model.TotalPrice) <span class="glyphicon-rub"></span>
+    @Html.ActionLink("Оформить заказ", "MakeOrder", null, new { @class = "btn btn-default" })
 }
